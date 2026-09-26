@@ -1,0 +1,13 @@
+---
+interface Props {
+	href: string;
+	label: string;
+	variant?: "default" | "underline";
+}
+
+const { href, label, variant = "default" } = Astro.props;
+---
+
+<a href={href} class:list={["link-arrow", variant === "underline" && "link-arrow--underline"]}>
+	{label}
+</a>

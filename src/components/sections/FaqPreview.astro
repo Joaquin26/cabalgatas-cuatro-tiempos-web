@@ -1,0 +1,104 @@
+---
+import SectionHeader from "../ui/SectionHeader.astro";
+import LinkArrow from "../ui/LinkArrow.astro";
+
+const questions = [
+	"¿Necesito experiencia montando caballo?",
+	"¿Desde que edad se puede participar?",
+	"¿Dónde están ubicados?",
+	"¿Qué debo llevar?",
+	"¿Qué pasa si necesito cambiar mi reserva?",
+];
+---
+
+<section class="faq-preview section">
+	<div class="faq-preview__intro reveal">
+		<SectionHeader
+			eyebrow="PREGUNTAS FRECUENTES"
+			title="Todo lo que necesitas saber"
+			subtitle="Resolvemos las dudas más comunes para que solo tengas que preocuparte por disfrutar la experiencia."
+			weight="regular"
+		/>
+		<LinkArrow href="/faq" label="VER TODAS LAS PREGUNTAS →" variant="underline" />
+	</div>
+	<div class="faq-preview__list reveal">
+		{questions.map((question) => (
+			<details class="faq-item">
+				<summary>
+					<span>{question}</span>
+					<span class="faq-item__icon" aria-hidden="true">
+						+
+					</span>
+				</summary>
+			</details>
+		))}
+	</div>
+</section>
+
+<style>
+	.faq-preview {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
+
+	.faq-preview__intro {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.5rem;
+	}
+
+	.faq-preview__list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.faq-item {
+		border-bottom: 1px solid #d8cec4;
+		padding: 0.9rem 0;
+	}
+
+	.faq-item summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		cursor: pointer;
+		list-style: none;
+		font-size: var(--text-small);
+		color: #34291f;
+	}
+
+	.faq-item summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-item__icon {
+		font-weight: 600;
+		font-size: 1.5rem;
+		color: var(--color-brown);
+		transition: transform var(--duration-base) var(--ease-calm);
+	}
+
+	.faq-item[open] .faq-item__icon {
+		transform: rotate(45deg);
+	}
+
+	@media (min-width: 1024px) {
+		.faq-preview {
+			flex-direction: row;
+			gap: 9rem;
+		}
+
+		.faq-preview__intro {
+			flex-shrink: 0;
+			width: 30rem;
+		}
+
+		.faq-preview__list {
+			flex: 1;
+			justify-content: center;
+		}
+	}
+</style>

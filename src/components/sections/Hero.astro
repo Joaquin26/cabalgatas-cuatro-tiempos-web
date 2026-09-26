@@ -1,0 +1,273 @@
+---
+import { Image } from "astro:assets";
+import Nav from "../layout/Nav.astro";
+import heroImage from "../../assets/inicio/hero-cabalgata.png";
+
+const slides = Array.from({ length: 5 }, () => ({
+	image: heroImage,
+	alt: "Grupo a caballo al atardecer en el valle de Pachacámac",
+	heading: ["Vuelve a", "vivir lo esencial."],
+	subtitle:
+		"Experiencias entre caballos, naturaleza y momentos para recordar en el valle de Pachacámac.",
+}));
+
+const slideCount = String(slides.length).padStart(2, "0");
+---
+
+<section class="hero" data-hero data-slide-duration="6000">
+	{slides.map((slide, i) => (
+		<Image
+			src={slide.image}
+			alt={slide.alt}
+			class:list={["hero__image", i === 0 && "is-active"]}
+			data-hero-image={i}
+			widths={[720, 1440, 2160]}
+			sizes="100vw"
+			loading={i === 0 ? "eager" : "lazy"}
+			priority={i === 0}
+		/>
+	))}
+	<div class="hero__scrim" aria-hidden="true"></div>
+	<Nav />
+	<div class="hero__content">
+		<div class="hero__text-stack">
+			{slides.map((slide, i) => (
+				<div class:list={["hero__text", i === 0 && "is-active"]} data-hero-text={i}>
+					<h1 class="reveal">
+						{slide.heading.map((line, li) => (
+							<>
+								{line}
+								{li < slide.heading.length - 1 && <br />}
+							</>
+						))}
+					</h1>
+					<p class="hero__subtitle reveal">{slide.subtitle}</p>
+				</div>
+			))}
+		</div>
+		<a href="/#experiencias" class="button button--secondary hero__cta reveal">
+			DESCUBRIR EXPERIENCIAS →
+		</a>
+		<div class="hero__slider" aria-hidden="true">
+			<span data-hero-counter>01/{slideCount}</span>
+			<div class="hero__slider-track">
+				<div class="hero__slider-fill" data-hero-fill></div>
+			</div>
+		</div>
+	</div>
+	<p class="hero__location">
+		<span class="hero__location-main">PACHACAMÁC, LIMA</span>
+		<span class="hero__location-sub">A OTRO RITMO</span>
+	</p>
+</section>
+
+<script>
+	function initHero(hero: HTMLElement) {
+		const images = Array.from(hero.querySelectorAll<HTMLElement>("[data-hero-image]"));
+		const texts = Array.from(hero.querySelectorAll<HTMLElement>("[data-hero-text]"));
+		const fill = hero.querySelector<HTMLElement>("[data-hero-fill]");
+		const counter = hero.querySelector<HTMLElement>("[data-hero-counter]");
+		const total = images.length;
+		if (total <= 1) return;
+
+		const duration = Number(hero.dataset.slideDuration) || 6000;
+		const digits = String(total).length;
+		let index = 0;
+		let timer: ReturnType<typeof setInterval> | undefined;
+
+		function show(i: number) {
+			images.forEach((img, idx) => img.classList.toggle("is-active", idx === i));
+			texts.forEach((txt, idx) => txt.classList.toggle("is-active", idx === i));
+			if (counter)
+				counter.textContent = `${String(i + 1).padStart(digits, "0")}/${String(total).padStart(digits, "0")}`;
+			if (fill) {
+				fill.style.animation = "none";
+
+				void fill.offsetWidth;
+				fill.style.animation = `hero-fill ${duration}ms linear forwards`;
+			}
+		}
+
+		function next() {
+			index = (index + 1) % total;
+			show(index);
+		}
+
+		function start() {
+			stop();
+			timer = setInterval(next, duration);
+		}
+
+		function stop() {
+			if (timer) clearInterval(timer);
+		}
+
+		show(0);
+		start();
+
+		hero.addEventListener("mouseenter", stop);
+		hero.addEventListener("mouseleave", start);
+		hero.addEventListener("focusin", stop);
+		hero.addEventListener("focusout", start);
+	}
+
+	document.querySelectorAll<HTMLElement>("[data-hero]").forEach(initHero);
+</script>
+
+<style>
+	.hero {
+		position: relative;
+		min-height: 100vh;
+		min-height: 100svh;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+	}
+
+	.hero__image {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: -2;
+		opacity: 0;
+		transition: opacity 1200ms var(--ease-calm);
+	}
+
+	.hero__image.is-active {
+		opacity: 1;
+	}
+
+	.hero__scrim {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background:
+			linear-gradient(
+				90deg,
+				rgba(20, 15, 11, 0.78) 0%,
+				rgba(20, 15, 11, 0.5) 32%,
+				rgba(20, 15, 11, 0.2) 70%,
+				rgba(20, 15, 11, 0.14) 100%
+			),
+			linear-gradient(
+				180deg,
+				rgba(20, 15, 11, 0.18) 0%,
+				rgba(20, 15, 11, 0) 50%,
+				rgba(20, 15, 11, 0.32) 100%
+			);
+	}
+
+	.hero__content {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.875rem;
+		max-width: 26.25rem;
+		padding: 6rem var(--gutter) 3rem;
+		color: var(--color-text-image);
+	}
+
+	.hero__text-stack {
+		display: grid;
+		width: 100%;
+	}
+
+	.hero__text {
+		grid-area: 1 / 1;
+		display: flex;
+		flex-direction: column;
+		gap: 1.875rem;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 800ms var(--ease-calm);
+	}
+
+	.hero__text.is-active {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.hero__text h1 {
+		font-size: var(--text-h1);
+		font-weight: 400;
+		color: var(--color-text-image);
+	}
+
+	.hero__subtitle {
+		font-family: var(--font-ui);
+		font-size: var(--text-body-lg);
+		color: var(--color-dark-sand);
+	}
+
+	.hero__cta {
+		border-color: var(--color-brown);
+		color: var(--color-text-image);
+		text-transform: none;
+		letter-spacing: 0.07em;
+		font-weight: 600;
+	}
+
+	.hero__slider {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		width: 100%;
+		font-size: var(--text-small);
+		letter-spacing: 0.16em;
+		color: var(--color-dark-sand);
+	}
+
+	.hero__slider-track {
+		position: relative;
+		height: 2px;
+		width: 10rem;
+		background: rgba(241, 234, 226, 0.3);
+	}
+
+	.hero__slider-fill {
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: 0%;
+		background: var(--color-dark-sand);
+	}
+
+	@keyframes hero-fill {
+		from {
+			width: 0%;
+		}
+		to {
+			width: 100%;
+		}
+	}
+
+	.hero__location {
+		position: absolute;
+		right: var(--gutter);
+		bottom: 2rem;
+		display: none;
+		flex-direction: column;
+		gap: 0.4rem;
+		margin: 0;
+		text-align: right;
+	}
+
+	.hero__location-main {
+		font-size: var(--text-body);
+		letter-spacing: 0.12em;
+		color: var(--color-text-image);
+	}
+
+	.hero__location-sub {
+		font-size: var(--text-small);
+		letter-spacing: 0.08em;
+		color: var(--color-dark-sand);
+	}
+
+	@media (min-width: 768px) {
+		.hero__location {
+			display: flex;
+		}
+	}
+</style>

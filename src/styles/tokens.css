@@ -1,0 +1,41 @@
+:root {
+	--color-chocolate: #2c2017;
+	--color-dark-chocolate: #140f0b;
+	--color-brown: #624b38;
+	--color-camel: #b68a58;
+	--color-dark-sand: #d8c4a5;
+	--color-sand: #d4cabf;
+	--color-main: #f1eae2;
+	--color-secundary: #f7f2ec;
+	--color-text-image: #f7f1e9;
+	--color-charcoal: #28231f;
+
+	--color-bg: var(--color-secundary);
+	--color-text: var(--color-charcoal);
+	--color-text-inverse: var(--color-text-image);
+
+	--font-display: "Cormorant Garamond", "Times New Roman", serif;
+	--font-ui: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+
+	--text-display-xl: clamp(2.75rem, 5vw + 1.5rem, 5rem);
+	--text-h1: clamp(2.25rem, 4vw + 1rem, 4rem);
+	--text-h2: clamp(1.85rem, 3vw + 1rem, 3rem);
+	--text-h3: clamp(1.4rem, 2vw + 0.8rem, 2rem);
+	--text-h4: clamp(1.15rem, 1vw + 0.8rem, 1.5rem);
+	--text-body-lg: 1.125rem;
+	--text-body: 1rem;
+	--text-small: 0.875rem;
+	--text-eyebrow: 0.75rem;
+
+	--max-width: 1440px;
+	--content-width: 1296px;
+	--section-spacing: clamp(3.5rem, 6vw, 6rem);
+	--gutter: clamp(1.25rem, 6vw, 72px);
+
+	--radius-card: 4px;
+	--radius-button: 4px;
+	--radius-input: 8px;
+
+	--ease-calm: cubic-bezier(0.22, 0.61, 0.36, 1);
+	--duration-base: 500ms;
+}

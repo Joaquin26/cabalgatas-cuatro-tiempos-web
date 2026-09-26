@@ -1,0 +1,72 @@
+---
+import logo from "../../../public/brand/logo-mark.png";
+import { Image } from "astro:assets";
+
+const links = [
+	{ label: "Experiencias", href: "/#experiencias" },
+	{ label: "Nosotros", href: "/nosotros" },
+	{ label: "Galeria", href: "/galeria" },
+	{ label: "FAQ", href: "/faq" },
+];
+---
+
+<header class="nav">
+	<a href="/" class="nav__logo">
+		<Image src={logo} alt="Cabalgatas Cuatro Tiempos" width={135} height={45} />
+	</a>
+	<nav class="nav__links" aria-label="Principal">
+		{links.map((link) => (
+			<a href={link.href}>{link.label}</a>
+		))}
+	</nav>
+	<a href="/#experiencias" class="button nav__cta">
+		RESERVAR →
+	</a>
+</header>
+
+<style>
+	.nav {
+		position: absolute;
+		inset: 0 0 auto 0;
+		z-index: 10;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1.5rem;
+		padding: 1.375rem var(--gutter);
+	}
+
+	.nav__logo :global(img) {
+		display: block;
+		height: 2.8125rem;
+		width: auto;
+	}
+
+	.nav__links {
+		display: none;
+		align-items: center;
+		gap: 2.5rem;
+		font-size: var(--text-body-lg);
+		color: var(--color-text-image);
+	}
+
+	.nav__links a {
+		text-decoration: none;
+	}
+
+	.nav__cta {
+		border-color: var(--color-brown);
+		color: var(--color-text-image);
+		font-weight: 400;
+		text-transform: none;
+		letter-spacing: normal;
+		padding: 0.9375rem 1.5rem;
+		font-size: var(--text-small);
+	}
+
+	@media (min-width: 1024px) {
+		.nav__links {
+			display: flex;
+		}
+	}
+</style>

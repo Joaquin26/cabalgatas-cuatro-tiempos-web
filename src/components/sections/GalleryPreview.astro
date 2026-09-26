@@ -1,0 +1,61 @@
+---
+import { getImage } from "astro:assets";
+import SectionHeader from "../ui/SectionHeader.astro";
+import LinkArrow from "../ui/LinkArrow.astro";
+import stripImage from "../../assets/galeria/tira.png";
+
+const optimized = await getImage({ src: stripImage, width: 1600 });
+const positions = ["0%", "25%", "50%", "75%", "100%"];
+---
+
+<section class="gallery-preview section">
+	<div class="gallery-preview__header reveal">
+		<SectionHeader eyebrow="GALERÍA" title="Momentos que hablan por sí solos" />
+		<LinkArrow href="/galeria" label="VER GALERÍA →" />
+	</div>
+	<div class="gallery-preview__grid reveal">
+		{positions.map((position) => (
+			<span
+				class="gallery-preview__tile"
+				style={{ backgroundImage: `url(${optimized.src})`, backgroundPositionX: position }}
+			/>
+		))}
+	</div>
+</section>
+
+<style>
+	.gallery-preview {
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+	}
+
+	.gallery-preview__header {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.gallery-preview__grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
+	}
+
+	.gallery-preview__tile {
+		display: block;
+		aspect-ratio: 240 / 190;
+		background-color: #d9d9d9;
+		background-size: 500% 100%;
+		background-repeat: no-repeat;
+		background-position-y: center;
+	}
+
+	@media (min-width: 1024px) {
+		.gallery-preview__grid {
+			grid-template-columns: repeat(5, 1fr);
+		}
+	}
+</style>

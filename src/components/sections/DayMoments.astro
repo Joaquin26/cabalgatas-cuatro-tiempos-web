@@ -1,0 +1,101 @@
+---
+import { Image } from "astro:assets";
+import SectionHeader from "../ui/SectionHeader.astro";
+import momentoImage from "../../assets/inicio/momento.png";
+
+const steps = [
+	{ number: "01", label: "Llegas al campo" },
+	{ number: "02", label: "Conoces a tu caballo" },
+	{ number: "03", label: "Conoces el valle" },
+	{ number: "04", label: "Compartes la mesa" },
+	{ number: "05", label: "Terminas sin prisa" },
+];
+---
+
+<section class="day-moments section">
+	<SectionHeader
+		eyebrow="ASÍ SE VIVE CUATRO TIEMPOS"
+		title="Un día, muchos momentos"
+		align="center"
+		class="reveal"
+	/>
+	<ol class="day-moments__list reveal">
+		{steps.map((step) => (
+			<li class="day-moments__step">
+				<span class="day-moments__image">
+					<Image src={momentoImage} alt="" width={224} height={150} />
+				</span>
+				<span class="day-moments__number">{step.number}</span>
+				<span class="day-moments__label">{step.label}</span>
+			</li>
+		))}
+	</ol>
+</section>
+
+<style>
+	.day-moments {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3rem;
+		text-align: center;
+	}
+
+	.day-moments__list {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.5rem;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.day-moments__step {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.6rem;
+		text-align: left;
+	}
+
+	.day-moments__image {
+		display: block;
+		width: 100%;
+		aspect-ratio: 224 / 150;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.day-moments__image::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: rgba(106, 75, 53, 0.08);
+	}
+
+	.day-moments__image :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.day-moments__number {
+		font-size: var(--text-eyebrow);
+		letter-spacing: 0.1em;
+		color: var(--color-dark-chocolate);
+	}
+
+	.day-moments__label {
+		font-family: var(--font-display);
+		font-size: 1.3125rem;
+		color: var(--color-chocolate);
+		margin-top: -0.4rem;
+	}
+
+	@media (min-width: 1024px) {
+		.day-moments__list {
+			grid-template-columns: repeat(5, 1fr);
+		}
+	}
+</style>

@@ -1,0 +1,200 @@
+---
+import { Image } from "astro:assets";
+import SectionHeader from "../ui/SectionHeader.astro";
+import LinkArrow from "../ui/LinkArrow.astro";
+import fullDayImage from "../../assets/inicio/hero-cabalgata.png";
+import cabalgata2hImage from "../../assets/experiencias/cabalgata-2h/card.jpg";
+import pilatesHorsesImage from "../../assets/experiencias/pilates-horses/card.jpg";
+
+const cards = [
+	{
+		href: "/experiencias/full-day",
+		image: fullDayImage,
+		alt: "Grupo a caballo cruzando el valle en el Full Day a Caballo",
+		title: "FULL DAY A CABALLO",
+		description: "Un día completo entre caballos, naturaleza, gastronomía y buenos momentos.",
+		price: "S/ 380 por persona",
+		size: "large",
+	},
+	{
+		href: "/experiencias/cabalgata-2h",
+		image: cabalgata2hImage,
+		alt: "Jinete recorriendo el valle de Pachacámac",
+		title: "CABALGATA 2H POR EL VALLE",
+		description: "Recorre el valle de Pachacamac",
+		size: "small",
+	},
+	{
+		href: "/experiencias/pilates-horses",
+		image: pilatesHorsesImage,
+		alt: "Persona practicando pilates junto a un caballo",
+		title: "PILATES & HORSES",
+		description: "Movimiento, naturaleza y conexión",
+		size: "small",
+	},
+];
+---
+
+<section class="experiences section" id="experiencias">
+	<SectionHeader
+		eyebrow="NUESTRAS EXPERIENCIAS"
+		title="Elige tu próxima aventura"
+		subtitle="Cada experiencia está pensada para vivir el campo a tu manera."
+		align="center"
+		class="reveal"
+	/>
+	<div class="experiences__grid reveal">
+		{cards.map((card) => (
+			<a href={card.href} class:list={["experience-card", `experience-card--${card.size}`]}>
+				<Image
+					src={card.image}
+					alt={card.alt}
+					class="experience-card__image"
+					widths={[400, 620, 1000]}
+					sizes="(min-width: 1024px) 40vw, 100vw"
+				/>
+				<span class="experience-card__scrim" aria-hidden="true" />
+				<span class="experience-card__content">
+					<span class="experience-card__title">{card.title}</span>
+					<span class="experience-card__description">{card.description}</span>
+					{card.price && <span class="experience-card__price">{card.price}</span>}
+				</span>
+				<span class="experience-card__arrow" aria-hidden="true">
+					→
+				</span>
+			</a>
+		))}
+	</div>
+	<p class="experiences__footer reveal">
+		<span>¿Buscas algo especial para un grupo o una ocasión?</span>
+		<LinkArrow href="#celebra" label="DESCUBRE CELEBRA A TU MANERA →" />
+	</p>
+</section>
+
+<style>
+	.experiences {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2.2rem;
+		text-align: center;
+	}
+
+	.experiences__grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+		width: 100%;
+	}
+
+	.experience-card {
+		position: relative;
+		display: block;
+		overflow: hidden;
+		border-radius: var(--radius-card);
+		text-decoration: none;
+		aspect-ratio: 315 / 371;
+	}
+
+	.experience-card__image {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.experience-card__scrim {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			180deg,
+			rgba(20, 15, 11, 0.22) 0%,
+			rgba(20, 15, 11, 0.28) 45%,
+			rgba(20, 15, 11, 0.9) 100%
+		);
+	}
+
+	.experience-card--large .experience-card__scrim {
+		background: linear-gradient(
+			180deg,
+			rgba(20, 15, 11, 0.02) 0%,
+			rgba(20, 15, 11, 0.08) 45%,
+			rgba(20, 15, 11, 0.78) 100%
+		);
+	}
+
+	.experience-card__content {
+		position: absolute;
+		left: 1.5rem;
+		right: 1.5rem;
+		bottom: 3.5rem;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.9rem;
+		text-align: left;
+	}
+
+	.experience-card__title {
+		font-family: var(--font-ui);
+		font-weight: 600;
+		font-size: 1.1rem;
+		letter-spacing: 0.14em;
+		color: var(--color-text-image);
+	}
+
+	.experience-card__description {
+		font-family: var(--font-ui);
+		font-size: var(--text-small);
+		letter-spacing: 0.05em;
+		color: var(--color-sand);
+	}
+
+	.experience-card__price {
+		font-size: var(--text-body);
+		letter-spacing: 0.05em;
+		color: var(--color-sand);
+	}
+
+	.experience-card__arrow {
+		position: absolute;
+		right: 1.5rem;
+		bottom: 1.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 50%;
+		border: 1px solid rgba(241, 234, 226, 0.5);
+		color: var(--color-text-image);
+		font-size: var(--text-body);
+	}
+
+	.experiences__footer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.1rem;
+		margin-top: 0.5rem;
+		font-weight: 600;
+	}
+
+	.experiences__footer span {
+		font-size: var(--text-small);
+		letter-spacing: 0.08em;
+		color: var(--color-chocolate);
+	}
+
+	@media (min-width: 1024px) {
+		.experiences__grid {
+			grid-template-columns: 1.97fr 1fr 1fr;
+			align-items: stretch;
+		}
+
+		.experience-card--large {
+			aspect-ratio: auto;
+		}
+	}
+</style>

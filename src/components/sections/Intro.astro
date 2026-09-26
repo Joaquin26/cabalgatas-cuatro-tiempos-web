@@ -1,0 +1,120 @@
+---
+import { Image } from "astro:assets";
+import LinkArrow from "../ui/LinkArrow.astro";
+import conexionImage from "../../assets/inicio/conexion.jpg";
+---
+
+<section class="intro section">
+	<div class="intro__content reveal">
+		<p class="eyebrow intro__eyebrow">CUATRO TIEMPOS</p>
+		<h2>
+			Más que una cabalgata, <br />
+			una forma de conectar.
+		</h2>
+		<p class="intro__body">
+			Creamos experiencias a caballo en el valle de Pachacámac para disfrutar de la naturaleza, la
+			tranquilidad y una conexión auténtica con nuestros caballos.
+		</p>
+		<LinkArrow href="/nosotros" label="CONOCE MÁS SOBRE NOSOTROS →" />
+	</div>
+	<div class="intro__media reveal">
+		<div class="intro__image">
+			<Image
+				src={conexionImage}
+				alt="Jinete acariciando a su caballo tras la cabalgata"
+				width={700}
+				height={818}
+			/>
+		</div>
+		<div class="intro__tags">
+			<p>Caballos</p>
+			<p>Naturaleza</p>
+			<p>Momentos reales</p>
+			<span class="intro__rule" aria-hidden="true"></span>
+		</div>
+	</div>
+</section>
+
+<style>
+	.intro {
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+	}
+
+	.intro__eyebrow {
+		margin-bottom: 1.5rem;
+	}
+
+	.intro__content h2 {
+		font-size: var(--text-h2);
+		font-weight: 400;
+		color: var(--color-chocolate);
+		margin-bottom: 1.5rem;
+	}
+
+	.intro__body {
+		font-size: var(--text-body);
+		line-height: 1.55;
+		color: var(--color-brown);
+		max-width: 32rem;
+	}
+
+	.intro__media {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	.intro__image {
+		flex-shrink: 0;
+		width: 13.75rem;
+		aspect-ratio: 350 / 409;
+		overflow: hidden;
+		border-radius: 11.25rem 11.25rem 0 0;
+	}
+
+	.intro__image :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 30% 30%;
+	}
+
+	.intro__tags {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 1.375rem;
+		color: var(--color-brown);
+	}
+
+	.intro__tags p {
+		margin: 0;
+	}
+
+	.intro__rule {
+		margin-top: 0.75rem;
+		width: 3rem;
+		height: 1px;
+		background: var(--color-camel);
+	}
+
+	@media (min-width: 1024px) {
+		.intro {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.intro__content {
+			max-width: 31.25rem;
+		}
+
+		.intro__image {
+			width: 21.875rem;
+		}
+	}
+</style>

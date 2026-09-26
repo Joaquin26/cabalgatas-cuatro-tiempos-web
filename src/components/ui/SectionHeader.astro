@@ -1,0 +1,42 @@
+---
+interface Props {
+	eyebrow: string;
+	title: string;
+	subtitle?: string;
+	align?: "left" | "center";
+	tone?: "light" | "dark";
+	weight?: "semibold" | "regular";
+	class?: string;
+}
+
+const {
+	eyebrow,
+	title,
+	subtitle,
+	align = "left",
+	tone = "light",
+	weight = "semibold",
+	class: className,
+} = Astro.props;
+const titleLines = title.split("\n");
+---
+
+<div
+	class:list={[
+		"section-header",
+		`section-header--${align}`,
+		weight === "regular" && "section-header--regular",
+		className,
+	]}
+>
+	<p class:list={["eyebrow", tone === "dark" && "eyebrow--dark"]}>{eyebrow}</p>
+	<h2>
+		{titleLines.map((line, i) => (
+			<>
+				{line}
+				{i < titleLines.length - 1 && <br />}
+			</>
+		))}
+	</h2>
+	{subtitle && <p class="section-header__subtitle">{subtitle}</p>}
+</div>

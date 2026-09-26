@@ -1,0 +1,827 @@
+# Cabalgatas Cuatro Tiempos — Design System
+
+## 01. Dirección de marca
+
+Cuatro Tiempos es una marca de experiencias de campo alrededor de los
+caballos, la naturaleza y los momentos compartidos.
+
+No buscamos comunicar únicamente “cabalgatas”.
+Buscamos transmitir la sensación de escapar de la rutina y vivir
+Pachacámac a otro ritmo.
+
+### Concepto visual
+
+PREMIUM COUNTRYSIDE EXPERIENCE
+
+La experiencia debe sentirse:
+
+- Natural
+- Cálida
+- Editorial
+- Cuidada
+- Serena
+- Humana
+- Auténtica
+
+El carácter premium debe provenir del espacio, la fotografía,
+la composición y el cuidado de los detalles; no de recursos
+tradicionalmente asociados al lujo.
+
+## 02. Referencias de marca
+
+### Belmond — Referencia principal
+
+Inspiración:
+
+- Storytelling de experiencias
+- Slow luxury
+- Fotografía protagonista
+- Destino antes que producto
+- Contenido editorial
+
+### Ralph Lauren — Universo ecuestre
+
+Inspiración:
+
+- Elegancia ecuestre
+- Tonos tierra
+- Lifestyle
+- Tradición
+- Dirección fotográfica
+
+Evitar trasladar la estética western o preppy americana.
+
+### Aman — Sofisticación
+
+Inspiración:
+
+- Espacio
+- Ritmo visual
+- Simplicidad
+- Grandes fotografías
+- Pocos elementos compitiendo simultáneamente
+
+### Six Senses — Bienestar
+
+Inspiración:
+
+- Naturaleza
+- Wellness
+- Gastronomía
+- Experiencias
+- Conexión con el entorno
+
+---
+
+## 03. Principios de diseño
+
+### 01 — La experiencia antes que el servicio
+
+No comunicar:
+
+“Cabalgata de 2 horas + jugo + guía”
+
+Comunicar primero la experiencia y posteriormente sus características.
+
+La persona debe poder imaginarse allí antes de evaluar los detalles.
+
+### 02 — Una idea por momento
+
+Cada bloque debe tener un protagonista.
+
+Evitar:
+
+- múltiples CTAs compitiendo
+- exceso de cards
+- grandes cantidades de texto
+- demasiados elementos decorativos
+
+### 03 — La fotografía es parte de la interfaz
+
+Las imágenes no deben funcionar únicamente como decoración.
+
+Deben ayudar a contar la experiencia.
+
+### 04 — Premium no significa lujo clásico
+
+Evitar:
+
+- dorados
+- negro predominante
+- efectos glossy
+- sombras fuertes
+- mármol
+- ornamentos excesivos
+- estética de hotel cinco estrellas tradicional
+
+### 05 — El caballo es el corazón, no todo el universo
+
+Cuatro Tiempos también es:
+
+naturaleza + gastronomía + bienestar + personas + celebración + Pachacámac.
+
+---
+
+# 04. Color System
+
+## Primary
+
+Chocolate
+#301713
+
+Uso:
+
+- fondos de alto impacto
+- botones principales
+- navegación
+- footer
+- títulos puntuales
+
+## Secondary
+
+Earth Brown
+#594034
+
+Uso:
+
+- superficies secundarias
+- elementos gráficos
+- estados hover
+
+## Accent
+
+Camel
+#A47F5E
+
+Uso limitado:
+
+- pequeños detalles
+- líneas
+- indicadores
+- iconografía
+
+## Neutral Warm
+
+Sand
+#D8C4A5
+
+Cream
+#F1E5D1
+
+Ivory
+#FAF6EE
+
+Warm Charcoal
+#28231F
+
+## Distribución aproximada
+
+60% — Ivory / Cream
+25% — Chocolate / Brown
+10% — Fotografía / tonos naturales
+5% — Camel / Sand
+
+No utilizar Camel como color principal.
+
+---
+
+# 05. Typography
+
+## Display
+
+Cormorant Garamond
+
+Uso:
+
+- Hero
+- H1
+- H2
+- citas
+- mensajes editoriales
+- números destacados
+
+## UI / Body
+
+Manrope
+
+Uso:
+
+- navegación
+- párrafos
+- botones
+- formularios
+- sistema de reservas
+- labels
+- información funcional
+
+## Desktop Scale
+
+Display XL 80px
+H1 64px
+H2 48px
+H3 32px
+H4 24px
+
+Body Large 18px
+Body 16px
+Small 14px
+Eyebrow 12px
+
+### Eyebrow
+
+Usar uppercase + letter spacing.
+
+Ejemplo:
+
+NUESTRAS EXPERIENCIAS
+
+        ↓
+
+Encuentra tu próxima aventura
+
+## Principio
+
+La serif comunica emoción.
+La sans comunica información.
+
+No utilizar Cormorant para interfaces complejas o párrafos extensos.
+
+---
+
+# 06. Layout
+
+Desktop max-width:
+1280px
+
+Content:
+1200px
+
+Grid:
+12 columnas
+
+Column gap:
+24–32px
+
+Section spacing:
+120–160px
+
+Horizontal padding:
+64–80px
+
+## Principio
+
+Priorizar espacio negativo.
+
+No llenar una sección simplemente porque exista espacio disponible.
+
+---
+
+# 07. Shape Language
+
+La geometría principal nace del arco presente en el isotipo de
+Cuatro Tiempos.
+
+Puede utilizarse en:
+
+- fotografías destacadas
+- marcos
+- números
+- detalles gráficos
+- transiciones editoriales
+
+No todas las imágenes deben utilizar el arco.
+
+La fotografía rectangular continúa siendo la forma predominante.
+
+## Border Radius
+
+Cards:
+0–4px
+
+Buttons:
+0–4px
+
+Inputs:
+4–8px
+
+Evitar componentes excesivamente redondeados o estilo “app”.
+
+---
+
+# 08. Photography
+
+La fotografía debe sentirse documental/editorial, no publicitaria.
+
+## Distribución deseada
+
+40% Experiencia
+Personas viviendo la actividad.
+
+25% Entorno
+Valle, estancia, caminos y naturaleza.
+
+20% Detalles
+Montura, manos, botas, comida, fuego, texturas.
+
+15% Caballos
+Retratos y momentos naturales.
+
+## Tratamiento
+
+- temperatura ligeramente cálida
+- tonos tierra presentes
+- verdes moderadamente desaturados
+- contraste natural
+- pieles naturales
+- evitar filtros sepia fuertes
+
+## Evitar
+
+- fotografías de stock
+- poses artificiales
+- exceso de retratos de caballos
+- saturación excesiva
+- imágenes demasiado oscuras
+- estética western
+
+---
+
+# 09. Iconography
+
+Estilo:
+Lineal / artesanal / fino.
+
+Inspiración:
+Los símbolos presentes en el isotipo.
+
+Familias necesarias:
+
+- Duración
+- Personas
+- Calendario
+- Caballo
+- Alimentación
+- Traslado
+- Fogata
+- Ubicación
+- Dificultad / requisitos
+
+Mantener un mismo peso visual.
+
+No mezclar diferentes familias de iconos.
+
+---
+
+# 10. Buttons
+
+## Primary
+
+Background:
+Chocolate
+
+Text:
+Ivory
+
+Ejemplo:
+
+RESERVAR EXPERIENCIA →
+
+## Secondary
+
+Background:
+Transparent
+
+Border:
+Chocolate
+
+Text:
+Chocolate
+
+## Text CTA
+
+DESCUBRIR EXPERIENCIA →
+
+### Regla
+
+Utilizar un único CTA dominante por bloque.
+
+---
+
+# 11. Cards
+
+Las cards de experiencias deben sentirse editoriales,
+no como cards de e-commerce.
+
+Jerarquía:
+
+Fotografía
+Nombre
+Información esencial
+Precio
+CTA
+
+Ejemplo:
+
+FULL DAY A CABALLO
+
+6 HORAS · DOMINGOS
+
+Un día entre caballos, naturaleza,
+gastronomía y momentos para recordar.
+
+Desde S/380 por persona
+
+DESCUBRIR EXPERIENCIA →
+
+# 12. Experience UI
+
+La web posee dos modos visuales.
+
+## DISCOVERY MODE
+
+Utilizado en:
+
+- Inicio
+- Experiencias
+- Detalle
+- Nosotros
+- Galería
+
+Características:
+
+Editorial
+Emocional
+Fotográfico
+Mayor presencia de Cormorant
+Composiciones más libres
+Mucho espacio negativo
+
+## BOOKING MODE
+
+Utilizado desde que comienza la reserva.
+
+Características:
+
+Claro
+Predecible
+Funcional
+Mayor presencia de Manrope
+Menor decoración
+Jerarquía evidente
+Feedback inmediato
+
+El usuario nunca debe sacrificar claridad por estética.
+
+# 13. Booking Components
+
+Diseñar estados para:
+
+Calendar
+Date
+Time slot
+Availability
+Sold out
+Guest selector
+Price
+Form fields
+Validation
+Booking summary
+Payment
+Loading
+Success
+Error
+
+## Availability
+
+No depender únicamente del color.
+
+Ejemplo:
+
+DISPONIBLE
+ÚLTIMOS 3 CUPOS
+AGOTADO
+
+# 14. Motion
+
+Las animaciones deben transmitir calma.
+
+Permitido:
+
+- fade
+- reveal
+- desplazamientos suaves
+- image scale sutil
+- parallax muy moderado
+- transiciones editoriales
+
+Evitar:
+
+- elementos rebotando
+- animaciones rápidas
+- scroll hijacking
+- exceso de parallax
+- efectos que retrasen una reserva
+
+Duración orientativa:
+300–700ms
+
+# 15. Accessibility
+
+Contraste mínimo WCAG AA.
+
+Body:
+mínimo 16px.
+
+Touch targets:
+mínimo 44x44px.
+
+Todos los inputs deben poseer label.
+
+Los estados no pueden comunicarse únicamente mediante color.
+
+Mantener focus states visibles.
+
+# 16. Responsive
+
+Diseñar Mobile First en componentes funcionales.
+
+Breakpoints orientativos:
+
+Mobile < 768px
+Tablet 768–1023px
+Desktop >= 1024px
+Wide >= 1440px
+
+La experiencia móvil no debe ser una reducción del desktop.
+
+Especial atención a:
+
+- navegación
+- cards
+- calendario
+- selección de personas
+- resumen de compra
+- checkout
+
+# 17. Brand Guardrails
+
+CUATRO TIEMPOS SÍ ES:
+
+Premium countryside
+Editorial
+Natural
+Cálido
+Experiencial
+Ecuestre
+Humano
+Peruano
+
+CUATRO TIEMPOS NO ES:
+
+Western
+Cowboy
+Hotel de lujo clásico
+Club ecuestre deportivo
+Eco/hippie
+Turismo extremo
+Página turística genérica
+E-commerce
+
+# 18. Regla final
+
+Antes de agregar cualquier elemento preguntarse:
+
+1. ¿Ayuda a imaginar la experiencia?
+2. ¿Ayuda a entender la información?
+3. ¿Ayuda a reservar?
+
+Si no cumple ninguna de las tres,
+probablemente no es necesario.
+---
+
+# 19. Notas de implementación — Home (src/pages/index.astro)
+
+Addendum, no reemplaza ni reordena las secciones 01–18. Registra decisiones
+de implementación confirmadas en el build de Inicio (`src/pages/index.astro`,
+`Nav.astro`, `Footer.astro`, `DayMoment.astro`, `DayRail.astro`,
+`global.css`) para que páginas futuras (Experiencias, Detalle, Nosotros,
+Galería, FAQ, Reserva) las reutilicen en vez de redescubrirlas.
+
+## Kicker/eyebrow sobre título — prohibido, con resolución
+
+`craft-floor.md` prohíbe sin excepción un kicker/eyebrow visible
+directamente sobre un título, aunque la §05 de este documento describe el
+rol tipográfico "Eyebrow" con un ejemplo kicker→titular. Ambas cosas son
+ciertas a la vez y no se contradicen si se separan:
+
+- El estilo Eyebrow (12px, uppercase, tracked, Manrope — clase `.eyebrow`
+  en `global.css`) sigue siendo válido para labels independientes que **no**
+  estén apilados justo encima de un título.
+- Un marcador de hora/contexto que leería como kicker (p. ej. "07:00 ·
+  LLEGADA" sobre un H1) no se muestra como texto visible sobre el título:
+  se traslada a un elemento de UI de apoyo — aquí, el riel de progreso
+  vertical (`DayRail.astro`) — y el texto equivalente vive solo para
+  lectores de pantalla vía `.visually-hidden` (ver `DayMoment.astro`, el
+  `<span class="visually-hidden">{time} · {label} —</span>` antes del
+  título).
+
+**La Regla Kicker→Riel.** Cuando el contenido pide un marcador de tiempo/
+contexto que normalmente sería un kicker, resuélvelo en un componente de
+navegación/progreso con equivalente accesible oculto, nunca como texto
+visible apilado sobre el título.
+
+## Utilidad `.visually-hidden`
+
+Añadida a `global.css` (clip-rect estándar). Reutilizar para cualquier
+texto que deba existir para lectores de pantalla pero no visualmente,
+en vez de introducir `aria-label` ad hoc cuando el contenido es una frase
+completa (más fácil de mantener junto al copy real).
+
+## Contraste: Camel es decorativo, nunca texto sobre fondo claro
+
+Medido (WCAG contrast ratio):
+
+- `--color-camel` (#A47F5E) sobre `--color-ivory` (#FAF6EE): **~3.37:1** —
+  no pasa AA para texto de tamaño normal (mínimo 4.5:1).
+- `--color-camel` sobre `--color-cream` (#F1E5D1): **~2.92:1** — peor aún.
+- `--color-earth-brown` (#594034) sobre `--color-ivory`: **~8.82:1** —
+  pasa AA/AAA con holgura y es el sustituto correcto cuando se necesita
+  un tono de acento en texto pequeño sobre fondo claro.
+
+Esto confirma con números la guía ya existente en §04 ("uso limitado" para
+Camel: líneas, puntos, iconografía). El build actual no usa Camel como
+color de texto sobre fondo claro (donde aparece como `color`, es sobre
+`--color-chocolate` en el footer, o como `border`/`background` decorativo
+en Nav y DayRail).
+
+**La Regla Camel-Decorativo.** Camel se usa en líneas, bordes, puntos e
+iconografía — nunca como color de texto de tamaño body/label sobre Ivory o
+Cream. Si un diseño futuro necesita un acento tierra en texto pequeño sobre
+fondo claro, usar Earth Brown (#594034).
+
+## Logo: usar `logo-mark.png`, no `logo.PNG`
+
+El asset original (`public/brand/logo.PNG`) es el lockup completo
+aplanado sobre fondo sólido `#291311`, sin transparencia — ese tono no
+coincide exactamente con el Chocolate canónico (`#301713` de §04), y deja
+una costura visible sobre superficies chocolate reales. Se generó
+`public/brand/logo-mark.png` (chroma-key, transparente, recortado al
+contenido); `Nav.astro` y `Footer.astro` ya lo usan. **Usar
+`logo-mark.png` en toda página nueva; `logo.PNG` se conserva solo como
+proveniencia del asset original, no para uso en pantalla.**
+
+## Grading fotográfico unificador (fotografía real)
+
+Aplicado a toda foto real (no solo a la que tensiona con §17), vía la
+clase `.moment__image` en `DayMoment.astro`:
+
+```css
+filter: saturate(0.62) contrast(1.08) brightness(0.97) sepia(0.14);
+```
+
+más un wash de borde inferior:
+
+```css
+background: linear-gradient(180deg, rgba(48, 23, 19, 0) 55%, rgba(48, 23, 19, 0.32) 100%);
+```
+
+Su función es doble: unificar tonalmente fotos de procedencia mixta
+(distintas cámaras/luz) y, como efecto secundario, atenuar (no resolver)
+la lectura "western" del sombrero de ala ancha en `cabalgata.png`. Es un
+tratamiento real y perceptible (más fuerte que un tinte cosmético), pero
+la composición/grading no puede resolver un conflicto de guardrail a nivel
+de forma cuando el elemento conflictivo ocupa el cuadro completo a la
+altura del sujeto — eso requiere una foto distinta, y queda registrado
+como deuda de contenido en `PRODUCT.md`, no como algo que la página
+resuelve. **Aplicar el mismo filtro + wash a toda foto real nueva para
+mantener consistencia tonal entre procedencias distintas.**
+
+## Patrón reutilizable: sección split a pantalla completa (`DayMoment`)
+
+- Dos columnas, `min-height: 100svh`, lado de la imagen alternado por
+  sección vía `data-side="left"|"right"`.
+- Split 55/45 en desktop (`≥1024px`): `grid-template-columns: 11fr 9fr`
+  (imagen a la izquierda) o `9fr 11fr` (imagen a la derecha) — la imagen
+  siempre lleva el peso visual mayor. El orden de columnas se fija
+  explícitamente con `order` en ambos estados (no depender del orden del
+  DOM).
+- Imagen vía `object-fit: cover`, con `imagePosition` opcional para
+  art-direction de encuadre por sección (usado en `cabalgata` para sesgar
+  el foco lejos de los sombreros).
+- El heading es un prop (`headingLevel: "h1" | "h2"`) — la primera sección
+  de una página lleva `h1`, el resto `h2`, para que cada página tenga
+  exactamente un `<h1>`.
+
+## Reveal-on-scroll: nunca depender de JS para visibilidad por defecto
+
+`.reveal` solo entra en estado `opacity: 0` bajo `html.has-js` (clase
+añadida por un script inline temprano en `BaseLayout.astro`). Sin esa
+guarda, contenido con no-JS, JS lento o pre-hidratación queda atrapado
+invisible — bug real encontrado y corregido en este build. Además, un
+timeout de 4s en el observer de `BaseLayout.astro` fuerza `is-visible`
+como red de seguridad si el `IntersectionObserver` no dispara. **Cualquier
+animación de entrada nueva debe seguir este mismo patrón de guarda +
+fallback, no asumir que el JS siempre corre a tiempo.**
+
+## devToolbar deshabilitado (config de proyecto, no decisión de diseño)
+
+`astro.config.mjs` tiene `devToolbar: { enabled: false }` porque el overlay
+contaminaba las capturas de pantalla de página completa tomadas contra
+`astro dev` durante revisión. Sesiones futuras que tomen screenshots no
+deben sorprenderse de no verlo.
+
+## Accesibilidad: hallazgos y fixes confirmados en el build
+
+- Un solo `<h1>` por página: resuelto vía el prop `headingLevel` en
+  `DayMoment` (ver arriba).
+- Enlaces dentro de un contenedor `aria-hidden="true"` (el riel de
+  `DayRail.astro`) llevan `tabindex="-1"` en cada `<a>` para no quedar
+  enfocables por teclado mientras están ocultos de lectores de pantalla.
+- Contraste Camel-sobre-claro: ver regla arriba.
+
+## No canonizado (defectos del build, no reglas del sistema)
+
+- El tratamiento gráfico de placeholder en la sección "Atardecer" (arco +
+  degradado, sin foto real) es un relleno explícito por falta de foto,
+  señalado en el código y en `PRODUCT.md`. No es un patrón de "placeholder
+  gráfico" a reutilizar en otras páginas — se reemplaza por fotografía real
+  en cuanto esté disponible.
+- La tensión del sombrero de ala ancha en `cabalgata.png` con el guardrail
+  western de §17 es un defecto de contenido disponible, mitigado pero no
+  resuelto por grading/encuadre; documentado como deuda en `PRODUCT.md`,
+  no legitimado aquí como estética aceptable.
+- Los datos de contacto en `Footer.astro` (teléfono, ubicación) son
+  placeholder explícito sin confirmar — no tratar esos valores como
+  contenido real al copiar el componente a otra página.
+
+# 20. Notas de implementación — Home portado desde Figma (2026-09-24)
+
+Build reiniciado desde cero (ver decisión del usuario) y reconstruido a
+partir del archivo real de Figma "Cabalgata-Cuatro-Tiempos" (Dev Mode MCP).
+Registra decisiones nuevas que páginas futuras (Nosotros, Galería, FAQ,
+Full day y el resto de fichas de experiencia) deben reutilizar.
+
+## Tokens de color reconciliados con Figma
+
+Los valores de §04 quedaban desactualizados frente a las variables reales
+del archivo (`get_variable_defs`). `src/styles/tokens.css` ahora usa los
+valores de Figma como fuente de verdad, con nombres alineados a los
+nombres de variable de Figma en vez de los nombres descriptivos previos:
+
+| Token nuevo (`tokens.css`) | Valor     | Token antiguo (§04)        |
+| -------------------------- | --------- | -------------------------- |
+| `--color-chocolate`        | `#2c2017` | Chocolate `#301713`        |
+| `--color-dark-chocolate`   | `#140f0b` | (nuevo)                    |
+| `--color-brown`            | `#624b38` | Earth Brown `#594034`      |
+| `--color-camel`            | `#b68a58` | Camel `#a47f5e`            |
+| `--color-dark-sand`        | `#d8c4a5` | Sand `#d8c4a5` (igual)     |
+| `--color-sand`             | `#d4cabf` | (nuevo — texto sobre foto) |
+| `--color-main`             | `#f1eae2` | Cream `#f1e5d1`            |
+| `--color-secundary`        | `#f7f2ec` | Ivory `#faf6ee`            |
+| `--color-text-image`       | `#f7f1e9` | (nuevo — texto sobre foto) |
+
+**Regla de ahora en adelante.** Si una página futura necesita un color que
+no está en esta tabla ni en `tokens.css`, extraerlo con `get_variable_defs`
+del nodo de Figma correspondiente antes de inventar un hex — no reutilizar
+los valores viejos de §04, que ya no reflejan el archivo real.
+
+## Patrón: sprite CSS para una foto panorámica cortada en N tiles
+
+`GalleryPreview.astro` (franja de galería en Home) usa una sola foto ancha
+(`src/assets/galeria/tira.png`) mostrada en 5 tiles como si fueran 5 fotos
+distintas. Intentar esto con `<img>` + `object-position` por tile falla
+cuando el aspect-ratio del tile es mucho más angosto que el de la imagen
+fuente (el `object-fit: cover` de cada tile termina mostrando ventanas muy
+anchas que se solapan casi por completo entre tiles vecinos — se ven casi
+idénticos). El patrón correcto es CSS sprite: `getImage()` en el
+frontmatter para obtener una URL optimizada, `background-image` en cada
+tile con `background-size: 500% 100%` (N tiles ⇒ N00%) y
+`background-position-x` en pasos de `100/N %`. Reutilizar este patrón para
+cualquier foto-contact-sheet nueva, en vez de recrearlo con `<Image>` +
+`object-position`.
+
+## Espaciado entre secciones apiladas
+
+`--section-spacing` en `tokens.css` bajó de `clamp(4.5rem, 10vw, 10rem)`
+(120–160px, el valor de §06 leído como "padding de una sola sección") a
+`clamp(3.5rem, 6vw, 6rem)` (56–96px). Motivo: casi todas las secciones del
+Home usan `padding: var(--section-spacing) var(--gutter)` en ambos lados
+(top y bottom), así que dos secciones consecutivas suman el doble del
+espaciado — con el valor de §06 aplicado literalmente el hueco entre
+secciones quedaba visiblemente mayor que en el diseño real de Figma. El
+valor nuevo, sumado entre dos secciones vecinas, se acerca al rango
+120–160px que pedía el sistema originalmente. **Al portar una página
+nueva, usar `var(--section-spacing)` tal cual está definido ahora — no
+volver al valor de §06.**
+
+## Assets de Home
+
+Fotos descargadas del archivo de Figma (vía Dev Mode MCP) a
+`src/assets/inicio/`, `src/assets/experiencias/{cabalgata-2h,pilates-horses,celebra-a-tu-manera}/`,
+`src/assets/galeria/` y `src/assets/testimonios/`. El logo del nav
+reutiliza `public/brand/logo-mark.png` (ya existente) en vez del export
+raster del nav de Figma, seguiendo la regla ya fijada en §19. La foto de
+"Un día, muchos momentos" (`inicio/momento.png`) se repite igual en los 5
+pasos porque así está en el archivo de Figma fuente — no es un bug, es
+contenido pendiente de fotos reales por paso (igual que otros placeholders
+ya señalados en este documento).

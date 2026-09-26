@@ -1,0 +1,133 @@
+---
+import { Image } from "astro:assets";
+import celebrateImage from "../../assets/experiencias/celebra-a-tu-manera/hero.png";
+
+const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
+---
+
+<section class="celebrate" id="celebra">
+	<div class="celebrate__content reveal">
+		<div>
+			<p class="eyebrow eyebrow--dark celebrate__eyebrow">EXPERIENCIAS ESPECIALES</p>
+			<h2>Celebra a tu manera</h2>
+			<p class="celebrate__body">
+				Cumpleaños, aniversarios, reuniones especiales o simplemente una buena excusa para compartir
+			</p>
+		</div>
+		<a href="/nosotros#contacto" class="button celebrate__cta">
+			CUÉNTANOS TU IDEA →
+		</a>
+	</div>
+	<div class="celebrate__media reveal">
+		<div class="celebrate__image">
+			<Image
+				src={celebrateImage}
+				alt="Mesa servida al aire libre para una celebración en Cuatro Tiempos"
+				width={520}
+				height={400}
+			/>
+		</div>
+		<ul class="celebrate__tags">
+			{tags.map((tag) => (
+				<li>{tag}</li>
+			))}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.celebrate {
+		background: var(--color-chocolate);
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+		padding: 3.5rem var(--gutter);
+	}
+
+	.celebrate__content {
+		display: flex;
+		flex-direction: column;
+		gap: 1.9rem;
+		align-items: flex-start;
+	}
+
+	.celebrate__eyebrow {
+		margin-bottom: 0.9rem;
+	}
+
+	.celebrate__content h2 {
+		font-size: var(--text-h3);
+		font-weight: 600;
+		color: var(--color-main);
+	}
+
+	.celebrate__body {
+		margin-top: 1rem;
+		font-size: var(--text-body);
+		line-height: 1.5;
+		color: #d8c9bc;
+		max-width: 24rem;
+	}
+
+	.celebrate__cta {
+		border-color: var(--color-brown);
+		color: var(--color-text-image);
+		text-transform: none;
+		letter-spacing: 0.08em;
+	}
+
+	.celebrate__media {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.celebrate__image {
+		flex-shrink: 0;
+		width: 60%;
+		max-width: 22.5rem;
+		aspect-ratio: 520 / 400;
+		overflow: hidden;
+		border-radius: 9.5rem 9.5rem 0 0;
+	}
+
+	.celebrate__image :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.celebrate__tags {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 1.2rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		font-size: var(--text-small);
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: var(--color-dark-sand);
+	}
+
+	@media (min-width: 1024px) {
+		.celebrate {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			min-height: 23.75rem;
+		}
+
+		.celebrate__content {
+			justify-content: space-between;
+			height: 100%;
+			padding: 4.5rem 0;
+			max-width: 26rem;
+		}
+
+		.celebrate__media {
+			gap: 4.6875rem;
+		}
+	}
+</style>
