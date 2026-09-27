@@ -6,11 +6,13 @@ import conexionImage from "../../assets/inicio/conexion.jpg";
 
 <section class="intro section">
 	<div class="intro__content reveal">
-		<p class="eyebrow intro__eyebrow">CUATRO TIEMPOS</p>
-		<h2>
-			Más que una cabalgata, <br />
-			una forma de conectar.
-		</h2>
+		<div class="intro__heading">
+			<p class="eyebrow intro__eyebrow">CABALGATA CUATRO TIEMPOS</p>
+			<h2>
+				Más que una cabalgata, <br />
+				una forma de conectar.
+			</h2>
+		</div>
 		<p class="intro__body">
 			Creamos experiencias a caballo en el valle de Pachacámac para disfrutar de la naturaleza, la
 			tranquilidad y una conexión auténtica con nuestros caballos.
@@ -42,15 +44,22 @@ import conexionImage from "../../assets/inicio/conexion.jpg";
 		gap: 3rem;
 	}
 
-	.intro__eyebrow {
-		margin-bottom: 1.5rem;
+	.intro__content {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.intro__heading {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 	}
 
 	.intro__content h2 {
 		font-size: var(--text-h2);
 		font-weight: 400;
 		color: var(--color-chocolate);
-		margin-bottom: 1.5rem;
 	}
 
 	.intro__body {
