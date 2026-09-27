@@ -13,7 +13,7 @@ const slides = Array.from({ length: 5 }, () => ({
 const slideCount = String(slides.length).padStart(2, "0");
 ---
 
-<section class="hero" data-hero data-slide-duration="6000">
+<section class="hero" data-hero data-slide-duration="15000">
 	{slides.map((slide, i) => (
 		<Image
 			src={slide.image}
@@ -65,48 +65,56 @@ const slideCount = String(slides.length).padStart(2, "0");
 		const texts = Array.from(hero.querySelectorAll<HTMLElement>("[data-hero-text]"));
 		const fill = hero.querySelector<HTMLElement>("[data-hero-fill]");
 		const counter = hero.querySelector<HTMLElement>("[data-hero-counter]");
+		const pauseTargets = hero.querySelectorAll<HTMLElement>(".hero__cta, .hero__slider");
 		const total = images.length;
 		if (total <= 1) return;
 
 		const duration = Number(hero.dataset.slideDuration) || 6000;
-		const digits = String(total).length;
+		const digits = Math.max(2, String(total).length);
 		let index = 0;
-		let timer: ReturnType<typeof setInterval> | undefined;
+		let elapsed = 0;
+		let lastTick = 0;
+		let paused = false;
 
-		function show(i: number) {
+		function setSlide(i: number) {
+			index = i;
 			images.forEach((img, idx) => img.classList.toggle("is-active", idx === i));
 			texts.forEach((txt, idx) => txt.classList.toggle("is-active", idx === i));
 			if (counter)
 				counter.textContent = `${String(i + 1).padStart(digits, "0")}/${String(total).padStart(digits, "0")}`;
-			if (fill) {
-				fill.style.animation = "none";
+		}
 
-				void fill.offsetWidth;
-				fill.style.animation = `hero-fill ${duration}ms linear forwards`;
+		function tick(now: number) {
+			if (!paused) {
+				elapsed += now - lastTick;
+				if (elapsed >= duration) {
+					elapsed = 0;
+					setSlide((index + 1) % total);
+				}
+				if (fill) fill.style.width = `${Math.min((elapsed / duration) * 100, 100)}%`;
 			}
+			lastTick = now;
+			requestAnimationFrame(tick);
 		}
 
-		function next() {
-			index = (index + 1) % total;
-			show(index);
+		function pause() {
+			paused = true;
 		}
 
-		function start() {
-			stop();
-			timer = setInterval(next, duration);
+		function resume() {
+			paused = false;
 		}
 
-		function stop() {
-			if (timer) clearInterval(timer);
-		}
+		setSlide(0);
+		lastTick = performance.now();
+		requestAnimationFrame(tick);
 
-		show(0);
-		start();
-
-		hero.addEventListener("mouseenter", stop);
-		hero.addEventListener("mouseleave", start);
-		hero.addEventListener("focusin", stop);
-		hero.addEventListener("focusout", start);
+		pauseTargets.forEach((el) => {
+			el.addEventListener("mouseenter", pause);
+			el.addEventListener("mouseleave", resume);
+			el.addEventListener("focusin", pause);
+			el.addEventListener("focusout", resume);
+		});
 	}
 
 	document.querySelectorAll<HTMLElement>("[data-hero]").forEach(initHero);
@@ -229,15 +237,6 @@ const slideCount = String(slides.length).padStart(2, "0");
 		inset: 0 auto 0 0;
 		width: 0%;
 		background: var(--color-dark-sand);
-	}
-
-	@keyframes hero-fill {
-		from {
-			width: 0%;
-		}
-		to {
-			width: 100%;
-		}
 	}
 
 	.hero__location {
