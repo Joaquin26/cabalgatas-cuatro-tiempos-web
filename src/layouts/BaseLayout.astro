@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import Nav from "../components/layout/Nav.astro";
 
 interface Props {
 	title: string;
@@ -32,6 +33,7 @@ const {
 		/>
 	</head>
 	<body>
+		<Nav />
 		<slot />
 		<script>
 			const revealEls = document.querySelectorAll<HTMLElement>(".reveal");

@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import Nav from "../layout/Nav.astro";
 import heroImage from "../../assets/inicio/hero-cabalgata.png";
 
 const slides = Array.from({ length: 5 }, () => ({
@@ -28,7 +27,6 @@ const slideCount = String(slides.length).padStart(2, "0");
 		/>
 	))}
 	<div class="hero__scrim" aria-hidden="true"></div>
-	<Nav />
 	<div class="hero__content">
 		<div class="hero__text-stack">
 			{slides.map((slide, i) => (
