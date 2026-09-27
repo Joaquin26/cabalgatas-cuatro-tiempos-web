@@ -73,8 +73,6 @@ a {
 }
 
 .section {
-	max-width: var(--content-width);
-	margin: 0 auto;
 	padding: var(--section-spacing) var(--gutter);
 }
 
