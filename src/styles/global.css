@@ -73,7 +73,8 @@ a {
 }
 
 .section {
-	padding: var(--section-spacing) var(--gutter);
+	margin-block: var(--section-spacing);
+	padding-inline: var(--gutter);
 }
 
 .section-header {

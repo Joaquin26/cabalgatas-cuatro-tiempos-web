@@ -802,17 +802,20 @@ cualquier foto-contact-sheet nueva, en vez de recrearlo con `<Image>` +
 
 ## Espaciado entre secciones apiladas
 
-`--section-spacing` en `tokens.css` bajó de `clamp(4.5rem, 10vw, 10rem)`
-(120–160px, el valor de §06 leído como "padding de una sola sección") a
-`clamp(3.5rem, 6vw, 6rem)` (56–96px). Motivo: casi todas las secciones del
-Home usan `padding: var(--section-spacing) var(--gutter)` en ambos lados
-(top y bottom), así que dos secciones consecutivas suman el doble del
-espaciado — con el valor de §06 aplicado literalmente el hueco entre
-secciones quedaba visiblemente mayor que en el diseño real de Figma. El
-valor nuevo, sumado entre dos secciones vecinas, se acerca al rango
-120–160px que pedía el sistema originalmente. **Al portar una página
-nueva, usar `var(--section-spacing)` tal cual está definido ahora — no
-volver al valor de §06.**
+`.section` usa `margin-block: var(--section-spacing)` (no `padding-block`).
+Con `margin`, el navegador colapsa automáticamente los márgenes de dos
+`<section>` hermanas adyacentes — el hueco resultante es el mayor de los
+dos valores, no la suma — así que `--section-spacing` puede usarse tal
+cual el valor de §06 (`clamp(4.5rem, 10vw, 10rem)`, 120–160px) sin
+compensar nada a mano. Esto reemplaza un intento anterior (documentado
+aquí y ya obsoleto) que usaba `padding-block` y compensaba la duplicación
+bajando el token a la mitad — funcionaba, pero cualquiera que tocara
+`--section-spacing` sin conocer esa razón terminaba con espaciado
+impredecible. **Al portar una página nueva, usar `class="section"` para
+cualquier bloque sin fondo propio — el margin-collapse hace el trabajo
+solo.** Una sección con fondo propio (como `Celebrate`) no puede usar
+`margin` para su espaciado externo (el fondo no lo cubriría), así que
+sigue usando `padding` a mano vía `var(--gutter)`/valores propios.
 
 ## Assets de Home
 
