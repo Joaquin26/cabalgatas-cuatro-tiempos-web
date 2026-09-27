@@ -127,8 +127,8 @@ const cards = [
 	.experience-card__content {
 		position: absolute;
 		left: 1.5rem;
-		right: 1.5rem;
-		bottom: 3.5rem;
+		right: 4.5rem;
+		bottom: 1.75rem;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -139,8 +139,9 @@ const cards = [
 	.experience-card__title {
 		font-family: var(--font-ui);
 		font-weight: 600;
-		font-size: 1.1rem;
-		letter-spacing: 0.14em;
+		font-size: var(--text-card-title);
+		line-height: 1.15;
+		letter-spacing: 0.04em;
 		color: var(--color-text-image);
 	}
 
@@ -167,8 +168,8 @@ const cards = [
 		width: 2.5rem;
 		height: 2.5rem;
 		border-radius: 50%;
-		border: 1px solid rgba(241, 234, 226, 0.5);
-		color: var(--color-text-image);
+		background: var(--color-dark-sand);
+		color: var(--color-chocolate);
 		font-size: var(--text-body);
 	}
 
@@ -190,11 +191,10 @@ const cards = [
 	@media (min-width: 1024px) {
 		.experiences__grid {
 			grid-template-columns: 1.97fr 1fr 1fr;
-			align-items: stretch;
 		}
 
 		.experience-card--large {
-			aspect-ratio: auto;
+			aspect-ratio: 620 / 371;
 		}
 	}
 </style>

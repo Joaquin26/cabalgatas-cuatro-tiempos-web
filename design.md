@@ -227,6 +227,12 @@ Body 16px
 Small 14px
 Eyebrow 12px
 
+Card Title 20px — título dentro de una tarjeta de contenido (experiencia,
+testimonio, etc.), no es un nivel de heading de documento. Vive entre
+Body Large y H4 porque ninguno de los dos rinde bien para este uso:
+Body Large se siente débil como título de tarjeta, H4 es demasiado
+pesado. Token: `--text-card-title`.
+
 ### Eyebrow
 
 Usar uppercase + letter spacing.

@@ -29,14 +29,16 @@ const titleLines = title.split("\n");
 		className,
 	]}
 >
-	<p class:list={["eyebrow", tone === "dark" && "eyebrow--dark"]}>{eyebrow}</p>
-	<h2>
-		{titleLines.map((line, i) => (
-			<>
-				{line}
-				{i < titleLines.length - 1 && <br />}
-			</>
-		))}
-	</h2>
+	<div class="section-header__heading">
+		<p class:list={["eyebrow", tone === "dark" && "eyebrow--dark"]}>{eyebrow}</p>
+		<h2>
+			{titleLines.map((line, i) => (
+				<>
+					{line}
+					{i < titleLines.length - 1 && <br />}
+				</>
+			))}
+		</h2>
+	</div>
 	{subtitle && <p class="section-header__subtitle">{subtitle}</p>}
 </div>
