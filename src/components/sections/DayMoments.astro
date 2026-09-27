@@ -25,8 +25,8 @@ const steps = [
 				<span class="day-moments__image">
 					<Image src={momentoImage} alt="" width={224} height={150} />
 				</span>
-				<span class="day-moments__number">{step.number}</span>
-				<span class="day-moments__label">{step.label}</span>
+				<span class="day-moments__text"><span class="day-moments__number">{step.number}</span>
+				<span class="day-moments__label">{step.label}</span></span>
 			</li>
 		))}
 	</ol>
@@ -71,7 +71,7 @@ const steps = [
 		content: "";
 		position: absolute;
 		inset: 0;
-		background: rgba(106, 75, 53, 0.08);
+		background: rgba(98, 75, 56, 0.08);
 	}
 
 	.day-moments__image :global(img) {
@@ -80,17 +80,22 @@ const steps = [
 		object-fit: cover;
 	}
 
+	.day-moments__text {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
 	.day-moments__number {
 		font-size: var(--text-eyebrow);
 		letter-spacing: 0.1em;
-		color: var(--color-dark-chocolate);
+		color: var(--color-brown);
 	}
 
 	.day-moments__label {
 		font-family: var(--font-display);
-		font-size: 1.3125rem;
+		font-size: var(--text-card-title);
 		color: var(--color-chocolate);
-		margin-top: -0.4rem;
 	}
 
 	@media (min-width: 1024px) {
