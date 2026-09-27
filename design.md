@@ -825,3 +825,95 @@ raster del nav de Figma, seguiendo la regla ya fijada en §19. La foto de
 pasos porque así está en el archivo de Figma fuente — no es un bug, es
 contenido pendiente de fotos reales por paso (igual que otros placeholders
 ya señalados en este documento).
+
+# 21. Notas de implementación — Nav global, timing del Hero y consistencia de botones (2026-09-27)
+
+## Nav: de `Hero.astro` a `BaseLayout.astro`, fijo y con fondo condicional
+
+`Nav.astro` vivía importado únicamente dentro de `Hero.astro`, que a su vez
+solo se usa en `index.astro`. Consecuencia real: **faq.astro, nosotros.astro,
+galeria.astro y experiencias/[slug].astro no tenían navegación en absoluto**.
+Además `.nav` usaba `position: absolute` respecto a `.hero`, así que
+desaparecía al hacer scroll en vez de quedarse fijo.
+
+Solución aplicada:
+
+- `Nav` se movió a `BaseLayout.astro`, como hermano de `<slot />` — ahora
+  aparece en toda página que use el layout base.
+- `.nav` pasó a `position: fixed` con `z-index: 50`.
+- El fondo es condicional, no siempre visible: transparente por defecto
+  (para no romper el look flotante del Hero, que ya tiene su propio scrim
+  oscuro), y gana `background` sólido + `backdrop-filter: blur()` vía la
+  clase `.nav--solid` cuando (a) la página no tiene `[data-hero]`, o (b) el
+  usuario hace scroll más allá del alto del hero. La lógica vive en un
+  script inline en `Nav.astro` que compara `window.scrollY` contra
+  `hero.offsetHeight - nav.offsetHeight`.
+- Páginas sin hero full-bleed (`faq`, `nosotros`, `galeria`,
+  `experiencias/[slug]`) usan una clase utilitaria `.page` en su `<main>`
+  (`padding-top: 6rem` en `global.css`) para compensar el nav fijo — la
+  home no la necesita porque `.hero__content` ya reserva ese espacio
+  internamente.
+
+**Regla de ahora en adelante.** Cualquier nav/header global debe vivir en
+`BaseLayout.astro`, nunca dentro de una sección específica como `Hero` —
+de lo contrario queda atado al ciclo de vida de esa sección y desaparece en
+páginas que no la usan.
+
+## Carrusel del Hero: un solo reloj, no dos
+
+El fill bar y el avance de slide usaban dos mecanismos de timing
+independientes (una `animation` CSS de `duration` ms + un `setInterval` de
+JS con el mismo `duration` nominal). Al ser relojes distintos, se
+desincronizaban: la barra llegaba a 100% y se quedaba visualmente "llena"
+un rato hasta que el timer de JS por fin disparaba el cambio. Un primer
+intento de arreglo (disparar el avance desde el evento `animationend` de la
+barra, eliminando el `setInterval`) resolvió el desfase pero introdujo un
+punto único de falla: si el navegador no emitía `animationend` de forma
+confiable (pestaña en segundo plano, animación cancelada en vez de
+completada), el carrusel se quedaba pegado para siempre sin red de
+seguridad.
+
+Solución final: un único loop de `requestAnimationFrame` en `Hero.astro`
+que calcula el tiempo transcurrido con `performance.now()` y, del mismo
+cálculo, deriva tanto el ancho de la barra (`fill.style.width`) como el
+momento de avanzar de slide. No depende de ningún evento de animación CSS
+ni de un segundo timer — es imposible que ambas cosas se desincronicen
+porque las controla el mismo número. Verificado con muestreo continuo
+(14s+) sin estancamientos y tras simular una pestaña en segundo plano.
+
+**Regla de ahora en adelante.** Para cualquier UI con dos elementos que
+deben avanzar en sincronía (barra + contenido, progreso + estado), usar un
+único loop/temporizador como fuente de verdad — nunca una `animation` CSS y
+un timer de JS con la misma duración nominal esperando coincidir.
+
+## Pausa por hover: acotada a controles, no a toda la sección
+
+El hero ocupa `min-height: 100vh`, así que pausar el autoplay en
+`mouseenter`/`mouseleave` de toda `.hero` significaba que el carrusel
+quedaba pausado casi todo el tiempo que alguien lo estuviera viendo (el
+cursor casi nunca sale del área). Los listeners de pausa ahora están solo
+en los controles interactivos (`.hero__cta`, `.hero__slider`), no en la
+sección completa. `data-slide-duration` quedó en `15000` (15s).
+
+**Regla de ahora en adelante.** En cualquier componente a pantalla
+completa o de gran superficie, la pausa por hover debe acotarse a los
+controles reales (botones, indicadores), no a todo el contenedor.
+
+## Botones: `button--secondary` completo, no reinventar overrides parciales
+
+El CTA del Nav (`RESERVAR →`) usaba solo la clase base `.button` sin
+`.button--secondary`, reimplementando a mano `border-color`/`color` en
+`.nav__cta`. Efecto: sin la clase de variante, tampoco heredaba
+`.button--secondary:hover` — el botón no cambiaba visualmente al pasar el
+mouse, a diferencia del CTA del Hero que sí usa `button button--secondary`.
+Fix: `Nav.astro` ahora usa `class="button button--secondary nav__cta"`; los
+overrides propios de `.nav__cta` (padding más compacto, font-size) se
+mantienen porque el Nav es un contexto más chico, pero el comportamiento de
+hover y los valores de `font-weight`/`letter-spacing` ya vienen heredados
+de `.button--secondary` en vez de reescribirse.
+
+**Regla de ahora en adelante.** Un botón que use la variante `--secondary`
+o `--primary` en un componente debe llevar esa clase completa, aunque el
+componente sobreescriba tamaño/padding después — nunca replicar a mano
+solo el color/borde sin la clase, porque eso descarta silenciosamente el
+estado `:hover` definido junto a la variante.
