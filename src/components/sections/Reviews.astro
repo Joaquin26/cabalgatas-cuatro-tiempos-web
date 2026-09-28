@@ -22,15 +22,41 @@ const reviews = [
 		name: "Valentina M.",
 		experience: "Pilates & Horses",
 	},
+	{
+		quote:
+			"“El paisaje al atardecer es espectacular. Volvería mil veces solo por esa vista desde el valle.“",
+		name: "Diego S.",
+		experience: "Cabalgata 2h",
+	},
+	{
+		quote:
+			"“Organizamos el cumpleaños de mi hija ahí y fue perfecto. Atención de primera del inicio al fin.“",
+		name: "Andrea L.",
+		experience: "Celebra a tu Manera",
+	},
 ];
 ---
 
-<section class="reviews section">
+<section class="reviews section" data-reviews>
 	<div class="reviews__header reveal">
 		<SectionHeader eyebrow="LO QUE DICEN NUESTROS VISITANTES" title="Experiencias reales" />
-		<div class="reviews__nav" aria-hidden="true">
-			<span class="reviews__nav-button">←</span>
-			<span class="reviews__nav-button">→</span>
+		<div class="reviews__nav">
+			<button
+				type="button"
+				class="reviews__nav-button"
+				data-reviews-prev
+				aria-label="Testimonio anterior"
+			>
+				←
+			</button>
+			<button
+				type="button"
+				class="reviews__nav-button"
+				data-reviews-next
+				aria-label="Siguiente testimonio"
+			>
+				→
+			</button>
 		</div>
 	</div>
 	<ul class="reviews__grid reveal">
@@ -39,7 +65,7 @@ const reviews = [
 				<p class="review-card__quote">{review.quote}</p>
 				<div class="review-card__author">
 					<Image src={avatarImage} alt="" width={45} height={45} class="review-card__avatar" />
-					<div>
+					<div class="review-card__meta">
 						<p class="review-card__name">{review.name}</p>
 						<p class="review-card__experience">{review.experience}</p>
 					</div>
@@ -49,11 +75,90 @@ const reviews = [
 	</ul>
 </section>
 
+<script>
+	function initReviews(section: HTMLElement) {
+		const track = section.querySelector<HTMLElement>(".reviews__grid");
+		const prev = section.querySelector<HTMLButtonElement>("[data-reviews-prev]");
+		const next = section.querySelector<HTMLButtonElement>("[data-reviews-next]");
+		if (!track) return;
+
+		const originals = Array.from(track.children) as HTMLElement[];
+		const count = originals.length;
+		if (count < 2) return;
+
+		function cloneSet() {
+			return originals.map((card) => {
+				const clone = card.cloneNode(true) as HTMLElement;
+				clone.setAttribute("aria-hidden", "true");
+				clone.setAttribute("inert", "");
+				return clone;
+			});
+		}
+
+		// [clones of last set][real cards][clones of first set] — lets scrolling in
+		// either direction always land on visually-identical content, so the loop
+		// reset below never has anything to visibly jump across.
+		const before = cloneSet();
+		const after = cloneSet();
+		before.forEach((clone) => track!.appendChild(clone));
+		after.forEach((clone) => track!.appendChild(clone));
+		const allCards = Array.from(track.children) as HTMLElement[];
+		for (let i = 0; i < count; i++) {
+			track!.insertBefore(allCards[count + i], allCards[0]);
+		}
+
+		function stepWidth() {
+			const card = track!.querySelector<HTMLElement>(".review-card");
+			const gap = parseFloat(getComputedStyle(track!).columnGap || "0");
+			return card ? card.offsetWidth + gap : 0;
+		}
+
+		function jumpTo(scrollLeft: number) {
+			track!.style.scrollBehavior = "auto";
+			track!.scrollLeft = scrollLeft;
+			track!.style.scrollBehavior = "";
+		}
+
+		const realStart = track.children[count] as HTMLElement;
+		let realStartLeft = 0;
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				realStartLeft =
+					realStart.getBoundingClientRect().left - track!.getBoundingClientRect().left;
+				jumpTo(realStartLeft);
+			});
+		});
+
+		function scrollByCard(direction: 1 | -1) {
+			track!.scrollBy({ left: direction * stepWidth(), behavior: "smooth" });
+		}
+
+		function settleLoop() {
+			const step = stepWidth();
+			if (!step) return;
+			const span = count * step;
+			const offset = track!.scrollLeft - realStartLeft;
+			if (offset >= span - 1) {
+				jumpTo(track!.scrollLeft - span);
+			} else if (offset <= -span + 1) {
+				jumpTo(track!.scrollLeft + span);
+			}
+		}
+
+		track.addEventListener("scrollend", settleLoop);
+
+		prev?.addEventListener("click", () => scrollByCard(-1));
+		next?.addEventListener("click", () => scrollByCard(1));
+	}
+
+	document.querySelectorAll<HTMLElement>("[data-reviews]").forEach(initReviews);
+</script>
+
 <style>
 	.reviews {
 		display: flex;
 		flex-direction: column;
-		gap: 2.5rem;
+		gap: 3rem;
 	}
 
 	.reviews__header {
@@ -65,7 +170,7 @@ const reviews = [
 	}
 
 	.reviews__nav {
-		display: none;
+		display: flex;
 		gap: 0.9rem;
 	}
 
@@ -77,32 +182,47 @@ const reviews = [
 		height: 3.125rem;
 		border-radius: 50%;
 		border: 1px solid var(--color-dark-sand);
+		background: transparent;
+		color: inherit;
+		font-family: inherit;
 		font-size: 1.5rem;
+		cursor: pointer;
+		padding: 0;
 	}
 
 	.reviews__grid {
-		display: grid;
-		grid-template-columns: 1fr;
+		display: flex;
 		gap: 1rem;
 		margin: 0;
 		padding: 0;
 		list-style: none;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		scrollbar-width: none;
+	}
+
+	.reviews__grid::-webkit-scrollbar {
+		display: none;
 	}
 
 	.review-card {
 		background: var(--color-main);
-		border: 1px solid #ded3c9;
+		border: 1px solid var(--color-sand);
 		border-radius: var(--radius-card);
 		padding: 1.5rem;
 		display: flex;
 		flex-direction: column;
-		gap: 1.3rem;
+		gap: 1.5rem;
+		flex: 0 0 85%;
+		scroll-snap-align: start;
 	}
 
 	.review-card__quote {
 		font-size: var(--text-body);
 		line-height: 1.5;
-		color: #4c4037;
+		min-height: 4.5rem;
+		color: var(--color-brown);
 	}
 
 	.review-card__author {
@@ -118,6 +238,12 @@ const reviews = [
 		object-fit: cover;
 	}
 
+	.review-card__meta {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
 	.review-card__name {
 		font-weight: 600;
 		font-size: var(--text-small);
@@ -131,12 +257,14 @@ const reviews = [
 	}
 
 	@media (min-width: 1024px) {
-		.reviews__nav {
-			display: flex;
+		.review-card {
+			flex-basis: calc((100% - 2rem) / 3);
 		}
+	}
 
+	@media (prefers-reduced-motion: reduce) {
 		.reviews__grid {
-			grid-template-columns: repeat(3, 1fr);
+			scroll-behavior: auto;
 		}
 	}
 </style>
