@@ -791,9 +791,9 @@ no está en esta tabla ni en `tokens.css`, extraerlo con `get_variable_defs`
 del nodo de Figma correspondiente antes de inventar un hex — no reutilizar
 los valores viejos de §04, que ya no reflejan el archivo real.
 
-## Patrón: sprite CSS para una foto panorámica cortada en N tiles
+## Patrón: sprite CSS para una foto-contact-sheet cortada en N tiles
 
-`GalleryPreview.astro` (franja de galería en Home) usa una sola foto ancha
+`GalleryPreview.astro` (franja de galería en Home) usa una sola imagen
 (`src/assets/galeria/tira.png`) mostrada en 5 tiles como si fueran 5 fotos
 distintas. Intentar esto con `<img>` + `object-position` por tile falla
 cuando el aspect-ratio del tile es mucho más angosto que el de la imagen
@@ -801,10 +801,24 @@ fuente (el `object-fit: cover` de cada tile termina mostrando ventanas muy
 anchas que se solapan casi por completo entre tiles vecinos — se ven casi
 idénticos). El patrón correcto es CSS sprite: `getImage()` en el
 frontmatter para obtener una URL optimizada, `background-image` en cada
-tile con `background-size: 500% 100%` (N tiles ⇒ N00%) y
-`background-position-x` en pasos de `100/N %`. Reutilizar este patrón para
-cualquier foto-contact-sheet nueva, en vez de recrearlo con `<Image>` +
-`object-position`.
+tile, y `background-size`/`background-position-x` calculados a mano.
+
+**`tira.png` no es una panorámica continua — es un contact-sheet con
+margen crema horneado alrededor de cada foto y entre ellas** (medido:
+celdas de ~416px de ancho separadas por ~19px de margen, dentro de una
+imagen de 2171×724px). Usar `background-size: 500% 100%` (la fórmula
+genérica "N tiles ⇒ N00%") estira ese margen junto con la foto y lo deja
+visible como un marco crema alrededor de cada tile — bug real, no cosmético,
+reproducido igual en Chromium y WebKit. Los valores correctos
+(`background-size: 521% 219%`, `background-position-y: center`) se
+derivaron ubicando los bordes exactos de cada celda por escaneo de píxeles
+contra el color de fondo, y calculando el factor de escala que hace que el
+ancho de la celda cubra el ancho del tile preservando el aspect ratio real
+de la foto (sin distorsión) — las posiciones X ya existentes (0/25/50/75/
+100%) resultaron casi exactas porque las celdas están casi uniformemente
+espaciadas. **Si se reemplaza `tira.png` por un contact-sheet nuevo, hay
+que re-medir los bordes de celda — no asumir que la fórmula N00% funciona
+sin verificar contra el archivo real.**
 
 ## Espaciado entre secciones apiladas
 
