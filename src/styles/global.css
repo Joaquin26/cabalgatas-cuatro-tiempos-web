@@ -96,12 +96,8 @@ a {
 
 .section-header h2 {
 	font-size: var(--text-h2);
-	font-weight: 600;
-	color: var(--color-chocolate);
-}
-
-.section-header--regular h2 {
 	font-weight: 400;
+	color: var(--color-chocolate);
 }
 
 .section-header__subtitle {
