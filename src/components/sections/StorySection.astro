@@ -1,0 +1,83 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+interface Props {
+	eyebrow: string;
+	title: string;
+	paragraphs: string[];
+	image: ImageMetadata;
+	alt: string;
+	imagePosition?: string;
+}
+
+const { eyebrow, title, paragraphs, image, alt, imagePosition = "65% 40%" } = Astro.props;
+---
+
+<section class="section story">
+	<div class="story__text">
+		<SectionHeader eyebrow={eyebrow} title={title} />
+		<div class="story__body">
+			{paragraphs.map((paragraph) => (
+				<p>{paragraph}</p>
+			))}
+		</div>
+	</div>
+	<div class="story__image">
+		<Image
+			src={image}
+			alt={alt}
+			widths={[600, 1200]}
+			sizes="(min-width: 1024px) 600px, 100vw"
+			style={`object-position: ${imagePosition}`}
+		/>
+	</div>
+</section>
+
+<style>
+	.story {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.story__text {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-grid-gap);
+		max-width: 31.25rem;
+	}
+
+	.story__body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-grid-gap);
+		color: var(--color-brown);
+		line-height: 1.55;
+	}
+
+	.story__image {
+		aspect-ratio: var(--ratio-photo-wide);
+		overflow: hidden;
+		border-radius: var(--radius-card);
+	}
+
+	.story__image :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	@media (min-width: 1024px) {
+		.story {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.story__image {
+			flex: 0 1 37.5rem;
+		}
+	}
+</style>

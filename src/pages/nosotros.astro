@@ -1,8 +1,9 @@
 ---
-import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/sections/PageHero.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
+import StorySection from "../components/sections/StorySection.astro";
+import ImageBand from "../components/sections/ImageBand.astro";
 import hero from "../assets/galeria/hero.png";
 import story from "../assets/nosotros/historia.png";
 import place from "../assets/nosotros/lugar.png";
@@ -44,53 +45,24 @@ const team = [
 			subtitle="Aquí conocerás más de cómo nació esta experiencia que compartimos."
 		/>
 
-		<section class="section story">
-			<div class="story__text">
-				<SectionHeader eyebrow="Nuestra historia" title="Más que un proyecto, una forma de vida." />
-				<div class="story__body">
-					<p>
-						Cabalgatas Cuatro Tiempos nació del amor por los caballos, la naturaleza y los días sin
-						prisa. Lo que empezó como una pasión personal, se convirtió en un espacio para compartir
-						con otros todo lo bueno que no da el campo.
-					</p>
-					<p>
-						Creemos en experiencias reales, en el respeto por los caballos y en el valor de
-						desconectarse de la rutina, aunque sea por un día.
-					</p>
-				</div>
-			</div>
-			<div class="story__image">
-				<Image
-					src={story}
-					alt="Mujer sonriendo junto a un caballo, sosteniendo un letrero de Cabalgatas Cuatro Tiempos"
-					widths={[600, 1200]}
-					sizes="(min-width: 1024px) 600px, 100vw"
-				/>
-			</div>
-		</section>
+		<StorySection
+			eyebrow="Nuestra historia"
+			title="Más que un proyecto, una forma de vida."
+			paragraphs={[
+				"Cabalgatas Cuatro Tiempos nació del amor por los caballos, la naturaleza y los días sin prisa. Lo que empezó como una pasión personal, se convirtió en un espacio para compartir con otros todo lo bueno que no da el campo.",
+				"Creemos en experiencias reales, en el respeto por los caballos y en el valor de desconectarse de la rutina, aunque sea por un día.",
+			]}
+			image={story}
+			alt="Mujer sonriendo junto a un caballo, sosteniendo un letrero de Cabalgatas Cuatro Tiempos"
+		/>
 
-		<section class="place">
-			<Image
-				src={place}
-				alt="Valle y montañas de Pachacámac al atardecer"
-				class="place__image"
-				widths={[720, 1440, 2160]}
-				sizes="100vw"
-			/>
-			<div class="place__scrim" aria-hidden="true"></div>
-			<div class="place__content">
-				<SectionHeader
-					eyebrow="Pachacamac, Lima"
-					title="Nuestro lugar para desconectar de la ciudad"
-					tone="dark"
-					class="place__heading"
-				/>
-				<p>
-					Campo abierto, montañas y caminos que nos recuerdan lo esencial, a pocos kilómetros de
-					Lima.
-				</p>
-			</div>
-		</section>
+		<ImageBand
+			image={place}
+			alt="Valle y montañas de Pachacámac al atardecer"
+			eyebrow="Pachacamac, Lima"
+			title="Nuestro lugar para desconectar de la ciudad"
+			text="Campo abierto, montañas y caminos que nos recuerdan lo esencial, a pocos kilómetros de Lima."
+		/>
 
 		<section class="section values">
 			<h2 class="eyebrow">Lo que nos define</h2>
@@ -130,95 +102,6 @@ const team = [
 </BaseLayout>
 
 <style>
-	.story {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-lg);
-	}
-
-	.story__text {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-grid-gap);
-		max-width: 31.25rem;
-	}
-
-	.story__body {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-grid-gap);
-		color: var(--color-brown);
-		line-height: 1.55;
-	}
-
-	.story__image {
-		aspect-ratio: 600 / 409;
-		overflow: hidden;
-		border-radius: var(--radius-card);
-	}
-
-	.story__image :global(img) {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: 65% 40%;
-	}
-
-	.place {
-		position: relative;
-		display: flex;
-		align-items: center;
-		min-height: 30.4375rem;
-		padding: var(--space-xl) var(--gutter);
-		overflow: hidden;
-		background: var(--color-chocolate);
-	}
-
-	.place__image {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		z-index: 0;
-	}
-
-	.place__scrim {
-		position: absolute;
-		inset: 0;
-		background:
-			linear-gradient(
-				180deg,
-				rgba(20, 15, 11, 0.08) 0%,
-				rgba(20, 15, 11, 0) 50%,
-				rgba(20, 15, 11, 0.18) 100%
-			),
-			linear-gradient(
-				90deg,
-				rgba(20, 15, 11, 0.58) 0%,
-				rgba(20, 15, 11, 0.36) 38%,
-				rgba(20, 15, 11, 0.1) 70%,
-				rgba(20, 15, 11, 0.04) 100%
-			);
-	}
-
-	.place__content {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-grid-gap);
-		max-width: 33.75rem;
-	}
-
-	.place :global(.section-header h2) {
-		color: var(--color-main);
-	}
-
-	.place__content p {
-		line-height: 1.5;
-		color: var(--color-sand);
-	}
-
 	.values {
 		display: flex;
 		flex-direction: column;
@@ -228,7 +111,7 @@ const team = [
 
 	.values__label {
 		font-family: var(--font-ui);
-		font-weight: 600;
+		font-weight: var(--weight-semibold);
 		line-height: 1.5;
 		color: var(--color-chocolate);
 	}
@@ -301,7 +184,7 @@ const team = [
 
 	.team__name {
 		font-size: var(--text-card-title);
-		font-weight: 600;
+		font-weight: var(--weight-semibold);
 		line-height: 1.5;
 		color: var(--color-chocolate);
 	}
@@ -319,16 +202,6 @@ const team = [
 	}
 
 	@media (min-width: 1024px) {
-		.story {
-			flex-direction: row;
-			align-items: center;
-			justify-content: space-between;
-		}
-
-		.story__image {
-			flex: 0 1 37.5rem;
-		}
-
 		.values__list {
 			grid-template-columns: repeat(3, 1fr);
 			gap: var(--space-xl);
