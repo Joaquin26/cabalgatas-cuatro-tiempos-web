@@ -28,6 +28,15 @@
 	--text-eyebrow: 0.75rem;
 	--text-card-title: 1.25rem;
 
+	--weight-regular: 400;
+	--weight-medium: 500;
+	--weight-semibold: 600;
+
+	--tracking-tight: -0.01em;
+	--tracking-wide: 0.08em;
+	--tracking-wider: 0.12em;
+	--tracking-widest: 0.18em;
+
 	--max-width: 1440px;
 	--content-width: 1296px;
 	--section-spacing: clamp(3.5rem, 7vw, 6.5rem);
@@ -35,6 +44,7 @@
 	--space-header-gap: 3rem;
 	--space-grid-gap: 1.5rem;
 	--ratio-photo-tall: 7 / 8;
+	--ratio-photo-wide: 3 / 2;
 	--space-gallery-gap: 0.625rem;
 
 	--space-xs: 0.5rem;
