@@ -2,6 +2,71 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import hero from "../assets/galeria/hero.png";
+import moment1 from "../assets/galeria/momento-1.jpg";
+import moment2 from "../assets/galeria/momento-2.jpg";
+import moment3 from "../assets/galeria/momento-3.jpg";
+import moment4 from "../assets/galeria/momento-4.jpg";
+import moment5 from "../assets/galeria/momento-5.jpg";
+import moment6 from "../assets/galeria/momento-6.jpg";
+
+const categories = [
+	{ id: "todos", label: "Todos" },
+	{ id: "cabalgatas", label: "Cabalgatas" },
+	{ id: "caballos", label: "Caballos" },
+	{ id: "campo", label: "Campo" },
+	{ id: "mesa", label: "Mesa" },
+	{ id: "celebraciones", label: "Celebraciones" },
+];
+
+// Photos revealed per "Ver más momentos" click (and on first load).
+const PAGE_SIZE = 9;
+
+// MOCK: categories are a first guess from each photo; confirm with the client.
+const photos = [
+	{ image: moment1, category: "caballos", alt: "Mujer con sombrero junto a un caballo alazán" },
+	{ image: moment2, category: "caballos", alt: "Mujer sonriendo entre dos caballos" },
+	{
+		image: moment3,
+		category: "campo",
+		alt: "Grupo practicando pilates sobre rodillos junto a los caballos",
+	},
+	{ image: moment4, category: "campo", alt: "Clase de pilates al aire libre en la estancia" },
+	{
+		image: moment5,
+		category: "celebraciones",
+		alt: "Grupo de clientes posando juntos tras la cabalgata",
+	},
+	{
+		image: moment6,
+		category: "cabalgatas",
+		alt: "Jinete avanzando a caballo entre cultivos del valle",
+	},
+];
+
+// MOCK: tiles with only the background color, until real photos arrive. Each category is
+// topped up to PER_CATEGORY tiles, with mixed ratios, and interleaved so "Todos" looks varied.
+const PER_CATEGORY = 7;
+const ratios = [0.8, 1.5, 1, 1.33, 0.8, 1.5, 1];
+const filterIds = categories.filter((c) => c.id !== "todos").map((c) => c.id);
+const placeholders = filterIds.map((id, offset) =>
+	Array.from({ length: PER_CATEGORY - photos.filter((p) => p.category === id).length }, (_, i) => ({
+		category: id,
+		ratio: ratios[(i + offset) % ratios.length],
+	})),
+);
+const interleaved = Array.from({ length: PER_CATEGORY }, (_, i) =>
+	placeholders.map((list) => list[i]).filter(Boolean),
+).flat();
+
+// Tall photos are capped at 4:5 (cropped by object-fit) so no row gets taller than the rest.
+const MIN_RATIO = 0.8;
+const tiles = [
+	...photos.map((photo) => ({
+		...photo,
+		ratio: Math.max(photo.image.width / photo.image.height, MIN_RATIO),
+	})),
+	...interleaved,
+];
 ---
 
 <BaseLayout title="Galería">
@@ -29,8 +94,120 @@ import hero from "../assets/galeria/hero.png";
 				<span class="gallery-hero__location-sub">A OTRO RITMO</span>
 			</p>
 		</section>
+
+		<section class="gallery" data-gallery data-page-size={PAGE_SIZE}>
+			<ul class="gallery__categories" aria-label="Categorías">
+				{categories.map((category, i) => (
+					<li>
+						<button
+							type="button"
+							class="gallery__category"
+							data-category={category.id}
+							aria-pressed={i === 0 ? "true" : "false"}
+						>
+							{category.label}
+						</button>
+					</li>
+				))}
+			</ul>
+
+			<div class="gallery__grid" data-gallery-grid role="list">
+				{tiles.map((tile) => (
+					<div
+						class="gallery__item"
+						role="listitem"
+						data-category={tile.category}
+						data-ratio={tile.ratio}
+						style={`--ratio: ${tile.ratio}`}
+					>
+						{"image" in tile ? (
+							<Image
+								src={tile.image}
+								alt={tile.alt}
+								widths={[400, 800, 1200]}
+								sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+							/>
+						) : (
+							<div class="gallery__placeholder" aria-hidden="true" />
+						)}
+					</div>
+				))}
+			</div>
+
+			<p class="gallery__empty" data-gallery-empty role="status" hidden>
+				Pronto sumaremos momentos en esta categoría.
+			</p>
+
+			<button type="button" class="button button--secondary gallery__more" data-gallery-more>
+				VER MÁS MOMENTOS →
+			</button>
+		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	function initGallery(gallery: HTMLElement) {
+		const pageSize = Number(gallery.dataset.pageSize) || 6;
+		const tabs = Array.from(gallery.querySelectorAll<HTMLButtonElement>(".gallery__category"));
+		const grid = gallery.querySelector<HTMLElement>("[data-gallery-grid]")!;
+		const items = Array.from(grid.querySelectorAll<HTMLElement>(".gallery__item"));
+		const more = gallery.querySelector<HTMLButtonElement>("[data-gallery-more]");
+		const empty = gallery.querySelector<HTMLElement>("[data-gallery-empty]");
+		const mqTablet = window.matchMedia("(min-width: 768px)");
+		const mqDesktop = window.matchMedia("(min-width: 1024px)");
+		let category = "todos";
+		let limit = pageSize;
+
+		// Masonry: each photo goes to the currently shortest column. Columns are flex stacks of
+		// equal height, and items grow in proportion to their height, so every column ends flush.
+		function layout(visible: HTMLElement[]) {
+			const count = Math.min(mqDesktop.matches ? 3 : mqTablet.matches ? 2 : 1, visible.length);
+			const columns = Array.from({ length: count }, () => {
+				const el = document.createElement("div");
+				el.className = "gallery__col";
+				return { el, height: 0 };
+			});
+			for (const item of visible) {
+				const target = columns.reduce((a, b) => (b.height < a.height ? b : a));
+				target.el.append(item);
+				target.height += 1 / Number(item.dataset.ratio);
+			}
+			grid.replaceChildren(...columns.map((c) => c.el));
+		}
+
+		function render() {
+			const matching = items.filter(
+				(el) => category === "todos" || el.dataset.category === category,
+			);
+			layout(matching.slice(0, limit));
+			tabs.forEach((tab) =>
+				tab.setAttribute("aria-pressed", String(tab.dataset.category === category)),
+			);
+			if (more) more.hidden = matching.length <= limit;
+			if (empty) empty.hidden = matching.length > 0;
+		}
+
+		tabs.forEach((tab) =>
+			tab.addEventListener("click", () => {
+				category = tab.dataset.category ?? "todos";
+				limit = pageSize;
+				render();
+			}),
+		);
+
+		more?.addEventListener("click", () => {
+			limit += pageSize;
+			render();
+		});
+
+		mqTablet.addEventListener("change", render);
+		mqDesktop.addEventListener("change", render);
+
+		render();
+	}
+
+	document.querySelectorAll<HTMLElement>("[data-gallery]").forEach(initGallery);
+</script>
 
 <style>
 	.gallery-hero {
@@ -130,5 +307,102 @@ import hero from "../assets/galeria/hero.png";
 		font-size: var(--text-small);
 		letter-spacing: 0.08em;
 		color: var(--color-dark-sand);
+	}
+
+	.gallery {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 3rem;
+		padding: var(--section-spacing) var(--gutter);
+	}
+
+	.gallery__categories {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem 2rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.gallery__category {
+		min-height: 44px;
+		padding: 0 0 0.5rem;
+		background: none;
+		border: 0;
+		border-bottom: 2px solid transparent;
+		cursor: pointer;
+		font-family: inherit;
+		font-size: var(--text-small);
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--color-chocolate);
+		transition: border-color var(--duration-base) var(--ease-calm);
+	}
+
+	.gallery__category:hover,
+	.gallery__category[aria-pressed="true"] {
+		border-bottom-color: var(--color-camel);
+	}
+
+	.gallery__category:focus-visible,
+	.gallery__more:focus-visible {
+		outline: 2px solid var(--color-brown);
+		outline-offset: 4px;
+	}
+
+	.gallery__placeholder {
+		background: var(--color-sand);
+	}
+
+	.gallery__empty {
+		color: var(--color-brown);
+	}
+
+	.gallery__more[hidden] {
+		display: none;
+	}
+
+	/* Masonry columns are built by the script; without JS, items simply stack. */
+	.gallery__grid {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: var(--space-gallery-gap);
+		width: 100%;
+		max-width: var(--content-width);
+	}
+
+	@media (min-width: 768px) {
+		.gallery__grid {
+			flex-direction: row;
+		}
+	}
+
+	.gallery__grid > :global(.gallery__col) {
+		display: flex;
+		flex: 1 1 0;
+		flex-direction: column;
+		gap: var(--space-gallery-gap);
+		min-width: 0;
+	}
+
+	/* Natural height from the ratio; shorter columns stretch their items to end flush. */
+	.gallery__item {
+		flex: calc(1000 / var(--ratio)) 1 auto;
+		aspect-ratio: var(--ratio);
+		min-height: 0;
+		overflow: hidden;
+		border-radius: var(--radius-card);
+	}
+
+	.gallery__item :global(img),
+	.gallery__placeholder {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 </style>
