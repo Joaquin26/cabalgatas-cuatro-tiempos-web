@@ -8,20 +8,11 @@ interface Props {
 	class?: string;
 }
 
-const {
-	eyebrow,
-	title,
-	subtitle,
-	align = "left",
-	tone = "light",
-	class: className,
-} = Astro.props;
+const { eyebrow, title, subtitle, align = "left", tone = "light", class: className } = Astro.props;
 const titleLines = title.split("\n");
 ---
 
-<div
-	class:list={["section-header", `section-header--${align}`, className]}
->
+<div class:list={["section-header", `section-header--${align}`, className]}>
 	<div class="section-header__heading">
 		<p class:list={["eyebrow", tone === "dark" && "eyebrow--dark"]}>{eyebrow}</p>
 		<h2>
