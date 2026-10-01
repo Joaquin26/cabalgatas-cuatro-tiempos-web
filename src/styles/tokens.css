@@ -37,6 +37,11 @@
 	--ratio-photo-tall: 7 / 8;
 	--space-gallery-gap: 0.625rem;
 
+	--space-xs: 0.5rem;
+	--space-sm: 1rem;
+	--space-lg: 2.5rem;
+	--space-xl: 4.5rem;
+
 	--radius-card: 4px;
 	--radius-button: 4px;
 	--radius-input: 8px;
