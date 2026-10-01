@@ -1,9 +1,566 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import hero from "../assets/galeria/hero.png";
+import chevron from "../assets/faq/chevron-up.svg";
+import whatsapp from "../assets/faq/whatsapp.svg";
+import email from "../assets/faq/email.svg";
+import clock from "../assets/faq/clock.svg";
+
+// MOCK: every category beyond the first five answers is sample copy, and answers marked "draft" are written from copy already in the site (FaqPreview,
+// Celebra a tu manera, PRODUCT.md); confirm each one with the client before launch.
+const categories = [
+	{
+		id: "generales",
+		label: "Generales",
+		title: "Preguntas generales",
+		questions: [
+			{
+				question: "¿Qué es Cabalgatas Cuatro Tiempos?",
+				answer:
+					"Somos un espacio en Pachacamac donde compartimos experiencias con caballos, naturaleza y buena compañía. Organizamos cabalgatas y días de campo para que desconectes de la rutina y vivas el campo de una manera auténtica y segura.",
+			},
+			{
+				question: "¿Dónde se encuentran?",
+				answer:
+					"Estamos en el valle de Pachacámac, a unos 40 minutos del sur de Lima. Te enviamos la ubicación exacta y las indicaciones de acceso al confirmar tu reserva.",
+			},
+			{
+				question: "¿Qué experiencias ofrecen?",
+				// draft
+				answer:
+					"Ofrecemos cuatro experiencias: Full Day a Caballo, Cabalgata 2h por el Valle, Pilates & Horses y Celebra a tu Manera.",
+			},
+			{
+				question: "¿Necesito tener experiencia previa en caballos?",
+				answer:
+					"No, todas nuestras cabalgatas están pensadas para principiantes. Nuestro equipo te acompaña en todo momento y los caballos están entrenados para pasear con jinetes de cualquier nivel.",
+			},
+			{
+				question: "¿A partir de qué edad se puede participar?",
+				answer:
+					"Recibimos visitantes desde los 8 años acompañados de un adulto. Para menores de 8 contamos con paseos cortos guiados dentro del picadero, consúltanos al reservar.",
+			},
+			{
+				question: "¿Puedo ir si no sé montar?",
+				// draft
+				answer:
+					"Sí. Nuestras cabalgatas están pensadas para principiantes y nuestro equipo te acompaña en todo momento.",
+			},
+			{
+				question: "¿Qué pasa si me caigo del caballo?",
+				// draft, pending real safety copy
+				answer:
+					"Esta respuesta está pendiente de confirmar con nuestro equipo. Escríbenos y te contamos cómo cuidamos la seguridad de cada visitante.",
+			},
+			{
+				question: "¿Tienen opciones para grupos o eventos privados?",
+				// draft
+				answer:
+					"Sí, con Celebra a tu Manera: cumpleaños, aniversarios, reuniones especiales o simplemente una buena excusa para compartir. Cuéntanos tu idea y la armamos contigo.",
+			},
+		],
+	},
+	{
+		id: "reservas",
+		label: "Reservas y pagos",
+		title: "Reservas y pagos",
+		questions: [
+			{
+				question: "¿Cómo reservo mi experiencia?",
+				answer:
+					"Elige la experiencia que más te guste y escríbenos por WhatsApp o correo con la fecha y el número de personas. Te confirmamos disponibilidad y los siguientes pasos.",
+			},
+			{
+				question: "¿Qué medios de pago aceptan?",
+				answer: "Te indicamos las opciones de pago disponibles al momento de confirmar tu reserva.",
+			},
+			{
+				question: "¿Necesito pagar por adelantado?",
+				answer:
+					"Para asegurar tu cupo te pedimos confirmar tu reserva con anticipación. Te explicamos cómo hacerlo cuando te escribamos.",
+			},
+			{
+				question: "¿Qué pasa si necesito cambiar mi reserva?",
+				answer:
+					"Puedes reprogramar tu cabalgata sin costo hasta 24 horas antes de la actividad escribiéndonos por WhatsApp o correo.",
+			},
+			{
+				question: "¿Con cuánta anticipación debo reservar?",
+				answer:
+					"Te recomendamos reservar con anticipación, sobre todo para fines de semana y feriados. Escríbenos y revisamos la disponibilidad de tu fecha.",
+			},
+			{
+				question: "¿Puedo reservar para un grupo grande?",
+				answer:
+					"Sí, escríbenos con el número de personas y la fecha, y armamos la experiencia para tu grupo.",
+			},
+			{
+				question: "¿Recibiré una confirmación de mi reserva?",
+				answer:
+					"Sí, te enviamos la confirmación con los detalles de tu actividad y las indicaciones para llegar.",
+			},
+			{
+				question: "¿Qué hago si no puedo asistir?",
+				answer:
+					"Avísanos lo antes posible por WhatsApp o correo y vemos cómo reprogramar tu experiencia.",
+			},
+		],
+	},
+	{
+		id: "experiencia",
+		label: "La experiencia",
+		title: "La experiencia",
+		questions: [
+			{
+				question: "¿Cuánto dura una cabalgata?",
+				answer:
+					"Depende de la experiencia que elijas: tenemos recorridos cortos por el valle y un día completo en el campo. Te contamos la duración exacta al reservar.",
+			},
+			{
+				question: "¿Qué incluye el Full Day a Caballo?",
+				answer:
+					"Un día completo entre caballos, naturaleza, gastronomía y buenos momentos. Te detallamos todo lo que incluye al confirmar tu reserva.",
+			},
+			{
+				question: "¿Los grupos son pequeños?",
+				answer:
+					"Sí, trabajamos con grupos pequeños para darte una atención personalizada y un ritmo que respete el entorno.",
+			},
+			{
+				question: "¿Qué pasa si llueve?",
+				answer:
+					"Si el clima no permite la actividad, nos comunicamos contigo para reprogramarla en otra fecha.",
+			},
+			{
+				question: "¿Cuál es el punto de encuentro?",
+				answer:
+					"Te enviamos el punto de encuentro y las indicaciones de llegada al confirmar tu reserva.",
+			},
+			{
+				question: "¿En qué consiste Pilates & Horses?",
+				answer:
+					"Es una experiencia que combina movimiento, naturaleza y conexión con los caballos.",
+			},
+			{
+				question: "¿En qué consiste la Cabalgata 2h por el Valle?",
+				answer:
+					"Es un recorrido a caballo para conocer el valle de Pachacámac a un ritmo tranquilo.",
+			},
+			{
+				question: "¿Puedo ir con niños?",
+				answer:
+					"Recibimos visitantes desde los 8 años acompañados de un adulto. Para menores, consúltanos al reservar.",
+			},
+		],
+	},
+	{
+		id: "seguridad",
+		label: "Caballos y seguridad",
+		title: "Caballos y seguridad",
+		questions: [
+			{
+				question: "¿Los caballos están entrenados?",
+				answer:
+					"Sí, nuestros caballos están entrenados para pasear con jinetes de cualquier nivel.",
+			},
+			{
+				question: "¿Habrá alguien que me acompañe durante el recorrido?",
+				answer:
+					"Sí, nuestro equipo te acompaña en todo momento para que disfrutes con tranquilidad.",
+			},
+			{
+				question: "¿Cómo cuidan a los caballos?",
+				answer:
+					"Su cuidado y equilibrio siempre van primero. Respetamos sus ritmos y su descanso, y cada recorrido se piensa a su medida.",
+			},
+			{
+				question: "¿Es seguro para principiantes?",
+				answer:
+					"Sí, nuestras experiencias están pensadas para principiantes y nuestro equipo te acompaña en todo momento.",
+			},
+			{
+				question: "¿Qué pasa si no me siento cómodo durante el recorrido?",
+				answer:
+					"Puedes avisarle a nuestro equipo en cualquier momento y buscamos la mejor forma de ayudarte.",
+			},
+			{
+				question: "¿Recibiré indicaciones antes de montar?",
+				answer:
+					"Sí, antes de comenzar nuestro equipo te explica cómo montar y cómo cuidar tu seguridad.",
+			},
+			{
+				question: "¿Los caballos descansan entre recorridos?",
+				answer: "Sí, respetamos sus ritmos y su descanso, y cada recorrido se piensa a su medida.",
+			},
+		],
+	},
+	{
+		id: "llevar",
+		label: "Qué llevar",
+		title: "Qué llevar",
+		questions: [
+			{
+				question: "¿Qué ropa debo usar?",
+				answer:
+					"Ropa cómoda y zapatos cerrados. Si vas a pasar el día en el campo, te recomendamos llevar una capa extra por si refresca.",
+			},
+			{
+				question: "¿Qué llevo para el sol?",
+				answer:
+					"Bloqueador solar y algo para cubrirte la cabeza. Te avisamos si tu experiencia requiere algo más.",
+			},
+			{
+				question: "¿Puedo llevar mi celular o cámara?",
+				answer:
+					"Sí, puedes llevar tu celular o cámara. Te recomendamos guardarlos de forma segura mientras montas.",
+			},
+			{
+				question: "¿Debo llevar comida o agua?",
+				answer: "Si tu experiencia incluye alimentos o bebidas te lo indicamos previamente.",
+			},
+			{
+				question: "¿Qué calzado me recomiendan?",
+				answer: "Zapatos cerrados y cómodos. Evita sandalias o calzado abierto.",
+			},
+			{
+				question: "¿Puedo llevar mochila?",
+				answer: "Te recomendamos llevar solo lo necesario para que montes con comodidad.",
+			},
+			{
+				question: "¿Necesito llevar algún equipo especial?",
+				answer: "Te contamos al reservar qué debes llevar y qué te proporcionamos nosotros.",
+			},
+		],
+	},
+	{
+		id: "ubicacion",
+		label: "Ubicación y acceso",
+		title: "Ubicación y acceso",
+		questions: [
+			{
+				question: "¿Cómo llego?",
+				answer:
+					"Estamos en el valle de Pachacámac, a unos 40 minutos del sur de Lima. Te enviamos la ubicación exacta y las indicaciones de acceso al confirmar tu reserva.",
+			},
+			{
+				question: "¿Hay estacionamiento?",
+				answer: "Sí, puedes llegar en auto. Te damos las indicaciones al confirmar tu reserva.",
+			},
+			{
+				question: "¿Puedo ir en transporte público?",
+				answer:
+					"Te recomendamos escribirnos y te orientamos sobre la mejor forma de llegar desde donde estés.",
+			},
+			{
+				question: "¿A qué hora debo llegar?",
+				answer: "Te indicamos el horario de llegada al confirmar tu reserva.",
+			},
+			{
+				question: "¿Cómo encuentro la ubicación en el mapa?",
+				answer: "Te enviamos la ubicación exacta por WhatsApp o correo al confirmar tu reserva.",
+			},
+			{
+				question: "¿Cuánto demora llegar desde Lima?",
+				answer: "Estamos a unos 40 minutos del sur de Lima, según el tráfico.",
+			},
+			{
+				question: "¿Qué hago si me pierdo en el camino?",
+				answer: "Escríbenos por WhatsApp y te guiamos hasta llegar.",
+			},
+		],
+	},
+];
+
+// MOCK: contact data copied from Figma, not confirmed; the WhatsApp number is the footer's placeholder.
+const contact = {
+	whatsapp: "https://wa.me/51999999999",
+	email: "cabalgatascuatrotiempos@gmail.com",
+	hours: "Lun - Dom 9:00 a.m. - 6:00 p.m.",
+};
 ---
 
 <BaseLayout title="Preguntas frecuentes">
-	<main class="page">
-		<h1>Preguntas frecuentes</h1>
+	<main>
+		<PageHero
+			image={hero}
+			alt="Grupo de jinetes recorriendo un camino entre árboles en Pachacámac"
+			eyebrow="FAQ"
+			title="Resolvemos tus dudas"
+			subtitle="Aquí encontrarás la información más importante para que vivas tu experiencia con tranquilidad."
+		/>
+
+		<section class="section faq" data-faq>
+			<aside class="faq__sidebar">
+				<ul class="faq__categories" aria-label="Categorías">
+					{categories.map((category, i) => (
+						<li>
+							<button
+								type="button"
+								class="faq__category"
+								data-category={category.id}
+								aria-pressed={i === 0 ? "true" : "false"}
+							>
+								{category.label}
+							</button>
+						</li>
+					))}
+				</ul>
+				<!-- MOCK: placeholder for a photo, as in Figma. -->
+				<div class="faq__sidebar-photo" aria-hidden="true"></div>
+			</aside>
+
+			<div class="faq__main">
+				{categories.map((category, i) => (
+					<div class="faq__panel" data-panel={category.id} hidden={i !== 0}>
+						<h2>{category.title}</h2>
+						{category.questions.length > 0 ? (
+							<div class="faq__list">
+								{category.questions.map(({ question, answer }, qi) => (
+									<details class="faq-item" open={qi === 0}>
+										<summary>
+											<span>{question}</span>
+											<img class="faq-item__icon" src={chevron.src} alt="" width="15" height="10" />
+										</summary>
+										<p class="faq-item__answer">{answer}</p>
+									</details>
+								))}
+							</div>
+						) : (
+							<p class="faq__empty">Pronto sumaremos preguntas en esta categoría.</p>
+						)}
+					</div>
+				))}
+			</div>
+		</section>
+
+		<section class="section contact">
+			<!-- MOCK: placeholder for a photo, as in Figma. -->
+			<div class="contact__photo" aria-hidden="true"></div>
+			<SectionHeader
+				eyebrow="¿No encuentras tu respuesta?"
+				title="Escríbenos, estamos para ayudarte."
+				subtitle="Si tienes una consulta especial, puedes escribirnos por whatsapp. Te responderemos lo antes posible."
+			/>
+			<div class="contact__actions">
+				<a
+					href={contact.whatsapp}
+					class="button button--primary"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					<img src={whatsapp.src} alt="" width="24" height="24" />
+					ESCRIBIR POR WHATSAPP →
+				</a>
+				<a href={`mailto:${contact.email}`} class="contact__line">
+					<img src={email.src} alt="" width="24" height="24" />
+					{contact.email}
+				</a>
+				<p class="contact__line">
+					<img src={clock.src} alt="" width="24" height="24" />
+					{contact.hours}
+				</p>
+			</div>
+		</section>
 	</main>
 </BaseLayout>
+
+<script>
+	function initFaq(faq: HTMLElement) {
+		const tabs = Array.from(faq.querySelectorAll<HTMLButtonElement>(".faq__category"));
+		const panels = Array.from(faq.querySelectorAll<HTMLElement>("[data-panel]"));
+
+		tabs.forEach((tab) =>
+			tab.addEventListener("click", () => {
+				const id = tab.dataset.category;
+				tabs.forEach((t) => t.setAttribute("aria-pressed", String(t === tab)));
+				panels.forEach((panel) => {
+					panel.hidden = panel.dataset.panel !== id;
+				});
+			}),
+		);
+	}
+
+	document.querySelectorAll<HTMLElement>("[data-faq]").forEach(initFaq);
+</script>
+
+<style>
+	.faq {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.faq__categories {
+		display: flex;
+		gap: var(--space-sm);
+		margin: 0;
+		padding: 0 0 var(--space-xs);
+		list-style: none;
+		overflow-x: auto;
+	}
+
+	.faq__category {
+		min-height: 44px;
+		padding: 0 var(--space-xs);
+		background: none;
+		border: 0;
+		border-bottom: 2px solid transparent;
+		cursor: pointer;
+		font-family: inherit;
+		font-size: var(--text-body-lg);
+		font-weight: 600;
+		white-space: nowrap;
+		color: var(--color-chocolate);
+		transition: border-color var(--duration-base) var(--ease-calm);
+	}
+
+	.faq__category:hover,
+	.faq__category[aria-pressed="true"] {
+		border-bottom-color: var(--color-chocolate);
+	}
+
+	.faq__category:focus-visible {
+		outline: 2px solid var(--color-brown);
+		outline-offset: 4px;
+	}
+
+	.faq__sidebar-photo,
+	.contact__photo {
+		border-radius: var(--radius-card);
+		background: var(--color-sand);
+	}
+
+	.faq__sidebar-photo {
+		display: none;
+	}
+
+	.faq__panel[hidden] {
+		display: none;
+	}
+
+	.faq__panel h2 {
+		margin-bottom: var(--space-grid-gap);
+		padding-bottom: var(--space-grid-gap);
+		border-bottom: 1px solid var(--color-chocolate);
+		font-size: var(--text-h2);
+		font-weight: 400;
+		color: var(--color-chocolate);
+	}
+
+	.faq__empty {
+		color: var(--color-brown);
+	}
+
+	.faq-item {
+		border-bottom: 1px solid var(--color-dark-sand);
+		padding-block: var(--space-grid-gap);
+	}
+
+	.faq-item summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-sm);
+		cursor: pointer;
+		list-style: none;
+		font-size: var(--text-card-title);
+		color: var(--color-chocolate);
+	}
+
+	.faq-item summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-item summary:focus-visible {
+		outline: 2px solid var(--color-brown);
+		outline-offset: 4px;
+	}
+
+	/* The Figma chevron points up (open); it is flipped when the item is closed. */
+	.faq-item__icon {
+		flex-shrink: 0;
+		transform: rotate(180deg);
+		transition: transform var(--duration-base) var(--ease-calm);
+	}
+
+	.faq-item[open] .faq-item__icon {
+		transform: none;
+	}
+
+	.faq-item__answer {
+		margin-top: var(--space-sm);
+		line-height: 1.5;
+		color: var(--color-brown);
+	}
+
+	.contact {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.contact__photo {
+		aspect-ratio: 331 / 238;
+		width: 100%;
+		max-width: 20.6875rem;
+	}
+
+	.contact__actions {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-grid-gap);
+	}
+
+	/* The column is as wide as its longest line (the email); the button fills it, as in Figma. */
+	.contact__actions {
+		align-self: flex-start;
+	}
+
+	.contact__actions .button {
+		align-self: stretch;
+		gap: var(--space-sm);
+	}
+
+	.contact__line {
+		display: flex;
+		align-items: center;
+		gap: var(--space-xs);
+		min-height: 44px;
+		overflow-wrap: anywhere;
+		text-decoration: none;
+		color: var(--color-chocolate);
+	}
+
+	a.contact__line:hover {
+		text-decoration: underline;
+	}
+
+	a.contact__line:focus-visible {
+		outline: 2px solid var(--color-brown);
+		outline-offset: 4px;
+	}
+
+	@media (min-width: 1280px) {
+		.contact {
+			flex-direction: row;
+			align-items: center;
+		}
+
+		.contact__photo {
+			flex: 0 0 20.6875rem;
+		}
+
+		.contact__actions {
+			align-self: center;
+			flex-shrink: 0;
+		}
+
+		/* Indented to line up under the button label, as in Figma. */
+		.contact__line {
+			padding-inline: var(--space-grid-gap);
+		}
+	}
+</style>
