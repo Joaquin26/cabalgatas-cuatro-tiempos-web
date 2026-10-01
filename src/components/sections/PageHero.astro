@@ -119,11 +119,17 @@ const { image, alt, eyebrow, title, subtitle } = Astro.props;
 		position: absolute;
 		right: var(--gutter);
 		bottom: 2rem;
-		display: flex;
+		display: none;
 		flex-direction: column;
 		align-items: flex-end;
 		gap: 0.4rem;
 		letter-spacing: 0.12em;
+	}
+
+	@media (min-width: 768px) {
+		.page-hero__location {
+			display: flex;
+		}
 	}
 
 	.page-hero__location-main {
