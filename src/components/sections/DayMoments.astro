@@ -23,10 +23,12 @@ const steps = [
 		{steps.map((step) => (
 			<li class="day-moments__step">
 				<span class="day-moments__image">
-					<Image src={momentoImage} alt="" width={224} height={150} />
+					<Image src={momentoImage} alt="" width={480} height={548} />
 				</span>
-				<span class="day-moments__text"><span class="day-moments__number">{step.number}</span>
-				<span class="day-moments__label">{step.label}</span></span>
+				<span class="day-moments__text">
+					<span class="day-moments__number">{step.number}</span>
+					<span class="day-moments__label">{step.label}</span>
+				</span>
 			</li>
 		))}
 	</ol>
@@ -37,14 +39,14 @@ const steps = [
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 3rem;
+		gap: var(--space-header-gap);
 		text-align: center;
 	}
 
 	.day-moments__list {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 1.5rem;
+		gap: var(--space-grid-gap);
 		width: 100%;
 		margin: 0;
 		padding: 0;
@@ -62,7 +64,7 @@ const steps = [
 	.day-moments__image {
 		display: block;
 		width: 100%;
-		aspect-ratio: 240 / 190;
+		aspect-ratio: var(--ratio-photo-tall);
 		overflow: hidden;
 		position: relative;
 	}

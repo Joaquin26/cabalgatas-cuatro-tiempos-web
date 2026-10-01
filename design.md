@@ -269,7 +269,16 @@ Column gap:
 24–32px
 
 Section spacing:
-120–160px
+56–104px (`clamp(3.5rem, 7vw, 6.5rem)`)
+
+Header → contenido dentro de una sección:
+`--space-header-gap` (48px)
+
+Gap entre fotos de una grilla:
+`--space-grid-gap` (24px)
+
+Proporción de foto en grillas de 5 (Así se vive, Galería):
+`--ratio-photo-tall` (7 / 8)
 
 Horizontal padding:
 64–80px
@@ -810,7 +819,7 @@ imagen de 2171×724px). Usar `background-size: 500% 100%` (la fórmula
 genérica "N tiles ⇒ N00%") estira ese margen junto con la foto y lo deja
 visible como un marco crema alrededor de cada tile — bug real, no cosmético,
 reproducido igual en Chromium y WebKit. Los valores correctos
-(`background-size: 521% 219%`, `background-position-y: center`) se
+(`background-size: 521% 152%`, `background-position-y: center`, con tiles `7 / 8` — cada celda mide ~417×481px, así que no conviene un tile más alto que ~`1 / 1.15` sin que reaparezca el margen crema) se
 derivaron ubicando los bordes exactos de cada celda por escaneo de píxeles
 contra el color de fondo, y calculando el factor de escala que hace que el
 ancho de la celda cubra el ancho del tile preservando el aspect ratio real
@@ -826,7 +835,7 @@ sin verificar contra el archivo real.**
 Con `margin`, el navegador colapsa automáticamente los márgenes de dos
 `<section>` hermanas adyacentes — el hueco resultante es el mayor de los
 dos valores, no la suma — así que `--section-spacing` puede usarse tal
-cual el valor de §06 (`clamp(4.5rem, 10vw, 10rem)`, 120–160px) sin
+cual el valor de §06 (`clamp(3.5rem, 7vw, 6.5rem)`, 56–104px) sin
 compensar nada a mano. Esto reemplaza un intento anterior (documentado
 aquí y ya obsoleto) que usaba `padding-block` y compensaba la duplicación
 bajando el token a la mitad — funcionaba, pero cualquiera que tocara

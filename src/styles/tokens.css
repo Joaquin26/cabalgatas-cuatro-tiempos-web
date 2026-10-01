@@ -30,8 +30,11 @@
 
 	--max-width: 1440px;
 	--content-width: 1296px;
-	--section-spacing: clamp(4.5rem, 10vw, 10rem);
+	--section-spacing: clamp(3.5rem, 7vw, 6.5rem);
 	--gutter: clamp(1.25rem, 6vw, 72px);
+	--space-header-gap: 3rem;
+	--space-grid-gap: 1.5rem;
+	--ratio-photo-tall: 7 / 8;
 
 	--radius-card: 4px;
 	--radius-button: 4px;

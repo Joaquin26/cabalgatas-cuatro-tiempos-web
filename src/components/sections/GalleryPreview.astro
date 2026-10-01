@@ -27,7 +27,7 @@ const positions = ["0%", "25%", "50%", "75%", "100%"];
 	.gallery-preview {
 		display: flex;
 		flex-direction: column;
-		gap: 3rem;
+		gap: var(--space-header-gap);
 	}
 
 	.gallery-preview__header {
@@ -41,14 +41,14 @@ const positions = ["0%", "25%", "50%", "75%", "100%"];
 	.gallery-preview__grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 0.75rem;
+		gap: var(--space-grid-gap);
 	}
 
 	.gallery-preview__tile {
 		display: block;
-		aspect-ratio: 240 / 190;
+		aspect-ratio: var(--ratio-photo-tall);
 		background-color: var(--color-sand);
-		background-size: 521% 219%;
+		background-size: 521% 152%;
 		background-repeat: no-repeat;
 		background-position-y: center;
 	}
