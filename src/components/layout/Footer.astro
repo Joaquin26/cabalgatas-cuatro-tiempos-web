@@ -1,0 +1,302 @@
+---
+import logo from "../../../public/brand/logo-lockup.png";
+import { Image } from "astro:assets";
+
+const year = new Date().getFullYear();
+
+const experienceLinks = [
+	{ label: "Full Day a Caballo", href: "/experiencias/full-day" },
+	{ label: "Cabalgata por el Valle", href: "/#experiencias" },
+	{ label: "Pilates & Horses", href: "/#experiencias" },
+	{ label: "Experiencias privadas", href: "/#experiencias" },
+];
+
+const infoLinks = [
+	{ label: "Nosotros", href: "/nosotros" },
+	{ label: "Galería", href: "/galeria" },
+	{ label: "FAQ", href: "/faq" },
+	{ label: "Políticas de reserva", href: "/politicas-de-reserva" },
+	{ label: "Términos y condiciones", href: "/terminos-y-condiciones" },
+	{ label: "Política de privacidad", href: "/politica-de-privacidad" },
+];
+
+const legalLinks = [
+	{ label: "Términos y condiciones", href: "/terminos-y-condiciones" },
+	{ label: "Política de privacidad", href: "/politica-de-privacidad" },
+];
+
+const socialLinks = [
+	{ label: "Instagram", href: "https://instagram.com/cuatrotiempos" },
+	{ label: "Facebook", href: "https://facebook.com/cuatrotiempos" },
+	{ label: "WhatsApp", href: "https://wa.me/51999999999" },
+];
+---
+
+<footer class="footer">
+	<div class="footer__inner">
+		<div class="footer__brand">
+			<a href="/" class="footer__logo">
+				<Image src={logo} alt="Cabalgatas Cuatro Tiempos" width={150} height={50} />
+			</a>
+			<p class="footer__tagline">
+				Experiencias a caballo en el corazón de Pachacámac, donde la naturaleza, el bienestar y la
+				conexión se viven de verdad.
+			</p>
+			<div class="footer__social">
+				{socialLinks.map((link) => (
+					<a
+						href={link.href}
+						class="footer__social-link"
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label={link.label}
+					>
+						{link.label === "Instagram" && (
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+								<rect x="3" y="3" width="18" height="18" rx="5" />
+								<circle cx="12" cy="12" r="4" />
+								<circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none" />
+							</svg>
+						)}
+						{link.label === "Facebook" && (
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+								<path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21z" />
+							</svg>
+						)}
+						{link.label === "WhatsApp" && (
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+								<path d="M3 20.5l1.3-4.2a8 8 0 1 1 3.1 3.1z" />
+							</svg>
+						)}
+					</a>
+				))}
+			</div>
+		</div>
+
+		<nav class="footer__col" aria-labelledby="footer-experiencias">
+			<p class="footer__heading" id="footer-experiencias">Experiencias</p>
+			{experienceLinks.map((link) => (
+				<a href={link.href}>{link.label}</a>
+			))}
+		</nav>
+
+		<nav class="footer__col" aria-labelledby="footer-info">
+			<p class="footer__heading" id="footer-info">Información</p>
+			{infoLinks.map((link) => (
+				<a href={link.href}>{link.label}</a>
+			))}
+		</nav>
+
+		<div class="footer__col">
+			<p class="footer__heading">Contacto</p>
+			<p class="footer__contact">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+					<path d="M12 21s7-6.2 7-11.5a7 7 0 1 0-14 0C5 14.8 12 21 12 21z" />
+					<circle cx="12" cy="9.5" r="2.5" />
+				</svg>
+				Pachacámac, Lima, Perú
+			</p>
+			<a href="https://wa.me/51999999999" class="footer__contact" target="_blank" rel="noopener noreferrer">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+					<path d="M3 20.5l1.3-4.2a8 8 0 1 1 3.1 3.1z" />
+				</svg>
+				WhatsApp
+			</a>
+			<a href="mailto:hola@cuatrotiempos.pe" class="footer__contact">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+					<rect x="3" y="5" width="18" height="14" rx="2" />
+					<path d="M3.5 6.5l8.5 6.5 8.5-6.5" />
+				</svg>
+				hola@cuatrotiempos.pe
+			</a>
+		</div>
+	</div>
+
+	<div class="footer__bottom">
+		<p>© {year} Cuatro Tiempos Pachacámac. Todos los derechos reservados.</p>
+		<ul class="footer__legal">
+			{legalLinks.map((link) => (
+				<li><a href={link.href}>{link.label}</a></li>
+			))}
+			<li>
+				<a href="https://oneraincode.com" target="_blank" rel="noopener noreferrer">
+					Desarrollado por OneRainCode
+				</a>
+			</li>
+		</ul>
+	</div>
+</footer>
+
+<style>
+	.footer {
+		background: var(--color-dark-chocolate);
+		color: var(--color-text-image);
+		padding: 3.5rem var(--gutter) 2rem;
+	}
+
+	.footer__inner {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2.5rem;
+		max-width: var(--max-width);
+		margin-inline: auto;
+	}
+
+	.footer__brand {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.footer__logo :global(img) {
+		display: block;
+		height: 3rem;
+		width: auto;
+	}
+
+	.footer__tagline {
+		font-size: var(--text-small);
+		line-height: 1.6;
+		color: var(--color-dark-sand);
+		max-width: 22rem;
+	}
+
+	.footer__social {
+		display: flex;
+		gap: 0.75rem;
+	}
+
+	.footer__social-link {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 50%;
+		border: 1px solid var(--color-brown);
+		color: var(--color-dark-sand);
+	}
+
+	.footer__social-link:hover {
+		border-color: var(--color-dark-sand);
+		color: var(--color-text-image);
+	}
+
+	.footer__social-link svg {
+		width: 1.1rem;
+		height: 1.1rem;
+	}
+
+	.footer__col {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.9rem;
+	}
+
+	.footer__heading {
+		font-family: var(--font-display);
+		font-size: var(--text-h4);
+		font-weight: 400;
+		color: var(--color-text-image);
+		margin-bottom: 0.5rem;
+	}
+
+	.footer__col a,
+	.footer__contact {
+		font-size: var(--text-small);
+		color: var(--color-dark-sand);
+		text-decoration: none;
+	}
+
+	.footer__col a:hover {
+		color: var(--color-text-image);
+	}
+
+	.footer__contact {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin: 0;
+	}
+
+	.footer__contact svg {
+		flex: none;
+		width: 1.25rem;
+		height: 1.25rem;
+		max-width: 1.25rem;
+		color: var(--color-camel);
+	}
+
+	.footer__bottom {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		max-width: var(--max-width);
+		margin: 2.5rem auto 0;
+		padding-top: 1.5rem;
+		border-top: 1px solid rgba(247, 241, 233, 0.12);
+		font-size: var(--text-eyebrow);
+		color: var(--color-dark-sand);
+	}
+
+	.footer__bottom p {
+		margin: 0;
+	}
+
+	.footer__legal {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 0;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.footer__legal li + li::before {
+		content: "|";
+		margin-inline: 1rem;
+		color: var(--color-brown);
+	}
+
+	.footer__legal a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.footer__legal a:hover {
+		color: var(--color-text-image);
+	}
+
+	@media (min-width: 640px) {
+		.footer__inner {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.footer__brand {
+			grid-column: 1 / -1;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.footer__inner {
+			grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+			gap: 3rem;
+		}
+
+		.footer__brand {
+			grid-column: auto;
+		}
+
+		.footer__col {
+			padding-left: 2.5rem;
+			border-left: 1px solid rgba(247, 241, 233, 0.12);
+		}
+
+		.footer__bottom {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+		}
+	}
+</style>
