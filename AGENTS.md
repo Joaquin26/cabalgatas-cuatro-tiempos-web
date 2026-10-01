@@ -36,6 +36,7 @@ Antes de dar una tarea por terminada:
 
 - Código en inglés; textos visibles al usuario en español.
 - Commits con Conventional Commits: `feat(scope): ...`, `fix(scope): ...`.
+- No hagas commits ni stagees cambios (`git add`/`git commit`): los commits los hace el usuario. Si pide "armar el commit", solo propón el mensaje y qué archivos incluir.
 - No edites `dist/` ni `.astro/` (son generados).
 - No agregues dependencias ni frameworks (React, Tailwind, etc.) sin consultar.
 
