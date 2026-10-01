@@ -1,0 +1,139 @@
+---
+import SectionHeader from "../ui/SectionHeader.astro";
+
+interface Props {
+	title: string;
+	questions: { question: string; answer: string }[];
+	cta: { title: string; text: string; label: string; href: string };
+}
+
+const { title, questions, cta } = Astro.props;
+---
+
+<section class="section experience-faq">
+	<SectionHeader title={title} />
+	<div class="experience-faq__layout">
+		<div class="experience-faq__list">
+			{questions.map(({ question, answer }) => (
+				<details class="faq-item">
+					<summary>
+						<span>{question}</span>
+						<span class="faq-item__icon" aria-hidden="true">
+							+
+						</span>
+					</summary>
+					<p class="faq-item__answer">{answer}</p>
+				</details>
+			))}
+		</div>
+		<aside class="experience-faq__cta">
+			<h3>{cta.title}</h3>
+			<p>{cta.text}</p>
+			<a href={cta.href} class="button button--primary">
+				{cta.label}
+			</a>
+		</aside>
+	</div>
+</section>
+
+<style>
+	.experience-faq {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.experience-faq__layout {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.experience-faq__list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.faq-item {
+		border-bottom: 1px solid var(--color-sand);
+		padding-block: var(--space-sm);
+	}
+
+	.faq-item summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-sm);
+		cursor: pointer;
+		list-style: none;
+		color: var(--color-chocolate);
+	}
+
+	.faq-item summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-item summary:focus-visible {
+		outline: 2px solid var(--color-brown);
+		outline-offset: 4px;
+	}
+
+	.faq-item__icon {
+		font-weight: var(--weight-semibold);
+		font-size: var(--text-h4);
+		color: var(--color-brown);
+		transition: transform var(--duration-base) var(--ease-calm);
+	}
+
+	.faq-item[open] .faq-item__icon {
+		transform: rotate(45deg);
+	}
+
+	.faq-item__answer {
+		margin-top: var(--space-sm);
+		line-height: 1.5;
+		color: var(--color-brown);
+	}
+
+	.experience-faq__cta {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-xs);
+		padding: var(--space-grid-gap);
+		border: 1px solid var(--color-sand);
+		border-radius: var(--radius-card);
+		background: var(--color-main);
+	}
+
+	.experience-faq__cta h3 {
+		font-size: var(--text-h3);
+		font-weight: var(--weight-medium);
+		color: var(--color-chocolate);
+	}
+
+	.experience-faq__cta p {
+		font-weight: var(--weight-medium);
+		color: var(--color-chocolate);
+	}
+
+	.experience-faq__cta .button {
+		margin-top: var(--space-xs);
+	}
+
+	@media (min-width: 1024px) {
+		.experience-faq__layout {
+			flex-direction: row;
+			align-items: center;
+			gap: calc(var(--space-xl) * 2);
+		}
+
+		.experience-faq__list {
+			flex: 1;
+		}
+
+		.experience-faq__cta {
+			flex-shrink: 0;
+		}
+	}
+</style>

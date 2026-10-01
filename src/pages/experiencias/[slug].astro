@@ -1,6 +1,14 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/sections/PageHero.astro";
+import StorySection from "../../components/sections/StorySection.astro";
+import ExperienceSteps from "../../components/sections/ExperienceSteps.astro";
+import ImageBand from "../../components/sections/ImageBand.astro";
+import ExperienceIncludes from "../../components/sections/ExperienceIncludes.astro";
+import GalleryPreview from "../../components/sections/GalleryPreview.astro";
+import ExperienceFaq from "../../components/sections/ExperienceFaq.astro";
+import { whatsappUrl } from "../../data/contact";
 
 export async function getStaticPaths() {
 	const experiencias = await getCollection("experiencias");
@@ -10,15 +18,48 @@ export async function getStaticPaths() {
 	}));
 }
 
-const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { data } = Astro.props.entry;
+
+// MOCK: there is no booking flow yet, so every "reservar" button opens WhatsApp.
+const bookingHref = whatsappUrl;
 ---
 
-<BaseLayout title={entry.data.title} description={entry.data.summary}>
-	<main class="page">
-		<h1>{entry.data.title}</h1>
-		<p>{entry.data.duration}</p>
-		<p>{entry.data.summary}</p>
-		<Content />
+<BaseLayout title={data.title} description={data.summary}>
+	<main>
+		<PageHero
+			image={data.hero.image}
+			alt={data.hero.alt}
+			eyebrow={data.hero.eyebrow}
+			title={data.hero.title}
+			subtitle={data.hero.subtitle}
+		/>
+		<StorySection
+			eyebrow={data.intro.eyebrow}
+			title={data.intro.title}
+			paragraphs={data.intro.paragraphs}
+			image={data.intro.image}
+			alt={data.intro.alt}
+		/>
+		<ExperienceSteps title={data.stepsTitle} steps={data.steps} />
+		<ImageBand
+			image={data.place.image}
+			alt={data.place.alt}
+			eyebrow={data.place.eyebrow}
+			title={data.place.title}
+			text={data.place.text}
+			action={data.place.action}
+			align="right"
+		/>
+		<ExperienceIncludes
+			title={data.includesTitle}
+			includes={data.includes}
+			booking={{ ...data.booking, href: bookingHref }}
+		/>
+		<GalleryPreview />
+		<ExperienceFaq
+			title={data.faqTitle}
+			questions={data.faq}
+			cta={{ ...data.closing, label: data.closing.cta, href: bookingHref }}
+		/>
 	</main>
 </BaseLayout>

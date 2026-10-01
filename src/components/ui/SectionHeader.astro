@@ -1,6 +1,6 @@
 ---
 interface Props {
-	eyebrow: string;
+	eyebrow?: string;
 	title: string;
 	subtitle?: string;
 	align?: "left" | "center";
@@ -14,7 +14,7 @@ const titleLines = title.split("\n");
 
 <div class:list={["section-header", `section-header--${align}`, className]}>
 	<div class="section-header__heading">
-		<p class:list={["eyebrow", tone === "dark" && "eyebrow--dark"]}>{eyebrow}</p>
+		{eyebrow && <p class:list={["eyebrow", tone === "dark" && "eyebrow--dark"]}>{eyebrow}</p>}
 		<h2>
 			{titleLines.map((line, i) => (
 				<>

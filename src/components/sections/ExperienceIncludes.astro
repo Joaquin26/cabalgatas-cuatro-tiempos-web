@@ -1,0 +1,187 @@
+---
+import SectionHeader from "../ui/SectionHeader.astro";
+
+interface Props {
+	title: string;
+	includes: { icon: string; label: string }[];
+	booking: {
+		price: { currency: string; amount: string; unit: string };
+		details: { icon: string; lines: string[] }[];
+		cta: string;
+		href: string;
+	};
+}
+
+const { title, includes, booking } = Astro.props;
+
+const icons = import.meta.glob<{ default: ImageMetadata }>(
+	"../../assets/experiencias/icons/*.svg",
+	{ eager: true },
+);
+const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}.svg`].default.src;
+---
+
+<section class="section includes">
+	<SectionHeader title={title} />
+	<div class="includes__layout">
+		<ul class="includes__list">
+			{includes.map((item) => (
+				<li class="includes__item">
+					<img src={iconSrc(item.icon)} alt="" width="64" height="64" />
+					<span>{item.label}</span>
+				</li>
+			))}
+		</ul>
+		<aside class="includes__card">
+			<p class="includes__price">
+				<span class="includes__currency">{booking.price.currency}</span>
+				<span class="includes__amount">{booking.price.amount}</span>
+				<span class="includes__unit">{booking.price.unit}</span>
+			</p>
+			<ul class="includes__details">
+				{booking.details.map((detail) => (
+					<li>
+						<img src={iconSrc(detail.icon)} alt="" width="36" height="36" />
+						<span>
+							{detail.lines.map((line) => (
+								<span class="includes__line">{line}</span>
+							))}
+						</span>
+					</li>
+				))}
+			</ul>
+			<a href={booking.href} class="button button--primary includes__cta">
+				{booking.cta}
+			</a>
+		</aside>
+	</div>
+</section>
+
+<style>
+	.includes {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.includes__layout {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.includes__list {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: var(--space-lg) var(--space-grid-gap);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.includes__item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-sm);
+		text-align: center;
+		font-weight: var(--weight-medium);
+		line-height: 1.55;
+		color: var(--color-chocolate);
+	}
+
+	.includes__item img {
+		width: 4rem;
+		height: 4rem;
+		object-fit: contain;
+	}
+
+	.includes__card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+		padding: var(--space-grid-gap);
+		border: 1px solid var(--color-sand);
+		border-radius: var(--radius-card);
+		background: var(--color-main);
+	}
+
+	.includes__price {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: var(--space-xs);
+		font-family: var(--font-display);
+		font-weight: var(--weight-medium);
+		line-height: 1.2;
+		color: var(--color-chocolate);
+	}
+
+	.includes__currency,
+	.includes__unit {
+		font-size: var(--text-h4);
+	}
+
+	.includes__amount {
+		font-size: var(--text-h1);
+	}
+
+	.includes__details {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.includes__details li {
+		display: flex;
+		align-items: center;
+		gap: var(--space-grid-gap);
+		font-weight: var(--weight-medium);
+		line-height: 1.55;
+		color: var(--color-chocolate);
+	}
+
+	.includes__details img {
+		flex-shrink: 0;
+		width: 2.25rem;
+		height: 2.25rem;
+		object-fit: contain;
+	}
+
+	.includes__line {
+		display: block;
+	}
+
+	.includes__cta {
+		justify-content: center;
+	}
+
+	@media (min-width: 640px) {
+		.includes__list {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.includes__layout {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			gap: var(--space-xl);
+		}
+
+		.includes__list {
+			flex: 1;
+			grid-template-columns: repeat(4, 1fr);
+			max-width: 46.875rem;
+			gap: var(--space-lg);
+		}
+
+		.includes__card {
+			flex: 0 0 25rem;
+		}
+	}
+</style>
