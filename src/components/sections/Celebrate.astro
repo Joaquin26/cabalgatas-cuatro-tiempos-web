@@ -25,6 +25,7 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 		<div class="celebrate__media reveal">
 			<div class="celebrate__image">
 				<Image
+					class="parallax"
 					src={celebrateImage}
 					alt="Mesa servida al aire libre para una celebración en Cuatro Tiempos"
 					width={520}
@@ -94,6 +95,11 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 	.celebrate__cta:hover {
 		background: var(--color-brown);
 		color: var(--color-text-image);
+	}
+
+	/* Slightly larger than its arch so the soft parallax never exposes an edge. */
+	.celebrate__image :global(img) {
+		scale: 1.1;
 	}
 
 	.celebrate__media {

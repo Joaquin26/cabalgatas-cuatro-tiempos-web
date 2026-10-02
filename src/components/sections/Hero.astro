@@ -46,7 +46,7 @@ const slideCount = String(slides.length).padStart(2, "0");
 		<a href="/#experiencias" class="button button--secondary hero__cta reveal">
 			DESCUBRIR EXPERIENCIAS →
 		</a>
-		<div class="hero__slider" aria-hidden="true">
+		<div class="hero__slider reveal" aria-hidden="true">
 			<span data-hero-counter>01/{slideCount}</span>
 			<div class="hero__slider-track">
 				<div class="hero__slider-fill" data-hero-fill></div>
@@ -143,6 +143,30 @@ const slideCount = String(slides.length).padStart(2, "0");
 
 	.hero__image.is-active {
 		opacity: 1;
+		animation: hero-settle 16s var(--ease-calm) both;
+	}
+
+	/* The active photo slowly settles from a slight zoom; it never delays the first paint. */
+	@keyframes hero-settle {
+		from {
+			scale: 1.06;
+		}
+		to {
+			scale: 1;
+		}
+	}
+
+	/* Text and controls enter one after another on load. */
+	.hero__subtitle {
+		--reveal-delay: 150ms;
+	}
+
+	.hero__cta {
+		--reveal-delay: 300ms;
+	}
+
+	.hero__slider {
+		--reveal-delay: 450ms;
 	}
 
 	.hero__scrim {
@@ -260,6 +284,12 @@ const slideCount = String(slides.length).padStart(2, "0");
 		font-size: var(--text-small);
 		letter-spacing: 0.08em;
 		color: var(--color-dark-sand);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero__image.is-active {
+			animation: none;
+		}
 	}
 
 	@media (min-width: 768px) {

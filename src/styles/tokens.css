@@ -58,4 +58,9 @@
 
 	--ease-calm: cubic-bezier(0.22, 0.61, 0.36, 1);
 	--duration-base: 500ms;
+	--duration-fast: 300ms;
+	--duration-slow: 700ms;
+	--duration-image: 1200ms;
+	--reveal-distance: 1rem;
+	--stagger-step: 90ms;
 }

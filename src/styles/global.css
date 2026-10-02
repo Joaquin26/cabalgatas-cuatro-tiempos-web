@@ -175,15 +175,193 @@ a {
 	}
 }
 
+/*
+ * Motion (design.md §14): calm, short, and only transform/opacity so it never hurts load or layout.
+ * - .reveal: a block fades up once when it enters the viewport.
+ * - [data-stagger]: the direct children fade up one after another (index set in BaseLayout).
+ * - images inside [data-stagger] or .unveil settle from a slight zoom, using the independent
+ *   `scale` property so hover effects on `transform` keep working.
+ * Everything is gated by .has-js so content is never trapped invisible without JavaScript.
+ */
 .has-js .reveal {
 	opacity: 0;
-	transform: translateY(16px);
+	transform: translateY(var(--reveal-distance));
 	transition:
-		opacity 700ms var(--ease-calm),
-		transform 700ms var(--ease-calm);
+		opacity var(--duration-slow) var(--ease-calm),
+		transform var(--duration-slow) var(--ease-calm);
+	transition-delay: var(--reveal-delay, 0ms);
 }
 
 .reveal.is-visible {
 	opacity: 1;
 	transform: none;
+}
+
+.has-js [data-stagger] > * {
+	opacity: 0;
+	transform: translateY(var(--reveal-distance));
+	transition:
+		opacity var(--duration-slow) var(--ease-calm),
+		transform var(--duration-slow) var(--ease-calm);
+}
+
+[data-stagger].is-visible > * {
+	opacity: 1;
+	transform: none;
+	transition-delay: calc(var(--i, 0) * var(--stagger-step));
+}
+
+.has-js [data-stagger] img,
+.has-js .unveil img {
+	scale: 1.06;
+	transition:
+		scale var(--duration-image) var(--ease-calm),
+		transform var(--duration-slow) var(--ease-calm);
+}
+
+[data-stagger].is-visible img {
+	scale: 1;
+	transition-delay: calc(var(--i, 0) * var(--stagger-step)), 0s;
+}
+
+.unveil.is-visible img {
+	scale: 1;
+	transition-delay: 0s;
+}
+
+/* FAQ accordions open smoothly where the browser supports animating <details> content. */
+:root {
+	interpolate-size: allow-keywords;
+}
+
+.faq-item::details-content {
+	block-size: 0;
+	overflow: clip;
+	transition:
+		block-size var(--duration-base) var(--ease-calm),
+		content-visibility var(--duration-base) allow-discrete;
+}
+
+.faq-item[open]::details-content {
+	block-size: auto;
+}
+
+/* Very soft parallax tied to scroll, only where scroll-driven animations exist. */
+@keyframes parallax-soft {
+	from {
+		translate: 0 1.5rem;
+	}
+	to {
+		translate: 0 -1.5rem;
+	}
+}
+
+@supports (animation-timeline: view()) {
+	/* Longhands on purpose: the minifier would fold them into an `animation` shorthand that
+	   Chrome rejects when it contains view(). */
+	.parallax {
+		animation-name: parallax-soft;
+		animation-timing-function: linear;
+		animation-fill-mode: both;
+		animation-timeline: view();
+		animation-range: cover;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.has-js .reveal,
+	.has-js [data-stagger] > * {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.has-js [data-stagger] img,
+	.has-js .unveil img {
+		scale: none;
+		transition: none;
+	}
+
+	.faq-item::details-content {
+		transition: none;
+	}
+
+	.parallax {
+		animation: none;
+	}
+}
+
+/*
+ * Interaction details: short (300ms), transform/color only, hover only on devices that hover.
+ * - .arrow-nudge: the trailing "→" of buttons and arrow links, wrapped at runtime (BaseLayout).
+ * - .draw-underline: a thin underline that draws in from the left.
+ */
+.arrow-nudge {
+	display: inline-block;
+	transition: transform var(--duration-fast) var(--ease-calm);
+}
+
+/* The non-breaking space keeps the original gap; flex buttons already add their own gap. */
+.button .arrow-nudge {
+	margin-left: -0.6em;
+}
+
+.draw-underline,
+.link-arrow:not(.link-arrow--underline) {
+	background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+	transition: background-size var(--duration-fast) var(--ease-calm);
+}
+
+.link-arrow:not(.link-arrow--underline) {
+	background-position: 0 calc(100% - 0.7rem);
+}
+
+.link-arrow--underline {
+	transition: border-color var(--duration-fast) var(--ease-calm);
+}
+
+.button {
+	transition:
+		background-color var(--duration-base) var(--ease-calm),
+		color var(--duration-base) var(--ease-calm),
+		border-color var(--duration-base) var(--ease-calm),
+		transform var(--duration-fast) var(--ease-calm);
+}
+
+.button:active {
+	transform: translateY(1px);
+}
+
+@media (hover: hover) {
+	:is(.button, .link-arrow):hover .arrow-nudge {
+		transform: translateX(0.25rem);
+	}
+
+	.draw-underline:hover,
+	.link-arrow:not(.link-arrow--underline):hover {
+		background-size: 100% 1px;
+	}
+
+	.link-arrow--underline:hover {
+		border-color: var(--color-camel);
+	}
+}
+
+:is(.button, .link-arrow):focus-visible .arrow-nudge {
+	transform: translateX(0.25rem);
+}
+
+.draw-underline:focus-visible,
+.link-arrow:not(.link-arrow--underline):focus-visible {
+	background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.arrow-nudge {
+		transform: none !important;
+	}
+
+	.button:active {
+		transform: none;
+	}
 }

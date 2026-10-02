@@ -67,6 +67,11 @@ const { title, questions, cta } = Astro.props;
 		cursor: pointer;
 		list-style: none;
 		color: var(--color-chocolate);
+		transition: color var(--duration-fast) var(--ease-calm);
+	}
+
+	.faq-item summary:hover {
+		color: var(--color-brown);
 	}
 
 	.faq-item summary::-webkit-details-marker {

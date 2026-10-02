@@ -43,7 +43,7 @@ const cards = [
 		align="center"
 		class="reveal"
 	/>
-	<div class="experiences__grid reveal">
+	<div class="experiences__grid" data-stagger>
 		{cards.map((card) => (
 			<a href={card.href} class:list={["experience-card", `experience-card--${card.size}`]}>
 				<Image
@@ -102,6 +102,7 @@ const cards = [
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		transition: transform var(--duration-slow) var(--ease-calm);
 	}
 
 	.experience-card__scrim {
@@ -171,6 +172,33 @@ const cards = [
 		background: var(--color-dark-sand);
 		color: var(--color-chocolate);
 		font-size: var(--text-body);
+		transition:
+			transform var(--duration-fast) var(--ease-calm),
+			background-color var(--duration-fast) var(--ease-calm);
+	}
+
+	@media (hover: hover) {
+		.experience-card:hover .experience-card__image {
+			transform: scale(1.04);
+		}
+
+		.experience-card:hover .experience-card__arrow {
+			transform: translateX(0.25rem);
+			background: var(--color-text-image);
+		}
+	}
+
+	.experience-card:focus-visible {
+		outline: 2px solid var(--color-text-image);
+		outline-offset: -6px;
+	}
+
+	.experience-card:focus-visible .experience-card__image {
+		transform: scale(1.04);
+	}
+
+	.experience-card:focus-visible .experience-card__arrow {
+		transform: translateX(0.25rem);
 	}
 
 	.experiences__footer {

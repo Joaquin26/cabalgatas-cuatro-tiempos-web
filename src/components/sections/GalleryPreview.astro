@@ -13,7 +13,7 @@ const positions = ["0%", "25%", "50%", "75%", "100%"];
 		<SectionHeader eyebrow="GALERÍA" title="Momentos que hablan por sí solos" />
 		<LinkArrow href="/galeria" label="VER GALERÍA →" />
 	</div>
-	<div class="gallery-preview__grid reveal">
+	<div class="gallery-preview__grid" data-stagger>
 		{positions.map((position) => (
 			<span
 				class="gallery-preview__tile"

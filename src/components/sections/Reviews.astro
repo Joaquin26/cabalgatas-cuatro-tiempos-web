@@ -59,7 +59,7 @@ const reviews = [
 			</button>
 		</div>
 	</div>
-	<ul class="reviews__grid reveal">
+	<ul class="reviews__grid" data-stagger>
 		{reviews.map((review) => (
 			<li class="review-card">
 				<p class="review-card__quote">{review.quote}</p>
@@ -188,6 +188,36 @@ const reviews = [
 		font-size: 1.5rem;
 		cursor: pointer;
 		padding: 0;
+		transition:
+			background-color var(--duration-fast) var(--ease-calm),
+			color var(--duration-fast) var(--ease-calm),
+			border-color var(--duration-fast) var(--ease-calm),
+			transform var(--duration-fast) var(--ease-calm);
+	}
+
+	@media (hover: hover) {
+		.reviews__nav-button:hover {
+			background: var(--color-chocolate);
+			border-color: var(--color-chocolate);
+			color: var(--color-text-image);
+		}
+
+		[data-reviews-prev]:hover {
+			transform: translateX(-0.125rem);
+		}
+
+		[data-reviews-next]:hover {
+			transform: translateX(0.125rem);
+		}
+	}
+
+	.reviews__nav-button:focus-visible {
+		outline: 2px solid var(--color-brown);
+		outline-offset: 4px;
+	}
+
+	.reviews__nav-button:active {
+		transform: scale(0.96);
 	}
 
 	.reviews__grid {

@@ -38,7 +38,33 @@ const {
 		<slot />
 		<Footer />
 		<script>
-			const revealEls = document.querySelectorAll<HTMLElement>(".reveal");
+			const targets = Array.from(document.querySelectorAll<HTMLElement>(".reveal, [data-stagger]"));
+
+			// Children of [data-stagger] get their position, used as the entrance delay.
+			for (const el of targets) {
+				if (el.hasAttribute("data-stagger")) {
+					Array.from(el.children).forEach((child, i) =>
+						(child as HTMLElement).style.setProperty("--i", String(i)),
+					);
+				}
+			}
+
+			// Wrap the trailing "→" of buttons and arrow links so it can nudge on hover. The arrow is
+			// decorative, so it is hidden from screen readers.
+			for (const el of document.querySelectorAll<HTMLElement>(".button, .link-arrow")) {
+				const node = Array.from(el.childNodes)
+					.reverse()
+					.find((n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim());
+				const text = node?.textContent ?? "";
+				if (!node || !text.trimEnd().endsWith("→")) continue;
+				const arrow = document.createElement("span");
+				arrow.className = "arrow-nudge";
+				arrow.setAttribute("aria-hidden", "true");
+				arrow.textContent = "\u00a0→";
+				node.textContent = text.slice(0, text.lastIndexOf("→")).trimEnd();
+				node.after(arrow);
+			}
+
 			const observer = new IntersectionObserver(
 				(entries) => {
 					for (const entry of entries) {
@@ -50,11 +76,18 @@ const {
 				},
 				{ threshold: 0, rootMargin: "0px 0px -10% 0px" },
 			);
-			for (const el of revealEls) observer.observe(el);
+			for (const el of targets) observer.observe(el);
 
+			// Safety net: if the observer never fires, reveal only what is on screen right now.
+			// Elements further down keep waiting, so their entrance still plays on scroll.
 			setTimeout(() => {
-				for (const el of revealEls) el.classList.add("is-visible");
-				observer.disconnect();
+				for (const el of targets) {
+					const rect = el.getBoundingClientRect();
+					if (rect.top < window.innerHeight && rect.bottom > 0) {
+						el.classList.add("is-visible");
+						observer.unobserve(el);
+					}
+				}
 			}, 4000);
 		</script>
 	</body>

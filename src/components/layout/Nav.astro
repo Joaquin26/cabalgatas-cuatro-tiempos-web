@@ -83,6 +83,23 @@ const links = [
 
 	.nav__links a {
 		text-decoration: none;
+		padding-block: 0.25rem;
+		background: linear-gradient(var(--color-dark-sand), var(--color-dark-sand)) 0 100% / 0 1px
+			no-repeat;
+		transition: background-size var(--duration-fast) var(--ease-calm);
+	}
+
+	.nav__links a:hover,
+	.nav__links a:focus-visible {
+		background-size: 100% 1px;
+	}
+
+	.nav__logo {
+		transition: opacity var(--duration-fast) var(--ease-calm);
+	}
+
+	.nav__logo:hover {
+		opacity: 0.85;
 	}
 
 	.nav__cta {
