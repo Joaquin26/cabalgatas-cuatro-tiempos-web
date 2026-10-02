@@ -1,0 +1,190 @@
+---
+interface Props {
+	title: string;
+	updated: string;
+	headings: { depth: number; slug: string; text: string }[];
+}
+
+const { title, updated, headings } = Astro.props;
+const toc = headings.filter((heading) => heading.depth === 2);
+---
+
+<section class="section legal">
+	<header class="legal__header">
+		<p class="eyebrow">Legal</p>
+		<h1>{title}</h1>
+		<p class="legal__meta">Última actualización: {updated}</p>
+	</header>
+	<div class="legal__layout">
+		{toc.length > 0 && (
+			<aside class="legal__side">
+				<nav class="legal__toc" aria-label="Contenido del documento">
+					<ol>
+						{toc.map((heading) => (
+							<li>
+								<a href={`#${heading.slug}`}>{heading.text}</a>
+							</li>
+						))}
+					</ol>
+				</nav>
+			</aside>
+		)}
+		<article class="legal__body">
+			<slot />
+		</article>
+	</div>
+</section>
+
+<style>
+	.legal {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-header-gap);
+	}
+
+	.legal__header {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.legal__header h1 {
+		font-size: var(--text-h1);
+		font-weight: var(--weight-regular);
+		color: var(--color-chocolate);
+	}
+
+	.legal__meta {
+		color: var(--color-brown);
+	}
+
+	.legal__layout {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.legal__side {
+		display: none;
+	}
+
+	.legal__toc ol {
+		display: flex;
+		flex-direction: column;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		counter-reset: toc;
+	}
+
+	.legal__toc li {
+		counter-increment: toc;
+	}
+
+	/* Fixed number column and first-line alignment, so long titles wrap evenly. */
+	.legal__toc a {
+		display: grid;
+		grid-template-columns: var(--space-grid-gap) 1fr;
+		column-gap: var(--space-xs);
+		align-items: baseline;
+		min-height: 44px;
+		padding-block: var(--space-xs);
+		text-decoration: none;
+		line-height: 1.4;
+		color: var(--color-chocolate);
+	}
+
+	.legal__toc a::before {
+		content: counter(toc, decimal-leading-zero);
+		font-size: var(--text-eyebrow);
+		letter-spacing: var(--tracking-wide);
+		color: var(--color-brown);
+	}
+
+	.legal__toc a:hover {
+		text-decoration: underline;
+	}
+
+	.legal__toc a:focus-visible {
+		outline: 2px solid var(--color-brown);
+		outline-offset: 4px;
+	}
+
+	.legal__body {
+		max-width: 46rem;
+		color: var(--color-brown);
+		line-height: 1.6;
+	}
+
+	.legal__body :global(h2) {
+		margin-top: var(--space-lg);
+		margin-bottom: var(--space-sm);
+		scroll-margin-top: 6rem;
+		font-size: var(--text-h3);
+		font-weight: var(--weight-medium);
+		color: var(--color-chocolate);
+	}
+
+	.legal__body :global(h2:first-child) {
+		margin-top: 0;
+	}
+
+	.legal__body :global(p) {
+		margin-bottom: var(--space-sm);
+	}
+
+	.legal__body :global(ul) {
+		display: grid;
+		gap: var(--space-xs);
+		margin: 0 0 var(--space-sm);
+		padding: 0;
+		list-style: none;
+	}
+
+	.legal__body :global(li) {
+		position: relative;
+		padding-left: var(--space-grid-gap);
+	}
+
+	/* Small camel dash as the bullet (decorative, never text). */
+	.legal__body :global(li::before) {
+		content: "";
+		position: absolute;
+		top: 0.8em;
+		left: 0;
+		width: var(--space-sm);
+		height: 1px;
+		background: var(--color-camel);
+	}
+
+	.legal__body :global(a) {
+		color: var(--color-chocolate);
+	}
+
+	@media (min-width: 1024px) {
+		.legal__layout {
+			flex-direction: row;
+			align-items: stretch;
+			gap: var(--space-xl);
+		}
+
+		/* The aside spans the whole article so the divider never ends early; the index inside it
+		   stays sticky while the text scrolls. */
+		.legal__side {
+			display: block;
+			align-self: stretch;
+			flex: 0 0 16.25rem;
+			padding-right: var(--space-lg);
+			border-right: 1px solid var(--color-chocolate);
+		}
+
+		.legal__toc {
+			position: sticky;
+			top: 6rem;
+		}
+
+		.legal__body {
+			flex: 1;
+		}
+	}
+</style>
