@@ -78,6 +78,18 @@ const {
 			);
 			for (const el of targets) observer.observe(el);
 
+			// Anything already on screen at load (such as the hero controls, which sit inside the
+			// observer's bottom margin) enters right away instead of waiting for a scroll.
+			requestAnimationFrame(() => {
+				for (const el of targets) {
+					const rect = el.getBoundingClientRect();
+					if (rect.top < window.innerHeight && rect.bottom > 0) {
+						el.classList.add("is-visible");
+						observer.unobserve(el);
+					}
+				}
+			});
+
 			// Safety net: if the observer never fires, reveal only what is on screen right now.
 			// Elements further down keep waiting, so their entrance still plays on scroll.
 			setTimeout(() => {

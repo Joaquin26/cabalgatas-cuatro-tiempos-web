@@ -29,28 +29,42 @@ const slideCount = String(slides.length).padStart(2, "0");
 	<div class="hero__scrim" aria-hidden="true"></div>
 	<div class="hero__content">
 		<div class="hero__text-stack">
-			{slides.map((slide, i) => (
-				<div class:list={["hero__text", i === 0 && "is-active"]} data-hero-text={i}>
-					<h1 class="reveal">
-						{slide.heading.map((line, li) => (
-							<>
-								{line}
-								{li < slide.heading.length - 1 && <br />}
-							</>
-						))}
-					</h1>
-					<p class="hero__subtitle reveal">{slide.subtitle}</p>
-				</div>
-			))}
+			{slides.map((slide, i) => {
+				// Only the first slide is the page's <h1>; the rest share its look as plain text.
+				const Heading = i === 0 ? "h1" : "p";
+				return (
+					<div class:list={["hero__text", i === 0 && "is-active"]} data-hero-text={i}>
+						<Heading class="hero__title reveal">
+							{slide.heading.map((line, li) => (
+								<>
+									{line}
+									{li < slide.heading.length - 1 && <br />}
+								</>
+							))}
+						</Heading>
+						<p class="hero__subtitle reveal">{slide.subtitle}</p>
+					</div>
+				);
+			})}
 		</div>
 		<a href="/#experiencias" class="button button--secondary hero__cta reveal">
 			DESCUBRIR EXPERIENCIAS →
 		</a>
-		<div class="hero__slider reveal" aria-hidden="true">
-			<span data-hero-counter>01/{slideCount}</span>
-			<div class="hero__slider-track">
-				<div class="hero__slider-fill" data-hero-fill></div>
-			</div>
+		<div class="hero__controls reveal">
+			<button
+				type="button"
+				class="hero__slider"
+				data-hero-pause
+				aria-pressed="false"
+				aria-label="Pausar carrusel"
+				title="Pausar carrusel"
+			>
+				<span data-hero-counter>01/{slideCount}</span>
+				<span class="hero__slider-track" aria-hidden="true">
+					<span class="hero__slider-fill" data-hero-fill></span>
+				</span>
+				<span class="hero__slider-status" data-hero-status aria-hidden="true"></span>
+			</button>
 		</div>
 	</div>
 	<p class="hero__location">
@@ -65,7 +79,9 @@ const slideCount = String(slides.length).padStart(2, "0");
 		const texts = Array.from(hero.querySelectorAll<HTMLElement>("[data-hero-text]"));
 		const fill = hero.querySelector<HTMLElement>("[data-hero-fill]");
 		const counter = hero.querySelector<HTMLElement>("[data-hero-counter]");
-		const pauseTargets = hero.querySelectorAll<HTMLElement>(".hero__cta, .hero__slider");
+		const pauseTargets = hero.querySelectorAll<HTMLElement>(".hero__cta");
+		const status = hero.querySelector<HTMLElement>("[data-hero-status]");
+		const pauseButton = hero.querySelector<HTMLButtonElement>("[data-hero-pause]");
 		const total = images.length;
 		if (total <= 1) return;
 
@@ -75,6 +91,16 @@ const slideCount = String(slides.length).padStart(2, "0");
 		let elapsed = 0;
 		let lastTick = 0;
 		let paused = false;
+		// Autoplay starts paused for people who ask for reduced motion; the button toggles it.
+		let userPaused = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+		function syncPauseButton() {
+			pauseButton?.setAttribute("aria-pressed", String(userPaused));
+			const label = userPaused ? "Reanudar carrusel" : "Pausar carrusel";
+			pauseButton?.setAttribute("aria-label", label);
+			pauseButton?.setAttribute("title", label);
+			if (status) status.textContent = userPaused ? "PAUSA" : "";
+		}
 
 		function setSlide(i: number) {
 			index = i;
@@ -85,7 +111,7 @@ const slideCount = String(slides.length).padStart(2, "0");
 		}
 
 		function tick(now: number) {
-			if (!paused) {
+			if (!paused && !userPaused) {
 				elapsed += now - lastTick;
 				if (elapsed >= duration) {
 					elapsed = 0;
@@ -105,6 +131,12 @@ const slideCount = String(slides.length).padStart(2, "0");
 			paused = false;
 		}
 
+		pauseButton?.addEventListener("click", () => {
+			userPaused = !userPaused;
+			syncPauseButton();
+		});
+
+		syncPauseButton();
 		setSlide(0);
 		lastTick = performance.now();
 		requestAnimationFrame(tick);
@@ -165,7 +197,7 @@ const slideCount = String(slides.length).padStart(2, "0");
 		--reveal-delay: 300ms;
 	}
 
-	.hero__slider {
+	.hero__controls {
 		--reveal-delay: 450ms;
 	}
 
@@ -219,9 +251,12 @@ const slideCount = String(slides.length).padStart(2, "0");
 		visibility: visible;
 	}
 
-	.hero__text h1 {
+	.hero__title {
+		margin: 0;
+		font-family: var(--font-display);
 		font-size: var(--text-h1);
 		font-weight: 400;
+		line-height: 1.1;
 		color: var(--color-text-image);
 	}
 
@@ -239,17 +274,47 @@ const slideCount = String(slides.length).padStart(2, "0");
 		font-weight: 600;
 	}
 
+	.hero__controls {
+		display: flex;
+		align-items: center;
+		gap: var(--space-sm);
+		width: 100%;
+	}
+
+	/* The progress indicator is also the pause control: no extra icon, just a quiet affordance. */
 	.hero__slider {
 		display: flex;
 		align-items: center;
 		gap: 1.25rem;
-		width: 100%;
+		min-height: 44px;
+		padding: 0;
+		border: 0;
+		background: none;
+		font-family: inherit;
 		font-size: var(--text-small);
 		letter-spacing: 0.16em;
 		color: var(--color-dark-sand);
+		cursor: pointer;
+		transition: color var(--duration-fast) var(--ease-calm);
+	}
+
+	.hero__slider:hover {
+		color: var(--color-text-image);
+	}
+
+	.hero__slider:focus-visible {
+		outline: 2px solid var(--color-text-image);
+		outline-offset: 4px;
+	}
+
+	.hero__slider-status {
+		font-size: var(--text-eyebrow);
+		letter-spacing: var(--tracking-widest);
+		color: var(--color-camel);
 	}
 
 	.hero__slider-track {
+		display: block;
 		position: relative;
 		height: 2px;
 		width: 10rem;
@@ -257,6 +322,7 @@ const slideCount = String(slides.length).padStart(2, "0");
 	}
 
 	.hero__slider-fill {
+		display: block;
 		position: absolute;
 		inset: 0 auto 0 0;
 		width: 0%;
@@ -297,7 +363,7 @@ const slideCount = String(slides.length).padStart(2, "0");
 			display: flex;
 		}
 
-		.hero__text h1 {
+		.hero__title {
 			white-space: nowrap;
 		}
 	}
