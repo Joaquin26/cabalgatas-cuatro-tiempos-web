@@ -56,10 +56,10 @@ const { title, questions, cta } = Astro.props;
 
 	.faq-item {
 		border-bottom: 1px solid var(--color-sand);
-		padding-block: var(--space-sm);
 	}
 
 	.faq-item summary {
+		padding-block: var(--space-sm);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -90,7 +90,7 @@ const { title, questions, cta } = Astro.props;
 	}
 
 	.faq-item__answer {
-		margin-top: var(--space-sm);
+		padding-bottom: var(--space-sm);
 		line-height: 1.5;
 		color: var(--color-brown);
 	}
