@@ -40,7 +40,9 @@
 	--max-width: 1440px;
 	--content-width: 1296px;
 	--section-spacing: clamp(3.5rem, 7vw, 6.5rem);
-	--gutter: clamp(1.25rem, 6vw, 72px);
+	/* Side padding: fluid up to 72px, then it grows on wide screens so content never stretches
+	   past --max-width (it stays centered, and the layout looks the same as at 1440px). */
+	--gutter: max(clamp(1.25rem, 6vw, 72px), calc((100vw - var(--max-width)) / 2 + 72px));
 	--space-header-gap: 3rem;
 	--space-grid-gap: 1.5rem;
 	--ratio-photo-tall: 7 / 8;
