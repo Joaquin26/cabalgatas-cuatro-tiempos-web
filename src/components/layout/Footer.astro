@@ -1,4 +1,5 @@
 ---
+import { whatsappUrl, email } from "../../data/contact";
 import logo from "../../../public/brand/logo-lockup.png";
 import { Image } from "astro:assets";
 
@@ -8,7 +9,7 @@ const experienceLinks = [
 	{ label: "Full Day a Caballo", href: "/experiencias/full-day" },
 	{ label: "Cabalgata por el Valle", href: "/#experiencias" },
 	{ label: "Pilates & Horses", href: "/#experiencias" },
-	{ label: "Experiencias privadas", href: "/#experiencias" },
+	{ label: "Experiencias privadas", href: "/#celebra" },
 ];
 
 const infoLinks = [
@@ -26,7 +27,7 @@ const legalLinks = [
 const socialLinks = [
 	{ label: "Instagram", href: "https://instagram.com/cuatrotiempos" },
 	{ label: "Facebook", href: "https://facebook.com/cuatrotiempos" },
-	{ label: "WhatsApp", href: "https://wa.me/51999999999" },
+	{ label: "WhatsApp", href: whatsappUrl },
 ];
 ---
 
@@ -120,12 +121,7 @@ const socialLinks = [
 				</svg>
 				Pachacámac, Lima, Perú
 			</p>
-			<a
-				href="https://wa.me/51999999999"
-				class="footer__contact"
-				target="_blank"
-				rel="noopener noreferrer"
-			>
+			<a href={whatsappUrl} class="footer__contact" target="_blank" rel="noopener noreferrer">
 				<svg
 					width="20"
 					height="20"
@@ -139,7 +135,7 @@ const socialLinks = [
 				</svg>
 				WhatsApp
 			</a>
-			<a href="mailto:hola@cuatrotiempos.pe" class="footer__contact">
+			<a href={`mailto:${email}`} class="footer__contact">
 				<svg
 					width="20"
 					height="20"
@@ -152,7 +148,7 @@ const socialLinks = [
 					<rect x="3" y="5" width="18" height="14" rx="2" />
 					<path d="M3.5 6.5l8.5 6.5 8.5-6.5" />
 				</svg>
-				hola@cuatrotiempos.pe
+				{email}
 			</a>
 		</div>
 	</div>
@@ -217,8 +213,8 @@ const socialLinks = [
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 2.5rem;
-		height: 2.5rem;
+		width: 2.75rem;
+		height: 2.75rem;
 		border-radius: 50%;
 		border: 1px solid var(--color-brown);
 		color: var(--color-dark-sand);
@@ -245,7 +241,6 @@ const socialLinks = [
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 0.9rem;
 	}
 
 	.footer__heading {
@@ -258,13 +253,16 @@ const socialLinks = [
 
 	.footer__col a,
 	.footer__contact {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
 		font-size: var(--text-small);
 		color: var(--color-dark-sand);
 		text-decoration: none;
 	}
 
 	.footer__col a {
-		background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+		background: linear-gradient(currentColor, currentColor) 0 calc(50% + 0.7rem) / 0 1px no-repeat;
 		transition:
 			color var(--duration-fast) var(--ease-calm),
 			background-size var(--duration-fast) var(--ease-calm);
@@ -329,6 +327,9 @@ const socialLinks = [
 	}
 
 	.footer__legal a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
 		color: inherit;
 		text-decoration: none;
 	}
