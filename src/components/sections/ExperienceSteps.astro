@@ -17,11 +17,12 @@ interface Props {
 }
 
 const { title, steps } = Astro.props;
+const columns = Math.min(steps.length, 4);
 ---
 
 <section class="section steps">
 	<SectionHeader title={title} align="center" />
-	<ol class="steps__list">
+	<ol class="steps__list" style={`--columns: ${columns}`}>
 		{steps.map((step, i) => (
 			<li class="steps__item">
 				<div class="steps__image">
@@ -115,7 +116,7 @@ const { title, steps } = Astro.props;
 
 	@media (min-width: 1024px) {
 		.steps__list {
-			grid-template-columns: repeat(4, 1fr);
+			grid-template-columns: repeat(var(--columns), 1fr);
 		}
 	}
 </style>

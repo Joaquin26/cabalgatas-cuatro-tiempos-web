@@ -4,6 +4,7 @@ import SectionHeader from "../ui/SectionHeader.astro";
 interface Props {
 	title: string;
 	includes: { icon: string; label: string }[];
+	requirements?: { title: string; items: string[] };
 	booking: {
 		price: { currency: string; amount: string; unit: string };
 		details: { icon: string; lines: string[] }[];
@@ -12,7 +13,7 @@ interface Props {
 	};
 }
 
-const { title, includes, booking } = Astro.props;
+const { title, includes, requirements, booking } = Astro.props;
 
 const icons = import.meta.glob<{ default: ImageMetadata }>(
 	"../../assets/experiencias/icons/*.svg",
@@ -24,14 +25,26 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 <section class="section includes">
 	<SectionHeader title={title} />
 	<div class="includes__layout">
-		<ul class="includes__list">
-			{includes.map((item) => (
-				<li class="includes__item">
-					<img src={iconSrc(item.icon)} alt="" width="64" height="64" />
-					<span>{item.label}</span>
-				</li>
-			))}
-		</ul>
+		<div class="includes__main">
+			<ul class="includes__list">
+				{includes.map((item) => (
+					<li class="includes__item">
+						<img src={iconSrc(item.icon)} alt="" width="64" height="64" />
+						<span>{item.label}</span>
+					</li>
+				))}
+			</ul>
+			{requirements && (
+				<div class="includes__requirements">
+					<h3>{requirements.title}</h3>
+					<ul>
+						{requirements.items.map((item) => (
+							<li>{item}</li>
+						))}
+					</ul>
+				</div>
+			)}
+		</div>
 		<aside class="includes__card">
 			<p class="includes__price">
 				<span class="includes__currency">{booking.price.currency}</span>
@@ -61,13 +74,59 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 	.includes {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-xs);
+		gap: var(--space-header-gap);
 	}
 
 	.includes__layout {
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-lg);
+	}
+
+	.includes__main {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-lg);
+	}
+
+	.includes__requirements {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+		padding-top: var(--space-grid-gap);
+		border-top: 1px solid var(--color-sand);
+	}
+
+	.includes__requirements h3 {
+		font-size: var(--text-h4);
+		font-weight: var(--weight-semibold);
+		color: var(--color-chocolate);
+	}
+
+	.includes__requirements ul {
+		display: grid;
+		gap: var(--space-xs);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.includes__requirements li {
+		position: relative;
+		padding-left: var(--space-grid-gap);
+		line-height: 1.5;
+		color: var(--color-brown);
+	}
+
+	/* Small camel dash as the bullet (decorative, never text). */
+	.includes__requirements li::before {
+		content: "";
+		position: absolute;
+		top: 0.75em;
+		left: 0;
+		width: var(--space-sm);
+		height: 1px;
+		background: var(--color-camel);
 	}
 
 	.includes__list {
@@ -168,15 +227,18 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 	@media (min-width: 1024px) {
 		.includes__layout {
 			flex-direction: row;
-			align-items: center;
+			align-items: flex-start;
 			justify-content: space-between;
 			gap: var(--space-xl);
 		}
 
-		.includes__list {
+		.includes__main {
 			flex: 1;
-			grid-template-columns: repeat(4, 1fr);
 			max-width: 46.875rem;
+		}
+
+		.includes__list {
+			grid-template-columns: repeat(4, 1fr);
 			gap: var(--space-lg);
 		}
 

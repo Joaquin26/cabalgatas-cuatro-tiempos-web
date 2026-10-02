@@ -12,7 +12,7 @@ const includeIcons = [
 	"orange",
 	"bonfire",
 ] as const;
-const detailIcons = ["calendar", "user", "group"] as const;
+const detailIcons = ["calendar", "clock", "user", "group"] as const;
 
 const experiencias = defineCollection({
 	loader: glob({ pattern: "**/*.md", base: "./src/content/experiencias" }),
@@ -53,6 +53,7 @@ const experiencias = defineCollection({
 				action: z.object({ label: z.string(), href: z.string() }).optional(),
 			}),
 			includesTitle: z.string(),
+			requirements: z.object({ title: z.string(), items: z.array(z.string()) }).optional(),
 			includes: z.array(z.object({ icon: z.enum(includeIcons), label: z.string() })),
 			booking: z.object({
 				price: z.object({ currency: z.string(), amount: z.string(), unit: z.string() }),
