@@ -5,7 +5,7 @@ import { Image } from "astro:assets";
 const links = [
 	{ label: "Experiencias", href: "/#experiencias" },
 	{ label: "Nosotros", href: "/nosotros" },
-	{ label: "Galeria", href: "/galeria" },
+	{ label: "Galería", href: "/galeria" },
 	{ label: "FAQ", href: "/faq" },
 ];
 ---
@@ -83,9 +83,11 @@ const links = [
 
 	.nav__links a {
 		text-decoration: none;
-		padding-block: 0.25rem;
-		background: linear-gradient(var(--color-dark-sand), var(--color-dark-sand)) 0 100% / 0 1px
-			no-repeat;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		background: linear-gradient(var(--color-dark-sand), var(--color-dark-sand)) 0
+			calc(50% + 0.8rem) / 0 1px no-repeat;
 		transition: background-size var(--duration-fast) var(--ease-calm);
 	}
 
@@ -95,6 +97,9 @@ const links = [
 	}
 
 	.nav__logo {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
 		transition: opacity var(--duration-fast) var(--ease-calm);
 	}
 
