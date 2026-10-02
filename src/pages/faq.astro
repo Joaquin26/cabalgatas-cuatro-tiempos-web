@@ -2,7 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHero from "../components/sections/PageHero.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
-import { whatsappUrl, email as contactEmail, hours } from "../data/contact";
+import { whatsappUrl, email as contactEmail, hours, phone } from "../data/contact";
+import WhatsAppIcon from "../components/ui/WhatsAppIcon.astro";
 import hero from "../assets/galeria/hero.png";
 import chevron from "../assets/faq/chevron-up.svg";
 import whatsapp from "../assets/faq/whatsapp.svg";
@@ -274,7 +275,7 @@ const categories = [
 	},
 ];
 
-const contact = { whatsapp: whatsappUrl, email: contactEmail, hours };
+const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 ---
 
 <BaseLayout title="Preguntas frecuentes">
@@ -348,6 +349,10 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours };
 				>
 					<img src={whatsapp.src} alt="" width="24" height="24" />
 					ESCRIBIR POR WHATSAPP →
+				</a>
+				<a href={contact.whatsapp} class="contact__line" target="_blank" rel="noopener noreferrer">
+					<WhatsAppIcon size={24} />
+					{contact.phone}
 				</a>
 				<a href={`mailto:${contact.email}`} class="contact__line">
 					<img src={email.src} alt="" width="24" height="24" />

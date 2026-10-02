@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { whatsappUrl } from "../../data/contact";
+import { whatsappLink, messages } from "../../data/contact";
 import celebrateImage from "../../assets/experiencias/celebra-a-tu-manera/hero.png";
 
 const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
@@ -19,7 +19,7 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 					compartir
 				</p>
 			</div>
-			<a href={whatsappUrl} class="button button--secondary celebrate__cta">
+			<a href={whatsappLink(messages.celebration)} class="button button--secondary celebrate__cta">
 				CUÉNTANOS TU IDEA →
 			</a>
 		</div>

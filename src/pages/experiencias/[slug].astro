@@ -8,7 +8,7 @@ import ImageBand from "../../components/sections/ImageBand.astro";
 import ExperienceIncludes from "../../components/sections/ExperienceIncludes.astro";
 import GalleryPreview from "../../components/sections/GalleryPreview.astro";
 import ExperienceFaq from "../../components/sections/ExperienceFaq.astro";
-import { whatsappUrl } from "../../data/contact";
+import { whatsappLink, messages } from "../../data/contact";
 
 export async function getStaticPaths() {
 	const experiencias = await getCollection("experiencias");
@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 const { data } = Astro.props.entry;
 
 // MOCK: there is no booking flow yet, so every "reservar" button opens WhatsApp.
-const bookingHref = whatsappUrl;
+const bookingHref = whatsappLink(messages.booking(data.title));
 ---
 
 <BaseLayout title={data.title} description={data.summary}>
