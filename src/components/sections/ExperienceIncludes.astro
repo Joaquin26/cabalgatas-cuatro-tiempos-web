@@ -29,7 +29,9 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 			<ul class="includes__list">
 				{includes.map((item) => (
 					<li class="includes__item">
-						<img src={iconSrc(item.icon)} alt="" width="64" height="64" />
+						<span class="includes__icon">
+							<img src={iconSrc(item.icon)} alt="" />
+						</span>
 						<span>{item.label}</span>
 					</li>
 				))}
@@ -149,10 +151,19 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 		color: var(--color-chocolate);
 	}
 
-	.includes__item img {
+	/* Some SVGs are cropped to their artwork and others keep the full 64px canvas, so each one is
+	   shown at its natural size, centered in the same box, to keep the set visually even. */
+	.includes__icon {
+		display: grid;
+		place-items: center;
 		width: 4rem;
 		height: 4rem;
-		object-fit: contain;
+	}
+
+	.includes__icon img {
+		display: block;
+		max-width: 100%;
+		max-height: 100%;
 	}
 
 	.includes__card {
