@@ -365,3 +365,8 @@ a {
 		transform: none;
 	}
 }
+
+/* The page behind an open dialog should not scroll. */
+html:has(dialog[open]) {
+	overflow: hidden;
+}

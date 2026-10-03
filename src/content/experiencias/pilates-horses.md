@@ -51,6 +51,11 @@ booking:
     - { icon: "calendar", lines: ["Fechas específicas"] }
     - { icon: "clock", lines: ["7:30 a.m. - 1:00 p.m.", "(5 h 30 min)"] }
     - { icon: "user", lines: ["Cupos limitados", "Máx. 30 personas"] }
+  # MOCK: the real dates for "fechas específicas" are not defined yet.
+  schedule:
+    dates: ["2026-10-18", "2026-11-08", "2026-11-22", "2026-12-06", "2026-12-20"]
+    minPeople: 1
+    maxPeople: 30
   cta: "RESERVAR AHORA →"
 faqTitle: "Preguntas frecuentes"
 faq:

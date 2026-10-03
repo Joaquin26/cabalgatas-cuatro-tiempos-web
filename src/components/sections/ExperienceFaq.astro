@@ -29,7 +29,7 @@ const { title, questions, cta } = Astro.props;
 		<aside class="experience-faq__cta">
 			<h3>{cta.title}</h3>
 			<p>{cta.text}</p>
-			<a href={cta.href} class="button button--primary">
+			<a href={cta.href} class="button button--primary" data-booking-open>
 				{cta.label}
 			</a>
 		</aside>

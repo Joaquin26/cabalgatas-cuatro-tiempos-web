@@ -1,0 +1,650 @@
+---
+import type { Schedule } from "../../data/availability";
+import { whatsappLink, messages } from "../../data/contact";
+
+interface Props {
+	slug: string;
+	title: string;
+	price: number;
+	currency: string;
+	schedule: Schedule;
+}
+
+const { slug, title, price, currency, schedule } = Astro.props;
+const config = JSON.stringify({ slug, title, price, currency, schedule });
+const fallback = whatsappLink(messages.booking(title));
+---
+
+<dialog class="booking" data-booking-dialog data-config={config} aria-labelledby="booking-title">
+	<div class="booking__panel">
+		<button type="button" class="booking__close" data-booking-close aria-label="Cerrar">
+			<span aria-hidden="true">×</span>
+		</button>
+
+		<header class="booking__header">
+			<h2 id="booking-title">Reserva tu {title}</h2>
+		</header>
+
+		<div class="booking__body">
+			<div class="booking__calendar">
+				<div class="booking__month">
+					<button type="button" data-booking-prev aria-label="Mes anterior">
+						<span aria-hidden="true">‹</span>
+					</button>
+					<p data-booking-month aria-live="polite"></p>
+					<button type="button" data-booking-next aria-label="Mes siguiente">
+						<span aria-hidden="true">›</span>
+					</button>
+				</div>
+				<div class="booking__weekdays" aria-hidden="true">
+					<span>D</span>
+					<span>L</span>
+					<span>M</span>
+					<span>M</span>
+					<span>J</span>
+					<span>V</span>
+					<span>S</span>
+				</div>
+				<div class="booking__grid" data-booking-grid></div>
+				<p class="visually-hidden">
+					Los días sin disponibilidad no se pueden elegir. Cupos de prueba, solo como ejemplo.
+				</p>
+			</div>
+
+			<div class="booking__side">
+				<p class="booking__selected" data-booking-selected aria-live="polite">
+					Elige una fecha disponible.
+				</p>
+				<div class="booking__summary">
+					<div class="booking__people">
+						<p id="booking-people-label" data-booking-label>
+							Personas
+						</p>
+						<div class="booking__stepper" role="group" aria-labelledby="booking-people-label">
+							<button type="button" data-booking-minus aria-label="Una persona menos">
+								<span aria-hidden="true">−</span>
+							</button>
+							<output data-booking-people aria-live="polite">
+								1
+							</output>
+							<button type="button" data-booking-plus aria-label="Una persona más">
+								<span aria-hidden="true">+</span>
+							</button>
+						</div>
+						<p class="visually-hidden" data-booking-hint></p>
+					</div>
+					<div class="booking__total">
+						<p data-booking-unit></p>
+						<p class="booking__amount">
+							<strong data-booking-total></strong>
+						</p>
+					</div>
+				</div>
+
+				<button
+					type="button"
+					class="button button--primary booking__continue"
+					data-booking-continue
+					disabled
+				>
+					CONTINUAR →
+				</button>
+				<a class="booking__alt" href={fallback} target="_blank" rel="noopener noreferrer">
+					Reservar por WhatsApp
+				</a>
+			</div>
+		</div>
+	</div>
+</dialog>
+
+<script>
+	import { getAvailability, toKey, type Schedule } from "../../data/availability";
+	import { whatsappLink, messages } from "../../data/contact";
+
+	const dialog = document.querySelector<HTMLDialogElement>("[data-booking-dialog]");
+
+	if (dialog) {
+		const config = JSON.parse(dialog.dataset.config ?? "{}") as {
+			slug: string;
+			title: string;
+			price: number;
+			currency: string;
+			schedule: Schedule;
+		};
+		const q = <T extends HTMLElement>(sel: string) => dialog.querySelector<T>(sel)!;
+		const grid = q("[data-booking-grid]");
+		const monthLabel = q("[data-booking-month]");
+		const prev = q<HTMLButtonElement>("[data-booking-prev]");
+		const next = q<HTMLButtonElement>("[data-booking-next]");
+		const minus = q<HTMLButtonElement>("[data-booking-minus]");
+		const plus = q<HTMLButtonElement>("[data-booking-plus]");
+		const peopleOut = q("[data-booking-people]");
+		const hint = q("[data-booking-hint]");
+		const peopleLabel = q("[data-booking-label]");
+		const unit = q("[data-booking-unit]");
+		const total = q("[data-booking-total]");
+		const selectedText = q("[data-booking-selected]");
+		const cont = q<HTMLButtonElement>("[data-booking-continue]");
+
+		const { minPeople, maxPeople } = config.schedule;
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+		const lastMonth = new Date(today.getFullYear(), today.getMonth() + 6, 1);
+		let view = new Date(today.getFullYear(), today.getMonth(), 1);
+		let selected: { date: Date; left: number } | null = null;
+		let people = minPeople;
+
+		const money = (n: number) => `${config.currency} ${n.toLocaleString("es-PE")}`;
+		const longDate = (d: Date) =>
+			new Intl.DateTimeFormat("es-PE", { weekday: "long", day: "numeric", month: "long" }).format(
+				d,
+			);
+		const capitalize = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+		const shortDate = (d: Date) =>
+			new Intl.DateTimeFormat("es-PE", { weekday: "long", day: "numeric", month: "short" })
+				.format(d)
+				.replace(".", "");
+
+		function renderMonth() {
+			monthLabel.textContent = capitalize(
+				new Intl.DateTimeFormat("es-PE", { month: "long", year: "numeric" }).format(view),
+			);
+			prev.disabled = view <= new Date(today.getFullYear(), today.getMonth(), 1);
+			next.disabled = view >= lastMonth;
+			grid.replaceChildren();
+
+			const first = new Date(view.getFullYear(), view.getMonth(), 1);
+			const days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+			for (let i = 0; i < first.getDay(); i++) grid.append(document.createElement("span"));
+
+			for (let day = 1; day <= days; day++) {
+				const date = new Date(view.getFullYear(), view.getMonth(), day);
+				const info =
+					date < today
+						? { status: "unavailable" as const, left: 0 }
+						: getAvailability(config.slug, date, config.schedule);
+				const cell = document.createElement("button");
+				cell.type = "button";
+				cell.className = `booking__day is-${info.status}`;
+				const number = document.createElement("span");
+				number.textContent = String(day);
+				const note = document.createElement("span");
+				note.className = "booking__note";
+				let label = longDate(date);
+				if (info.status === "soldout") {
+					note.textContent = "Agotado";
+					label += ", agotado";
+				} else if (info.status === "low") {
+					note.textContent = `Quedan ${info.left}`;
+					label += `, últimos ${info.left} cupos`;
+				} else if (info.status === "available") {
+					label += `, ${info.left} cupos disponibles`;
+				} else {
+					label += ", no disponible";
+				}
+				cell.append(number, note);
+				cell.setAttribute("aria-label", label);
+				cell.disabled = info.status === "unavailable" || info.status === "soldout";
+				if (selected && toKey(selected.date) === toKey(date)) {
+					cell.classList.add("is-selected");
+					cell.setAttribute("aria-pressed", "true");
+				}
+				cell.addEventListener("click", () => {
+					selected = { date, left: info.left };
+					people = Math.min(Math.max(people, minPeople), Math.min(maxPeople, info.left));
+					renderMonth();
+					renderSummary();
+				});
+				grid.append(cell);
+			}
+		}
+
+		function renderSummary() {
+			const cap = selected ? Math.min(maxPeople, selected.left) : maxPeople;
+			people = Math.min(Math.max(people, minPeople), Math.max(minPeople, cap));
+			peopleOut.textContent = String(people);
+			minus.disabled = people <= minPeople;
+			plus.disabled = people >= cap;
+			const rule =
+				minPeople > 1
+					? `Grupos de ${minPeople} a ${maxPeople} personas.`
+					: `Hasta ${maxPeople} personas por reserva.`;
+			hint.textContent = rule;
+			peopleLabel.textContent =
+				minPeople > 1 ? `Personas (${minPeople} a ${maxPeople})` : "Personas";
+			unit.textContent = `${money(config.price)} × ${people} ${people === 1 ? "persona" : "personas"}`;
+			total.textContent = money(config.price * people);
+			selectedText.textContent = selected
+				? `${capitalize(shortDate(selected.date))} · ${selected.left <= 3 ? "últimos " : ""}${selected.left} ${selected.left === 1 ? "cupo" : "cupos"}`
+				: "Elige una fecha disponible.";
+			cont.disabled = !selected;
+		}
+
+		prev.addEventListener("click", () => {
+			view = new Date(view.getFullYear(), view.getMonth() - 1, 1);
+			renderMonth();
+		});
+		next.addEventListener("click", () => {
+			view = new Date(view.getFullYear(), view.getMonth() + 1, 1);
+			renderMonth();
+		});
+		minus.addEventListener("click", () => {
+			people -= 1;
+			renderSummary();
+		});
+		plus.addEventListener("click", () => {
+			people += 1;
+			renderSummary();
+		});
+		// MOCK: the next booking step does not exist yet, so "Continuar" hands the choice to WhatsApp.
+		cont.addEventListener("click", () => {
+			if (!selected) return;
+			const url = whatsappLink(
+				messages.bookingWith(config.title, capitalize(longDate(selected.date)), people),
+			);
+			window.open(url, "_blank", "noopener");
+		});
+
+		const close = () => dialog.close();
+		q("[data-booking-close]").addEventListener("click", close);
+		dialog.addEventListener("click", (event) => {
+			if (event.target === dialog) close();
+		});
+
+		// Every "Reservar ahora" link opens the dialog; without JavaScript it still opens WhatsApp.
+		document.querySelectorAll<HTMLElement>("[data-booking-open]").forEach((el) =>
+			el.addEventListener("click", (event) => {
+				event.preventDefault();
+				renderMonth();
+				renderSummary();
+				dialog.showModal();
+			}),
+		);
+	}
+</script>
+
+<!-- Global because the calendar days are created at runtime, outside Astro's scoped styles. All
+	 selectors start with .booking, so nothing leaks. -->
+<style is:global>
+	.booking {
+		width: min(28rem, calc(100vw - 2 * var(--space-sm)));
+		max-height: calc(100dvh - 2 * var(--space-sm));
+		padding: 0;
+		border: 0;
+		border-radius: var(--radius-card);
+		background: var(--color-secundary);
+		color: var(--color-chocolate);
+		overflow: auto;
+	}
+
+	.booking::backdrop {
+		background: color-mix(in srgb, var(--color-dark-chocolate) 60%, transparent);
+		backdrop-filter: blur(4px);
+	}
+
+	.booking[open] {
+		animation: booking-in var(--duration-base) var(--ease-calm);
+	}
+
+	.booking[open]::backdrop {
+		animation: booking-fade var(--duration-base) var(--ease-calm);
+	}
+
+	@keyframes booking-in {
+		from {
+			opacity: 0;
+			transform: translateY(var(--reveal-distance));
+		}
+	}
+
+	@keyframes booking-fade {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.booking[open],
+		.booking[open]::backdrop {
+			animation: none;
+		}
+	}
+
+	.booking__panel {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+		padding: var(--space-grid-gap);
+		font-family: var(--font-ui);
+	}
+
+	.booking__close {
+		position: absolute;
+		top: var(--space-xs);
+		right: var(--space-xs);
+		width: 44px;
+		height: 44px;
+		border: 0;
+		background: none;
+		font-size: var(--text-h3);
+		line-height: 1;
+		color: var(--color-chocolate);
+		cursor: pointer;
+	}
+
+	.booking__header h2 {
+		padding-right: var(--space-lg);
+		font-size: var(--text-h4);
+		line-height: 1.15;
+		font-weight: var(--weight-regular);
+	}
+
+	.booking__header p {
+		margin-top: var(--space-xs);
+		font-size: var(--text-small);
+		color: var(--color-brown);
+	}
+
+	.booking__calendar {
+		padding: var(--space-xs) var(--space-sm) var(--space-sm);
+		border: 1px solid var(--color-sand);
+		border-radius: var(--radius-card);
+		background: var(--color-main);
+	}
+
+	.booking__month {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.booking__month p {
+		font-weight: var(--weight-semibold);
+	}
+
+	.booking__month button,
+	.booking__stepper button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		border: 0;
+		border-radius: 50%;
+		background: none;
+		font-size: var(--text-h4);
+		color: var(--color-chocolate);
+		cursor: pointer;
+		transition: background-color var(--duration-fast) var(--ease-calm);
+	}
+
+	.booking__month button:hover:not(:disabled),
+	.booking__stepper button:hover:not(:disabled) {
+		background: var(--color-sand);
+	}
+
+	.booking button:disabled {
+		opacity: 0.35;
+		cursor: not-allowed;
+	}
+
+	.booking__weekdays,
+	.booking__grid {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		column-gap: 0.25rem;
+		text-align: center;
+	}
+
+	.booking__weekdays {
+		margin-block: var(--space-xs);
+		font-size: var(--text-eyebrow);
+		letter-spacing: var(--tracking-wide);
+		color: var(--color-brown);
+	}
+
+	.booking__grid {
+		row-gap: 0.25rem;
+	}
+
+	.booking__day {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: 44px;
+		padding: 0.125rem 0;
+		border: 1px solid transparent;
+		border-radius: var(--radius-card);
+		background: none;
+		font-family: inherit;
+		font-size: var(--text-small);
+		color: var(--color-chocolate);
+		cursor: pointer;
+		transition:
+			background-color var(--duration-fast) var(--ease-calm),
+			color var(--duration-fast) var(--ease-calm);
+	}
+
+	.booking__note {
+		white-space: nowrap;
+		font-size: 0.625rem;
+		line-height: 1.2;
+		color: var(--color-brown);
+	}
+
+	.booking__day.is-available:hover,
+	.booking__day.is-low:hover {
+		background: var(--color-sand);
+	}
+
+	.booking__day.is-available,
+	.booking__day.is-low {
+		border-color: var(--color-dark-sand);
+	}
+
+	.booking__day.is-unavailable {
+		color: var(--color-dark-sand);
+	}
+
+	.booking__day.is-soldout {
+		text-decoration: line-through;
+	}
+
+	.booking__day.is-unavailable:disabled,
+	.booking__day.is-soldout:disabled {
+		opacity: 1;
+		color: var(--color-brown);
+		opacity: 0.55;
+	}
+
+	.booking__day.is-selected,
+	.booking__day.is-selected:hover {
+		border-color: var(--color-chocolate);
+		background: var(--color-chocolate);
+		color: var(--color-text-image);
+	}
+
+	.booking__day.is-selected .booking__note {
+		color: var(--color-dark-sand);
+	}
+
+	.booking__legend,
+	.booking__hint {
+		margin-top: var(--space-xs);
+		font-size: var(--text-eyebrow);
+		color: var(--color-brown);
+	}
+
+	.booking__summary {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: var(--space-sm);
+	}
+
+	.booking__people {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xs);
+	}
+
+	.booking__people > p:first-child {
+		font-size: var(--text-small);
+		font-weight: var(--weight-semibold);
+	}
+
+	.booking__stepper {
+		display: inline-flex;
+		align-items: center;
+		align-self: flex-start;
+		gap: var(--space-xs);
+		padding: 0.125rem;
+		border: 1px solid var(--color-dark-sand);
+		border-radius: var(--radius-input);
+	}
+
+	.booking__stepper output {
+		min-width: 2.5rem;
+		text-align: center;
+	}
+
+	.booking__total {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 0.125rem;
+		text-align: right;
+	}
+
+	.booking__total p:first-child {
+		font-size: var(--text-small);
+		color: var(--color-brown);
+	}
+
+	.booking__amount {
+		font-family: var(--font-display);
+		font-size: var(--text-h3);
+		line-height: 1;
+	}
+
+	.booking__amount strong {
+		font-weight: var(--weight-semibold);
+	}
+
+	.booking__body {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.booking__side {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+	}
+
+	.booking__selected {
+		padding: var(--space-xs) var(--space-sm);
+		border: 1px solid var(--color-sand);
+		border-radius: var(--radius-card);
+		background: var(--color-main);
+		font-size: var(--text-small);
+		color: var(--color-brown);
+		text-align: center;
+	}
+
+	/* Narrow and short screens (phones): tighter spacing so the dialog fits without scrolling. */
+	@media (max-width: 719px) and (max-height: 780px) {
+		.booking {
+			max-height: calc(100dvh - 2 * var(--space-xs));
+		}
+
+		.booking__panel,
+		.booking__body,
+		.booking__side {
+			gap: var(--space-xs);
+		}
+
+		.booking__panel {
+			padding: var(--space-sm);
+		}
+
+		.booking__calendar {
+			padding-block: 0 var(--space-xs);
+		}
+	}
+
+	/* Wide screens: calendar on the left, choices on the right, so it is short and airy. */
+	@media (min-width: 720px) {
+		.booking {
+			width: min(50rem, calc(100vw - 2 * var(--space-sm)));
+		}
+
+		.booking__panel {
+			gap: var(--space-grid-gap);
+			padding: var(--space-lg);
+		}
+
+		.booking__body {
+			flex-direction: row;
+			align-items: stretch;
+			gap: var(--space-lg);
+		}
+
+		.booking__calendar {
+			display: flex;
+			flex: 1.35;
+			flex-direction: column;
+		}
+
+		/* Rows share the column's spare height instead of leaving a gap at the bottom. */
+		.booking__grid {
+			flex: 1;
+			grid-auto-rows: minmax(2.75rem, 1fr);
+		}
+
+		.booking__side {
+			flex: 1;
+			gap: var(--space-grid-gap);
+		}
+
+		.booking__summary {
+			flex-direction: column;
+			align-items: stretch;
+			gap: var(--space-grid-gap);
+		}
+
+		.booking__total {
+			align-items: flex-start;
+			text-align: left;
+		}
+
+		/* Pushes the action to the bottom of the column. */
+		.booking__continue {
+			margin-top: auto;
+		}
+	}
+
+	.booking__continue {
+		justify-content: center;
+	}
+
+	.booking__alt {
+		align-self: center;
+		font-size: var(--text-small);
+		color: var(--color-brown);
+	}
+
+	.booking__alt,
+	.booking__close,
+	.booking button:focus-visible {
+		outline-offset: 2px;
+	}
+
+	.booking :focus-visible {
+		outline: 2px solid var(--color-brown);
+		outline-offset: 2px;
+	}
+</style>

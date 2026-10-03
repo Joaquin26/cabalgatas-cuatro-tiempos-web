@@ -19,6 +19,8 @@ export const messages = {
 	celebration: "Hola, quiero organizar una celebración con Cabalgatas Cuatro Tiempos. Mi idea es: ",
 	booking: (experience: string) =>
 		`Hola, quiero reservar la experiencia "${experience}". Somos ___ personas y nos gustaría ir el ___.`,
+	bookingWith: (experience: string, date: string, people: number) =>
+		`Hola, quiero reservar la experiencia "${experience}" para el ${date}, para ${people} ${people === 1 ? "persona" : "personas"}.`,
 	question: (experience: string) =>
 		`Hola, tengo una consulta sobre la experiencia "${experience}".`,
 };

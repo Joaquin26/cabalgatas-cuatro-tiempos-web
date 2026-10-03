@@ -6,6 +6,7 @@ import StorySection from "../../components/sections/StorySection.astro";
 import ExperienceSteps from "../../components/sections/ExperienceSteps.astro";
 import ImageBand from "../../components/sections/ImageBand.astro";
 import ExperienceIncludes from "../../components/sections/ExperienceIncludes.astro";
+import BookingDialog from "../../components/sections/BookingDialog.astro";
 import GalleryPreview from "../../components/sections/GalleryPreview.astro";
 import ExperienceFaq from "../../components/sections/ExperienceFaq.astro";
 import { whatsappLink, messages } from "../../data/contact";
@@ -63,4 +64,11 @@ const bookingHref = whatsappLink(messages.booking(data.title));
 			cta={{ ...data.closing, label: data.closing.cta, href: bookingHref }}
 		/>
 	</main>
+	<BookingDialog
+		slug={Astro.props.entry.id}
+		title={data.title}
+		price={Number(data.booking.price.amount)}
+		currency={data.booking.price.currency}
+		schedule={data.booking.schedule}
+	/>
 </BaseLayout>

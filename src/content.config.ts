@@ -59,6 +59,13 @@ const experiencias = defineCollection({
 				price: z.object({ currency: z.string(), amount: z.string(), unit: z.string() }),
 				details: z.array(z.object({ icon: z.enum(detailIcons), lines: z.array(z.string()) })),
 				cta: z.string(),
+				// Which days the experience runs: weekdays (0 = Sunday) or specific dates (YYYY-MM-DD).
+				schedule: z.object({
+					weekdays: z.array(z.number().int().min(0).max(6)).optional(),
+					dates: z.array(z.string()).optional(),
+					minPeople: z.number().int().min(1),
+					maxPeople: z.number().int().min(1),
+				}),
 			}),
 			faqTitle: z.string(),
 			faq: z.array(z.object({ question: z.string(), answer: z.string() })),

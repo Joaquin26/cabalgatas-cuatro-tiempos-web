@@ -12,7 +12,7 @@ intro:
   eyebrow: "La experiencia"
   title: "Más que una cabalgata, un día para reconectar."
   paragraphs:
-    - "Vive la esencia del valle de Pachacamac, en un día que combina naturaleza, tradición, buena comida y la compañía de nuestros caballos de Paso Peruano. Una experiencia diseñada para desconectarte de la rutina y disfrutar lo esencial."
+    - "Un día completo de conexión con la naturaleza y los caballos en el corazón del valle de Pachacámac. Disfruta de un desayuno buffet, una clase de introducción y una cabalgata de dos horas, seguida de un delicioso almuerzo y momentos especiales alrededor de una fogata con chocolate caliente."
   image: "../../assets/experiencias/full-day/intro.png"
   alt: "Mujer con sombrero sonriendo entre dos caballos"
 stepsTitle: "Así se vive el día"
@@ -50,9 +50,14 @@ booking:
     amount: "380"
     unit: "por persona"
   details:
-    - { icon: "calendar", lines: ["Solo domingos", "(previa reserva)"] }
-    - { icon: "user", lines: ["Cupos limitados", "Máx. 12 personas"] }
+    - { icon: "calendar", lines: ["Domingos", "(previa reserva)"] }
+    - { icon: "clock", lines: ["10:00 a.m. - 4:00 p.m.", "(6 h)"] }
+    - { icon: "user", lines: ["Cupos limitados", "Máx. 12 personas por fecha"] }
     - { icon: "group", lines: ["Edad mínima", "10 años"] }
+  schedule:
+    weekdays: [0]
+    minPeople: 1
+    maxPeople: 12
   cta: "RESERVAR AHORA →"
 faqTitle: "Preguntas frecuentes"
 faq:

@@ -54,6 +54,10 @@ booking:
     - { icon: "clock", lines: ["11:00 a.m. - 1:00 p.m.", "(2 h)"] }
     - { icon: "user", lines: ["Mínimo 3, máximo 8", "personas"] }
     - { icon: "group", lines: ["Edad mínima", "10 años"] }
+  schedule:
+    weekdays: [2, 3, 5]
+    minPeople: 3
+    maxPeople: 8
   cta: "RESERVAR AHORA →"
 faqTitle: "Preguntas frecuentes"
 faq:
