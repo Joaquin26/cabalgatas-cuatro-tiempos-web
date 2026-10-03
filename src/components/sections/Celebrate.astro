@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import Zoomable from "../ui/Zoomable.astro";
 import { whatsappLink, messages } from "../../data/contact";
 import celebrateImage from "../../assets/experiencias/celebra-a-tu-manera/hero.png";
 
@@ -25,13 +26,18 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 		</div>
 		<div class="celebrate__media reveal">
 			<div class="celebrate__image">
-				<Image
-					class="parallax"
+				<Zoomable
 					src={celebrateImage}
 					alt="Mesa servida al aire libre para una celebración en Cuatro Tiempos"
-					width={520}
-					height={400}
-				/>
+				>
+					<Image
+						class="parallax"
+						src={celebrateImage}
+						alt="Mesa servida al aire libre para una celebración en Cuatro Tiempos"
+						width={520}
+						height={400}
+					/>
+				</Zoomable>
 			</div>
 			<ul class="celebrate__tags">
 				{tags.map((tag) => (
@@ -43,9 +49,11 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 </section>
 
 <style>
+	/* Phones and tablets: the arch photo is the finale; it fills the width and runs into the bottom
+	   edge of the section, as it bleeds off the edges on desktop. */
 	.celebrate {
 		background: var(--color-chocolate);
-		padding: 3.5rem var(--gutter);
+		padding: 3.5rem var(--gutter) 0;
 	}
 
 	.celebrate__inner {
@@ -87,7 +95,7 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 	}
 
 	.celebrate__cta {
-		border-color: var(--color-brown);
+		border-color: var(--color-dark-sand);
 		color: var(--color-text-image);
 		text-transform: none;
 		letter-spacing: 0.08em;
@@ -105,30 +113,36 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 
 	.celebrate__media {
 		display: flex;
-		align-items: center;
-		gap: 1.5rem;
+		align-items: flex-end;
+		gap: var(--space-grid-gap);
 	}
 
 	.celebrate__image {
-		flex-shrink: 0;
-		width: 60%;
-		max-width: 22.5rem;
-		aspect-ratio: 520 / 400;
+		flex: 0 0 66%;
+		max-width: 22rem;
+		aspect-ratio: 5 / 6;
 		overflow: hidden;
-		border-radius: 9.5rem 9.5rem 0 0;
+		border-radius: 50% 50% 0 0;
 	}
 
 	@media (min-width: 1024px) {
+		.celebrate {
+			padding-bottom: 3.5rem;
+		}
+
 		.celebrate__media {
 			align-self: stretch;
+			align-items: center;
 		}
 
 		.celebrate__image {
+			flex: none;
 			width: 34rem;
 			max-width: none;
 			height: calc(100% + 7rem);
 			margin-block: -3.5rem;
-			border-radius: 50% 50% 0 0;
+			margin-inline: 0;
+			aspect-ratio: 520 / 400;
 		}
 	}
 
@@ -141,10 +155,9 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 	.celebrate__tags {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
-		gap: 1rem;
+		gap: var(--space-xs);
 		margin: 0;
-		padding: 0;
+		padding: 0 0 var(--space-lg);
 		list-style: none;
 		font-size: var(--text-small);
 		font-weight: 600;
@@ -153,6 +166,12 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 	}
 
 	@media (min-width: 1024px) {
+		.celebrate__tags {
+			justify-content: space-between;
+			gap: 1rem;
+			padding-bottom: 0;
+		}
+
 		.celebrate__inner {
 			flex-direction: row;
 			align-items: center;
