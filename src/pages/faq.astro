@@ -549,6 +549,49 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 		outline-offset: 4px;
 	}
 
+	@media (min-width: 1024px) {
+		.faq {
+			flex-direction: row;
+			gap: var(--space-xl);
+		}
+
+		.faq__sidebar {
+			display: flex;
+			flex: 0 0 16.25rem;
+			flex-direction: column;
+			gap: var(--space-xl);
+			padding-right: var(--space-lg);
+			border-right: 1px solid var(--color-chocolate);
+		}
+
+		.faq__categories {
+			flex-direction: column;
+			gap: var(--space-lg);
+			padding: var(--space-sm);
+			overflow: visible;
+		}
+
+		.faq__category {
+			padding: 0 0 0 var(--space-sm);
+			border-bottom: 0;
+			border-left: 2px solid transparent;
+		}
+
+		.faq__category:hover,
+		.faq__category[aria-pressed="true"] {
+			border-left-color: var(--color-chocolate);
+		}
+
+		.faq__sidebar-photo {
+			display: block;
+			aspect-ratio: 3 / 4;
+		}
+
+		.faq__main {
+			flex: 1;
+		}
+	}
+
 	@media (min-width: 1280px) {
 		.contact {
 			flex-direction: row;
