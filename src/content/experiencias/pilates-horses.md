@@ -6,14 +6,14 @@ hero:
   eyebrow: "Pilates & Horses"
   title: "Cuerpo, mente y naturaleza"
   subtitle: "Una experiencia de movimiento y bienestar en conexión con la naturaleza."
-  image: "../../assets/galeria/hero.png"
+  image: "../../assets/galeria/hero.jpg"
   alt: "Grupo de jinetes recorriendo un camino entre árboles en Pachacámac"
 intro:
   eyebrow: "La experiencia"
   title: "Movimiento y bienestar en medio del campo."
   paragraphs:
     - "Una experiencia diseñada para conectar cuerpo, mente y naturaleza. Incluye traslados desde Lima, una clase de pilates guiada por un instructor certificado, un brunch campestre saludable e interacción con nuestros caballos, además de pequeños detalles y recuerdos que harán de este día algo inolvidable."
-  image: "../../assets/experiencias/full-day/intro.png"
+  image: "../../assets/experiencias/full-day/intro.jpg"
   alt: "Mujer con sombrero sonriendo entre dos caballos"
 stepsTitle: "Así se vive la experiencia"
 steps:
@@ -29,7 +29,7 @@ place:
   eyebrow: "Pachacamac, Lima"
   title: "Un lugar con historia"
   text: "Cabalgamos en un valle lleno de cultura, naturaleza y energía especial. El escenario perfecto para vivir el campo de una forma distinta."
-  image: "../../assets/nosotros/lugar.png"
+  image: "../../assets/nosotros/lugar.jpg"
   alt: "Valle y montañas de Pachacámac al atardecer"
   action:
     label: "DESCUBRIR EXPERIENCIAS →"

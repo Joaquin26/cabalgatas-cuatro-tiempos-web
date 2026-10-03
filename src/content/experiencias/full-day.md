@@ -6,14 +6,14 @@ hero:
   eyebrow: "Full Day"
   title: "Un día en la naturaleza"
   subtitle: "Naturaleza, buena comida y todo lo que necesitas para vivir la experiencia."
-  image: "../../assets/galeria/hero.png"
+  image: "../../assets/galeria/hero.jpg"
   alt: "Grupo de jinetes recorriendo un camino entre árboles en Pachacámac"
 intro:
   eyebrow: "La experiencia"
   title: "Más que una cabalgata, un día para reconectar."
   paragraphs:
     - "Un día completo de conexión con la naturaleza y los caballos en el corazón del valle de Pachacámac. Disfruta de un desayuno buffet, una clase de introducción y una cabalgata de dos horas, seguida de un delicioso almuerzo y momentos especiales alrededor de una fogata con chocolate caliente."
-  image: "../../assets/experiencias/full-day/intro.png"
+  image: "../../assets/experiencias/full-day/intro.jpg"
   alt: "Mujer con sombrero sonriendo entre dos caballos"
 stepsTitle: "Así se vive el día"
 steps:
@@ -29,7 +29,7 @@ place:
   eyebrow: "Pachacamac, Lima"
   title: "Un lugar con historia"
   text: "Cabalgamos en un valle lleno de cultura, naturaleza y energía especial. El escenario perfecto para vivir el campo de una forma distinta."
-  image: "../../assets/nosotros/lugar.png"
+  image: "../../assets/nosotros/lugar.jpg"
   alt: "Valle y montañas de Pachacámac al atardecer"
   action:
     label: "DESCUBRIR EXPERIENCIAS →"

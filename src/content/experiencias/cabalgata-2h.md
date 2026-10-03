@@ -6,14 +6,14 @@ hero:
   eyebrow: "Cabalgata 2h"
   title: "El valle a caballo"
   subtitle: "Una experiencia única en contacto con la naturaleza."
-  image: "../../assets/galeria/hero.png"
+  image: "../../assets/galeria/hero.jpg"
   alt: "Grupo de jinetes recorriendo un camino entre árboles en Pachacámac"
 intro:
   eyebrow: "La experiencia"
   title: "Dos horas para explorar el valle."
   paragraphs:
     - "Explora los hermosos paisajes del valle de Pachacámac a caballo y vive una experiencia única en contacto con la naturaleza. Durante el recorrido, podrás disfrutar de una parada especial para refrescarte con jugo de naranja natural."
-  image: "../../assets/experiencias/full-day/intro.png"
+  image: "../../assets/experiencias/full-day/intro.jpg"
   alt: "Mujer con sombrero sonriendo entre dos caballos"
 stepsTitle: "Así se vive la cabalgata"
 steps:
@@ -27,7 +27,7 @@ place:
   eyebrow: "Pachacamac, Lima"
   title: "Un lugar con historia"
   text: "Cabalgamos en un valle lleno de cultura, naturaleza y energía especial. El escenario perfecto para vivir el campo de una forma distinta."
-  image: "../../assets/nosotros/lugar.png"
+  image: "../../assets/nosotros/lugar.jpg"
   alt: "Valle y montañas de Pachacámac al atardecer"
   action:
     label: "DESCUBRIR EXPERIENCIAS →"
