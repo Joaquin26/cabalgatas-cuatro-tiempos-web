@@ -1,6 +1,10 @@
 ---
 import logo from "../../../public/brand/logo-lockup.png";
+import menuPhoto from "../../assets/inicio/hero-cabalgata.png";
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { whatsappUrl, instagramUrl, tiktokUrl, phone } from "../../data/contact";
+import WhatsAppIcon from "../ui/WhatsAppIcon.astro";
 
 const links = [
 	{ label: "Experiencias", href: "/#experiencias" },
@@ -8,6 +12,12 @@ const links = [
 	{ label: "Galería", href: "/galeria" },
 	{ label: "FAQ", href: "/faq" },
 ];
+
+// Experiences listed in the full-screen menu, in the order they are shown on the home page.
+const order = ["full-day", "cabalgata-2h", "pilates-horses"];
+const experiences = (await getCollection("experiencias"))
+	.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
+	.map((entry) => ({ title: entry.data.title, href: `/experiencias/${entry.id}` }));
 ---
 
 <header class="nav" data-nav>
@@ -22,9 +32,114 @@ const links = [
 	<a href="/#experiencias" class="button button--secondary nav__cta">
 		RESERVAR →
 	</a>
+	<button
+		type="button"
+		class="nav__burger"
+		data-menu-open
+		aria-label="Abrir menú"
+		aria-haspopup="dialog"
+	>
+		<span class="nav__burger-lines" aria-hidden="true"></span>
+	</button>
 </header>
 
+<dialog class="menu" data-menu aria-label="Menú principal" tabindex="-1">
+	<!-- Same photo and widths as the home hero, so the browser already has it cached. -->
+	<Image
+		src={menuPhoto}
+		alt=""
+		class="menu__photo"
+		widths={[720, 1440]}
+		sizes="100vw"
+		loading="lazy"
+		aria-hidden="true"
+	/>
+	<div class="menu__veil" aria-hidden="true"></div>
+	<div class="menu__top">
+		<a href="/" class="menu__logo" data-menu-link>
+			<Image src={logo} alt="Cabalgatas Cuatro Tiempos" width={135} height={45} />
+		</a>
+		<button type="button" class="menu__close" data-menu-close aria-label="Cerrar menú">
+			<span class="menu__close-icon" aria-hidden="true"></span>
+		</button>
+	</div>
+
+	<nav class="menu__nav" aria-label="Principal">
+		<ul>
+			<li style="--i: 0">
+				<a href="/#experiencias" class="menu__link" data-menu-link>
+					Experiencias
+				</a>
+				<ul class="menu__sub">
+					{experiences.map((item) => (
+						<li>
+							<a href={item.href} data-menu-link>
+								{item.title}
+							</a>
+						</li>
+					))}
+				</ul>
+			</li>
+			<li style="--i: 1">
+				<a href="/nosotros" class="menu__link" data-menu-link>
+					Nosotros
+				</a>
+			</li>
+			<li style="--i: 2">
+				<a href="/galeria" class="menu__link" data-menu-link>
+					Galería
+				</a>
+			</li>
+			<li style="--i: 3">
+				<a href="/faq" class="menu__link" data-menu-link>
+					FAQ
+				</a>
+			</li>
+		</ul>
+	</nav>
+
+	<div class="menu__footer" style="--i: 4">
+		<a href="/#experiencias" class="button button--secondary menu__cta" data-menu-link>
+			RESERVAR →
+		</a>
+		<div class="menu__contact">
+			<a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+				<WhatsAppIcon size={20} />
+				{phone}
+			</a>
+			<a href={instagramUrl} target="_blank" rel="noopener noreferrer">
+				Instagram
+			</a>
+			<a href={tiktokUrl} target="_blank" rel="noopener noreferrer">
+				TikTok
+			</a>
+		</div>
+	</div>
+</dialog>
+
 <script>
+	// Full-screen menu: a native <dialog> gives focus trapping and Esc to close.
+	const menu = document.querySelector<HTMLDialogElement>("[data-menu]");
+	if (menu) {
+		const openers = document.querySelectorAll<HTMLElement>("[data-menu-open]");
+		openers.forEach((el) =>
+			el.addEventListener("click", () => {
+				menu.showModal();
+				// Focus the dialog itself (it has no ring) instead of the first link, so no outline
+				// shows around the logo; Tab still moves through the menu in order.
+				menu.focus();
+			}),
+		);
+		menu.querySelector("[data-menu-close]")?.addEventListener("click", () => menu.close());
+		menu
+			.querySelectorAll<HTMLElement>("[data-menu-link]")
+			.forEach((el) => el.addEventListener("click", () => menu.close()));
+		// Back on a wide screen the regular nav is visible, so the menu is closed.
+		window.matchMedia("(min-width: 1024px)").addEventListener("change", (e) => {
+			if (e.matches && menu.open) menu.close();
+		});
+	}
+
 	function initNav(nav: HTMLElement) {
 		const hero = document.querySelector<HTMLElement>("[data-hero]");
 
@@ -108,7 +223,7 @@ const links = [
 	}
 
 	.nav__cta {
-		border-color: var(--color-brown);
+		border-color: var(--color-dark-sand);
 		color: var(--color-text-image);
 		text-transform: none;
 		letter-spacing: 0.07em;
@@ -116,9 +231,365 @@ const links = [
 		font-size: var(--text-small);
 	}
 
+	/* Hamburger: three thin lines that echo the brand's fine-line icons. */
+	.nav__burger {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		flex-shrink: 0;
+		padding: 0;
+		border: 0;
+		background: none;
+		cursor: pointer;
+		color: var(--color-text-image);
+	}
+
+	.nav__burger-lines,
+	.nav__burger-lines::before,
+	.nav__burger-lines::after {
+		display: block;
+		width: 1.5rem;
+		height: 1.5px;
+		background: currentColor;
+		transition: transform var(--duration-fast) var(--ease-calm);
+	}
+
+	.nav__burger-lines {
+		position: relative;
+	}
+
+	.nav__burger-lines::before,
+	.nav__burger-lines::after {
+		content: "";
+		position: absolute;
+		left: 0;
+	}
+
+	.nav__burger-lines::before {
+		top: -7px;
+	}
+
+	.nav__burger-lines::after {
+		top: 7px;
+	}
+
+	.nav__burger:hover .nav__burger-lines::before {
+		transform: translateX(0.25rem);
+	}
+
+	.nav__burger:hover .nav__burger-lines::after {
+		transform: translateX(-0.25rem);
+	}
+
+	.nav__burger:focus-visible,
+	.menu__close:focus-visible,
+	.menu a:focus-visible {
+		outline: 2px solid var(--color-text-image);
+		outline-offset: 4px;
+	}
+
+	/* On phones the booking button lives inside the menu, so the bar keeps only logo and burger. */
+	.nav__cta {
+		display: none;
+	}
+
+	.nav__burger {
+		margin-left: auto;
+	}
+
 	@media (min-width: 1024px) {
 		.nav__links {
 			display: flex;
+		}
+
+		.nav__burger {
+			display: none;
+		}
+
+		.nav__cta {
+			display: inline-flex;
+		}
+	}
+
+	/* Full-screen menu. */
+	.menu {
+		width: 100%;
+		max-width: none;
+		height: 100dvh;
+		max-height: none;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: var(--color-dark-chocolate);
+		color: var(--color-text-image);
+		overflow-y: auto;
+	}
+
+	.menu[open] {
+		display: flex;
+		flex-direction: column;
+		animation: menu-in var(--duration-base) var(--ease-calm);
+	}
+
+	.menu::backdrop {
+		background: var(--color-dark-chocolate);
+	}
+
+	@keyframes menu-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes menu-rise {
+		from {
+			opacity: 0;
+			translate: 0 var(--reveal-distance);
+		}
+	}
+
+	/* The photo sits behind everything; the veil keeps the white text readable on top of it. */
+	.menu__photo,
+	.menu__veil {
+		position: fixed;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.menu__photo {
+		object-fit: cover;
+		object-position: 70% center;
+	}
+
+	.menu__veil {
+		background:
+			linear-gradient(
+				90deg,
+				rgba(20, 15, 11, 0.9) 0%,
+				rgba(20, 15, 11, 0.7) 55%,
+				rgba(20, 15, 11, 0.45) 100%
+			),
+			linear-gradient(
+				180deg,
+				rgba(20, 15, 11, 0.5) 0%,
+				rgba(20, 15, 11, 0) 35%,
+				rgba(20, 15, 11, 0.6) 100%
+			);
+	}
+
+	.menu__top,
+	.menu__nav,
+	.menu__footer {
+		position: relative;
+	}
+
+	.menu__top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem var(--gutter);
+	}
+
+	.menu__logo {
+		display: flex;
+		align-items: center;
+		min-height: 44px;
+	}
+
+	.menu__logo :global(img) {
+		display: block;
+		height: 2.5rem;
+		width: auto;
+	}
+
+	.menu__close {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 0;
+		background: none;
+		cursor: pointer;
+		color: var(--color-text-image);
+	}
+
+	.menu__close-icon,
+	.menu__close-icon::before {
+		display: block;
+		width: 1.5rem;
+		height: 2px;
+		background: currentColor;
+	}
+
+	.menu__close-icon {
+		position: relative;
+		transform: rotate(45deg);
+	}
+
+	.menu__close-icon::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		transform: rotate(90deg);
+	}
+
+	.menu__nav {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		padding: var(--space-lg) var(--gutter);
+	}
+
+	.menu__nav ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.menu__nav > ul {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+		width: 100%;
+	}
+
+	.menu__nav > ul > li {
+		animation: menu-rise var(--duration-slow) var(--ease-calm) both;
+		animation-delay: calc(120ms + var(--i, 0) * 70ms);
+	}
+
+	.menu__nav > ul > li::after {
+		content: "";
+		display: block;
+		width: var(--space-lg);
+		height: 1px;
+		margin-top: var(--space-xs);
+		background: var(--color-camel);
+	}
+
+	.menu__link {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		font-family: var(--font-display);
+		font-size: var(--text-h2);
+		line-height: 1.1;
+		text-decoration: none;
+		color: var(--color-text-image);
+		transition: color var(--duration-fast) var(--ease-calm);
+	}
+
+	.menu__link:hover {
+		color: var(--color-camel);
+	}
+
+	.menu__nav .menu__sub {
+		display: flex;
+		flex-direction: column;
+		margin-top: var(--space-xs);
+		padding-left: var(--space-sm);
+		border-left: 1px solid var(--color-camel);
+	}
+
+	.menu__sub a {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		font-size: var(--text-body);
+		text-decoration: none;
+		color: var(--color-dark-sand);
+		transition: color var(--duration-fast) var(--ease-calm);
+	}
+
+	.menu__sub a:hover {
+		color: var(--color-text-image);
+	}
+
+	.menu__footer {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-grid-gap);
+		padding: var(--space-sm) var(--gutter) var(--space-lg);
+		border-top: 1px solid color-mix(in srgb, var(--color-text-image) 12%, transparent);
+		animation: menu-rise var(--duration-slow) var(--ease-calm) both;
+		animation-delay: calc(120ms + var(--i, 0) * 70ms);
+	}
+
+	/* Same light outlined button as the hero and the nav over photos (chocolate would vanish here). */
+	.menu__cta {
+		align-self: flex-start;
+		border-color: var(--color-dark-sand);
+		color: var(--color-text-image);
+	}
+
+	/* The dialog itself takes focus on open, so no ring lands on the logo. */
+	.menu:focus {
+		outline: none;
+	}
+
+	.menu__contact {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-xs) var(--space-grid-gap);
+		font-size: var(--text-small);
+	}
+
+	.menu__contact a {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-xs);
+		min-height: 44px;
+		text-decoration: none;
+		color: var(--color-dark-sand);
+	}
+
+	.menu__contact a:hover {
+		color: var(--color-text-image);
+	}
+
+	.menu__contact :global(svg) {
+		color: var(--color-camel);
+	}
+
+	/* Short screens: tighter list so the whole menu still fits. */
+	@media (max-height: 700px) {
+		.menu__link {
+			font-size: var(--text-h3);
+		}
+
+		.menu__nav {
+			padding-block: var(--space-xs);
+		}
+
+		.menu__nav > ul {
+			gap: 0;
+		}
+
+		.menu__nav .menu__sub {
+			margin-top: 0;
+		}
+
+		.menu__footer {
+			gap: var(--space-xs);
+			padding-block: var(--space-xs) var(--space-sm);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.menu[open],
+		.menu__nav > ul > li,
+		.menu__footer {
+			animation: none;
+		}
+
+		.nav__burger-lines::before,
+		.nav__burger-lines::after {
+			transition: none;
 		}
 	}
 </style>
