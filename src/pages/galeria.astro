@@ -1,5 +1,6 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
+import Lightbox from "../components/ui/Lightbox.astro";
 import PageHero from "../components/sections/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import hero from "../assets/galeria/hero.png";
@@ -68,6 +69,15 @@ const tiles = [
 	})),
 	...interleaved,
 ];
+
+// Full-size version of each real photo, loaded only when the viewer opens it.
+const gallery = await Promise.all(
+	tiles.map(async (tile, order) => ({
+		...tile,
+		order,
+		full: "image" in tile ? (await getImage({ src: tile.image, width: 1600 })).src : undefined,
+	})),
+);
 ---
 
 <BaseLayout title="Galería">
@@ -96,8 +106,8 @@ const tiles = [
 				))}
 			</ul>
 
-			<div class="gallery__grid" data-gallery-grid role="list">
-				{tiles.map((tile) => (
+			<div class="gallery__grid" data-gallery-grid role="list" data-lightbox-group>
+				{gallery.map((tile) => (
 					<div
 						class="gallery__item"
 						role="listitem"
@@ -106,12 +116,22 @@ const tiles = [
 						style={`--ratio: ${tile.ratio}`}
 					>
 						{"image" in tile ? (
-							<Image
-								src={tile.image}
-								alt={tile.alt}
-								widths={[400, 800, 1200]}
-								sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-							/>
+							<button
+								type="button"
+								class="gallery__open"
+								data-lightbox-open
+								data-order={tile.order}
+								data-full={tile.full}
+								data-alt={tile.alt}
+								aria-label={`Ampliar foto: ${tile.alt}`}
+							>
+								<Image
+									src={tile.image}
+									alt=""
+									widths={[400, 800, 1200]}
+									sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+								/>
+							</button>
 						) : (
 							<div class="gallery__placeholder" aria-hidden="true" />
 						)}
@@ -130,6 +150,7 @@ const tiles = [
 			</div>
 		</section>
 	</main>
+	<Lightbox />
 </BaseLayout>
 
 <script>
@@ -344,6 +365,21 @@ const tiles = [
 			scale: none;
 			transition: none;
 		}
+	}
+
+	.gallery__open {
+		display: block;
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		border: 0;
+		background: none;
+		cursor: zoom-in;
+	}
+
+	.gallery__open:focus-visible {
+		outline: 2px solid var(--color-brown);
+		outline-offset: -4px;
 	}
 
 	.gallery__item :global(img),

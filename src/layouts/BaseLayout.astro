@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import Nav from "../components/layout/Nav.astro";
 import Footer from "../components/layout/Footer.astro";
+import Lightbox from "../components/ui/Lightbox.astro";
 
 interface Props {
 	title: string;
@@ -37,6 +38,7 @@ const {
 		<Nav />
 		<slot />
 		<Footer />
+		<Lightbox />
 		<script>
 			const targets = Array.from(document.querySelectorAll<HTMLElement>(".reveal, [data-stagger]"));
 

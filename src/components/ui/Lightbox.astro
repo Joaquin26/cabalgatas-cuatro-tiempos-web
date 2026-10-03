@@ -1,0 +1,305 @@
+---
+// Photo viewer. Any button with [data-lightbox-open] inside a [data-lightbox-group] opens it;
+// its siblings in the same group (sorted by data-order) become previous/next.
+//   data-full  full-size image URL      data-alt  description (also used as the caption)
+---
+
+<dialog class="viewer" data-viewer aria-label="Visor de fotos" tabindex="-1">
+	<button type="button" class="viewer__close" data-viewer-close aria-label="Cerrar visor">
+		<span class="viewer__close-icon" aria-hidden="true"></span>
+	</button>
+	<button
+		type="button"
+		class="viewer__nav viewer__nav--prev"
+		data-viewer-prev
+		aria-label="Foto anterior"
+	>
+		<span aria-hidden="true">‹</span>
+	</button>
+	<figure class="viewer__figure">
+		<img class="viewer__image" data-viewer-image alt="" />
+		<figcaption class="viewer__caption">
+			<span data-viewer-caption></span>
+			<span class="viewer__count" data-viewer-count aria-live="polite"></span>
+		</figcaption>
+	</figure>
+	<button
+		type="button"
+		class="viewer__nav viewer__nav--next"
+		data-viewer-next
+		aria-label="Foto siguiente"
+	>
+		<span aria-hidden="true">›</span>
+	</button>
+</dialog>
+
+<script>
+	const viewer = document.querySelector<HTMLDialogElement>("[data-viewer]");
+
+	if (viewer) {
+		const q = <T extends HTMLElement>(sel: string) => viewer.querySelector<T>(sel)!;
+		const image = q<HTMLImageElement>("[data-viewer-image]");
+		const caption = q("[data-viewer-caption]");
+		const count = q("[data-viewer-count]");
+		const prev = q<HTMLButtonElement>("[data-viewer-prev]");
+		const next = q<HTMLButtonElement>("[data-viewer-next]");
+
+		let items: HTMLElement[] = [];
+		let index = 0;
+
+		function show(i: number) {
+			index = (i + items.length) % items.length;
+			const item = items[index];
+			image.classList.remove("is-ready");
+			image.src = item.dataset.full ?? "";
+			image.alt = item.dataset.alt ?? "";
+			caption.textContent = item.dataset.alt ?? "";
+			count.textContent = items.length > 1 ? `${index + 1} / ${items.length}` : "";
+			prev.hidden = next.hidden = items.length < 2;
+			// Warm the neighbours so moving on feels instant.
+			for (const step of [-1, 1]) {
+				const url = items[(index + step + items.length) % items.length]?.dataset.full;
+				if (url) new Image().src = url;
+			}
+		}
+
+		image.addEventListener("load", () => image.classList.add("is-ready"));
+
+		function open(trigger: HTMLElement) {
+			const group = trigger.closest<HTMLElement>("[data-lightbox-group]");
+			items = Array.from(
+				(group ?? document).querySelectorAll<HTMLElement>("[data-lightbox-open]"),
+			).sort((a, b) => Number(a.dataset.order ?? 0) - Number(b.dataset.order ?? 0));
+			show(Math.max(0, items.indexOf(trigger)));
+			viewer!.showModal();
+			viewer!.focus();
+		}
+
+		document.addEventListener("click", (event) => {
+			const trigger = (event.target as HTMLElement).closest<HTMLElement>("[data-lightbox-open]");
+			if (trigger) open(trigger);
+		});
+
+		prev.addEventListener("click", () => show(index - 1));
+		next.addEventListener("click", () => show(index + 1));
+		q("[data-viewer-close]").addEventListener("click", () => viewer.close());
+
+		// Clicking the dark area (not the photo or a control) closes it.
+		viewer.addEventListener("click", (event) => {
+			if (event.target === viewer) viewer.close();
+		});
+
+		viewer.addEventListener("keydown", (event) => {
+			if (event.key === "ArrowLeft") show(index - 1);
+			if (event.key === "ArrowRight") show(index + 1);
+		});
+
+		// Swipe on touch screens.
+		let startX = 0;
+		viewer.addEventListener("pointerdown", (event) => {
+			startX = event.clientX;
+		});
+		viewer.addEventListener("pointerup", (event) => {
+			const delta = event.clientX - startX;
+			if (Math.abs(delta) > 50 && items.length > 1) show(index + (delta < 0 ? 1 : -1));
+		});
+	}
+</script>
+
+<style is:global>
+	.viewer {
+		width: 100%;
+		max-width: none;
+		height: 100dvh;
+		max-height: none;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: color-mix(in srgb, var(--color-dark-chocolate) 96%, transparent);
+		color: var(--color-text-image);
+		touch-action: pan-y;
+	}
+
+	.viewer[open] {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		animation: viewer-in var(--duration-base) var(--ease-calm);
+	}
+
+	.viewer::backdrop {
+		background: var(--color-dark-chocolate);
+	}
+
+	@keyframes viewer-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	.viewer:focus {
+		outline: none;
+	}
+
+	.viewer__figure {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-sm);
+		margin: 0;
+		max-width: calc(100vw - 2 * var(--space-xl));
+	}
+
+	.viewer__image {
+		display: block;
+		max-width: 100%;
+		max-height: calc(100dvh - 11rem);
+		border-radius: var(--radius-card);
+		object-fit: contain;
+		opacity: 0;
+		transform: scale(0.985);
+		transition:
+			opacity var(--duration-base) var(--ease-calm),
+			transform var(--duration-base) var(--ease-calm);
+	}
+
+	.viewer__image.is-ready {
+		opacity: 1;
+		transform: none;
+	}
+
+	.viewer__caption {
+		display: flex;
+		gap: var(--space-sm);
+		align-items: baseline;
+		justify-content: space-between;
+		width: 100%;
+		font-size: var(--text-small);
+		color: var(--color-dark-sand);
+	}
+
+	.viewer__count {
+		flex-shrink: 0;
+		letter-spacing: var(--tracking-wide);
+	}
+
+	.viewer__close,
+	.viewer__nav {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		padding: 0;
+		border: 0;
+		background: none;
+		color: var(--color-text-image);
+		cursor: pointer;
+		transition:
+			color var(--duration-fast) var(--ease-calm),
+			transform var(--duration-fast) var(--ease-calm);
+	}
+
+	.viewer__close {
+		top: var(--space-sm);
+		right: var(--space-sm);
+	}
+
+	.viewer__close-icon,
+	.viewer__close-icon::before {
+		display: block;
+		width: 1.5rem;
+		height: 1.5px;
+		background: currentColor;
+	}
+
+	.viewer__close-icon {
+		position: relative;
+		transform: rotate(45deg);
+	}
+
+	.viewer__close-icon::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		transform: rotate(90deg);
+	}
+
+	.viewer__nav {
+		top: 50%;
+		margin-top: -22px;
+		font-size: 2.5rem;
+		line-height: 1;
+	}
+
+	.viewer__nav[hidden] {
+		display: none;
+	}
+
+	.viewer__nav--prev {
+		left: var(--space-xs);
+	}
+
+	.viewer__nav--next {
+		right: var(--space-xs);
+	}
+
+	@media (hover: hover) {
+		.viewer__nav--prev:hover {
+			color: var(--color-camel);
+			transform: translateX(-0.25rem);
+		}
+
+		.viewer__nav--next:hover {
+			color: var(--color-camel);
+			transform: translateX(0.25rem);
+		}
+
+		.viewer__close:hover {
+			color: var(--color-camel);
+		}
+	}
+
+	.viewer button:focus-visible {
+		outline: 2px solid var(--color-text-image);
+		outline-offset: 4px;
+	}
+
+	/* Phones: the arrows sit over the photo's edges and the photo uses the full width. */
+	@media (max-width: 719px) {
+		.viewer__figure {
+			max-width: calc(100vw - 2 * var(--space-sm));
+		}
+
+		.viewer__nav {
+			top: auto;
+			bottom: var(--space-sm);
+			margin-top: 0;
+		}
+
+		.viewer__nav--prev {
+			left: var(--space-sm);
+		}
+
+		.viewer__nav--next {
+			right: var(--space-sm);
+		}
+
+		.viewer__image {
+			max-height: calc(100dvh - 12rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.viewer[open] {
+			animation: none;
+		}
+
+		.viewer__image {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+	}
+</style>
