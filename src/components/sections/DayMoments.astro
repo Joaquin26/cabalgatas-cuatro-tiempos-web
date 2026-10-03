@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import SectionHeader from "../ui/SectionHeader.astro";
+import Zoomable from "../ui/Zoomable.astro";
 import momentoImage from "../../assets/inicio/momento.png";
 
 const steps = [
@@ -19,11 +20,13 @@ const steps = [
 		align="center"
 		class="reveal"
 	/>
-	<ol class="day-moments__list" data-stagger>
-		{steps.map((step) => (
+	<ol class="day-moments__list" data-stagger data-lightbox-group>
+		{steps.map((step, i) => (
 			<li class="day-moments__step">
 				<span class="day-moments__image">
-					<Image src={momentoImage} alt="" width={480} height={548} />
+					<Zoomable src={momentoImage} alt={step.label} grouped order={i}>
+						<Image src={momentoImage} alt="" width={480} height={548} />
+					</Zoomable>
 				</span>
 				<span class="day-moments__text">
 					<span class="day-moments__number">{step.number}</span>
@@ -73,6 +76,8 @@ const steps = [
 		content: "";
 		position: absolute;
 		inset: 0;
+		/* The tint must not block clicks on the photo underneath. */
+		pointer-events: none;
 		background: rgba(98, 75, 56, 0.08);
 	}
 

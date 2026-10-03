@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import LinkArrow from "../ui/LinkArrow.astro";
+import Zoomable from "../ui/Zoomable.astro";
 import conexionImage from "../../assets/inicio/conexion.jpg";
 ---
 
@@ -21,12 +22,14 @@ import conexionImage from "../../assets/inicio/conexion.jpg";
 	</div>
 	<div class="intro__media reveal unveil">
 		<div class="intro__image">
-			<Image
-				src={conexionImage}
-				alt="Jinete acariciando a su caballo tras la cabalgata"
-				width={700}
-				height={818}
-			/>
+			<Zoomable src={conexionImage} alt="Jinete acariciando a su caballo tras la cabalgata">
+				<Image
+					src={conexionImage}
+					alt="Jinete acariciando a su caballo tras la cabalgata"
+					width={700}
+					height={818}
+				/>
+			</Zoomable>
 		</div>
 		<div class="intro__tags">
 			<p>Caballos</p>

@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import SectionHeader from "../ui/SectionHeader.astro";
+import Zoomable from "../ui/Zoomable.astro";
 
 interface Props {
 	eyebrow: string;
@@ -25,13 +26,15 @@ const { eyebrow, title, paragraphs, image, alt, imagePosition = "65% 40%" } = As
 		</div>
 	</div>
 	<div class="story__image reveal unveil">
-		<Image
-			src={image}
-			alt={alt}
-			widths={[600, 1200]}
-			sizes="(min-width: 1024px) 600px, 100vw"
-			style={`object-position: ${imagePosition}`}
-		/>
+		<Zoomable src={image} alt={alt}>
+			<Image
+				src={image}
+				alt={alt}
+				widths={[600, 1200]}
+				sizes="(min-width: 1024px) 600px, 100vw"
+				style={`object-position: ${imagePosition}`}
+			/>
+		</Zoomable>
 	</div>
 </section>
 

@@ -1,11 +1,23 @@
 ---
-import { getImage } from "astro:assets";
+import { Image } from "astro:assets";
 import SectionHeader from "../ui/SectionHeader.astro";
 import LinkArrow from "../ui/LinkArrow.astro";
-import stripImage from "../../assets/galeria/tira.png";
+import Zoomable from "../ui/Zoomable.astro";
+import photo1 from "../../assets/galeria/preview-1.jpg";
+import photo2 from "../../assets/galeria/preview-2.jpg";
+import photo3 from "../../assets/galeria/preview-3.jpg";
+import photo4 from "../../assets/galeria/preview-4.jpg";
+import photo5 from "../../assets/galeria/preview-5.jpg";
 
-const optimized = await getImage({ src: stripImage, width: 1600 });
-const positions = ["0%", "25%", "50%", "75%", "100%"];
+// The five photos were cut out of one contact sheet (tira.png); swap them for real, individual
+// photos when they arrive. Alt texts describe each image.
+const photos = [
+	{ src: photo1, alt: "Jinete cabalgando por un sendero del valle, visto desde otro caballo" },
+	{ src: photo2, alt: "Detalle de una montura de cuero con estribo" },
+	{ src: photo3, alt: "Valle y montañas de Pachacámac" },
+	{ src: photo4, alt: "Grupo reunido alrededor de una fogata al atardecer" },
+	{ src: photo5, alt: "Mano acariciando el hocico de un caballo" },
+];
 ---
 
 <section class="gallery-preview section">
@@ -13,12 +25,18 @@ const positions = ["0%", "25%", "50%", "75%", "100%"];
 		<SectionHeader eyebrow="GALERÍA" title="Momentos que hablan por sí solos" />
 		<LinkArrow href="/galeria" label="VER GALERÍA →" />
 	</div>
-	<div class="gallery-preview__grid" data-stagger>
-		{positions.map((position) => (
-			<span
-				class="gallery-preview__tile"
-				style={{ backgroundImage: `url(${optimized.src})`, backgroundPositionX: position }}
-			/>
+	<div class="gallery-preview__grid" data-stagger data-lightbox-group>
+		{photos.map((photo, i) => (
+			<div class="gallery-preview__tile">
+				<Zoomable src={photo.src} alt={photo.alt} grouped order={i}>
+					<Image
+						src={photo.src}
+						alt=""
+						widths={[300, 600]}
+						sizes="(min-width: 1024px) 20vw, 50vw"
+					/>
+				</Zoomable>
+			</div>
 		))}
 	</div>
 </section>
@@ -45,12 +63,15 @@ const positions = ["0%", "25%", "50%", "75%", "100%"];
 	}
 
 	.gallery-preview__tile {
-		display: block;
+		overflow: hidden;
 		aspect-ratio: var(--ratio-photo-tall);
 		background-color: var(--color-sand);
-		background-size: 521% 152%;
-		background-repeat: no-repeat;
-		background-position-y: center;
+	}
+
+	.gallery-preview__tile :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	@media (min-width: 1024px) {
