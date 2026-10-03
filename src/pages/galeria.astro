@@ -81,7 +81,7 @@ const tiles = [
 		/>
 
 		<section class="gallery" data-gallery data-page-size={PAGE_SIZE}>
-			<ul class="gallery__categories" aria-label="Categorías">
+			<ul class="gallery__categories reveal" aria-label="Categorías">
 				{categories.map((category, i) => (
 					<li>
 						<button
@@ -123,9 +123,11 @@ const tiles = [
 				Pronto sumaremos momentos en esta categoría.
 			</p>
 
-			<button type="button" class="button button--secondary gallery__more" data-gallery-more>
-				VER MÁS MOMENTOS →
-			</button>
+			<div class="gallery__more-wrap reveal">
+				<button type="button" class="button button--secondary gallery__more" data-gallery-more>
+					VER MÁS MOMENTOS →
+				</button>
+			</div>
 		</section>
 	</main>
 </BaseLayout>
@@ -140,6 +142,21 @@ const tiles = [
 		const empty = gallery.querySelector<HTMLElement>("[data-gallery-empty]");
 		const mqTablet = window.matchMedia("(min-width: 768px)");
 		const mqDesktop = window.matchMedia("(min-width: 1024px)");
+		// Photos enter as they scroll into view, a beat apart. Photos already shown keep their state
+		// when "Ver más" re-balances the columns; changing category replays the entrance.
+		const seen = new IntersectionObserver(
+			(entries) => {
+				let i = 0;
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					const el = entry.target as HTMLElement;
+					el.style.setProperty("--d", `${i++ * 90}ms`);
+					el.classList.add("is-in");
+					seen.unobserve(el);
+				}
+			},
+			{ rootMargin: "0px 0px -8% 0px" },
+		);
 		let category = "todos";
 		let limit = pageSize;
 
@@ -164,7 +181,11 @@ const tiles = [
 			const matching = items.filter(
 				(el) => category === "todos" || el.dataset.category === category,
 			);
-			layout(matching.slice(0, limit));
+			const shown = matching.slice(0, limit);
+			layout(shown);
+			shown.forEach((el) => {
+				if (!el.classList.contains("is-in")) seen.observe(el);
+			});
 			tabs.forEach((tab) =>
 				tab.setAttribute("aria-pressed", String(tab.dataset.category === category)),
 			);
@@ -176,6 +197,10 @@ const tiles = [
 			tab.addEventListener("click", () => {
 				category = tab.dataset.category ?? "todos";
 				limit = pageSize;
+				items.forEach((el) => {
+					seen.unobserve(el);
+					el.classList.remove("is-in");
+				});
 				render();
 			}),
 		);
@@ -283,6 +308,42 @@ const tiles = [
 		min-height: 0;
 		overflow: hidden;
 		border-radius: var(--radius-card);
+	}
+
+	/* Entrance: only with JavaScript, so photos are never trapped invisible without it. */
+	:global(.has-js) .gallery__item {
+		opacity: 0;
+		transform: translateY(var(--reveal-distance));
+		transition:
+			opacity var(--duration-slow) var(--ease-calm) var(--d, 0ms),
+			transform var(--duration-slow) var(--ease-calm) var(--d, 0ms);
+	}
+
+	:global(.has-js) .gallery__item.is-in {
+		opacity: 1;
+		transform: none;
+	}
+
+	:global(.has-js) .gallery__item :global(img) {
+		scale: 1.06;
+		transition: scale var(--duration-image) var(--ease-calm) var(--d, 0ms);
+	}
+
+	:global(.has-js) .gallery__item.is-in :global(img) {
+		scale: 1;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		:global(.has-js) .gallery__item {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+
+		:global(.has-js) .gallery__item :global(img) {
+			scale: none;
+			transition: none;
+		}
 	}
 
 	.gallery__item :global(img),

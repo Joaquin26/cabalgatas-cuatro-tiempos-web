@@ -290,7 +290,7 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 
 		<section class="section faq" data-faq>
 			<aside class="faq__sidebar">
-				<ul class="faq__categories" aria-label="Categorías">
+				<ul class="faq__categories" aria-label="Categorías" data-stagger>
 					{categories.map((category, i) => (
 						<li>
 							<button
@@ -305,17 +305,17 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 					))}
 				</ul>
 				<!-- MOCK: placeholder for a photo, as in Figma. -->
-				<div class="faq__sidebar-photo" aria-hidden="true"></div>
+				<div class="faq__sidebar-photo reveal" aria-hidden="true"></div>
 			</aside>
 
-			<div class="faq__main">
+			<div class="faq__main reveal">
 				{categories.map((category, i) => (
 					<div class="faq__panel" data-panel={category.id} hidden={i !== 0}>
 						<h2>{category.title}</h2>
 						{category.questions.length > 0 ? (
 							<div class="faq__list">
 								{category.questions.map(({ question, answer }, qi) => (
-									<details class="faq-item" open={qi === 0}>
+									<details class="faq-item" open={qi === 0} style={`--i: ${qi}`}>
 										<summary>
 											<span>{question}</span>
 											<img class="faq-item__icon" src={chevron.src} alt="" width="15" height="10" />
@@ -334,13 +334,14 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 
 		<section class="section contact">
 			<!-- MOCK: placeholder for a photo, as in Figma. -->
-			<div class="contact__photo" aria-hidden="true"></div>
+			<div class="contact__photo reveal" aria-hidden="true"></div>
 			<SectionHeader
 				eyebrow="¿No encuentras tu respuesta?"
 				title="Escríbenos, estamos para ayudarte."
 				subtitle="Si tienes una consulta especial, puedes escribirnos por whatsapp. Te responderemos lo antes posible."
+				class="reveal"
 			/>
-			<div class="contact__actions">
+			<div class="contact__actions reveal">
 				<a
 					href={contact.whatsapp}
 					class="button button--primary"
@@ -375,6 +376,8 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 		tabs.forEach((tab) =>
 			tab.addEventListener("click", () => {
 				const id = tab.dataset.category;
+				// Panels animate only after the person switches category, not on first load.
+				faq.dataset.animate = "";
 				tabs.forEach((t) => t.setAttribute("aria-pressed", String(t === tab)));
 				panels.forEach((panel) => {
 					panel.hidden = panel.dataset.panel !== id;
@@ -435,6 +438,36 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 
 	.faq__sidebar-photo {
 		display: none;
+	}
+
+	/* Switching category: the title, then each question, rises in a beat apart. */
+	@keyframes faq-rise {
+		from {
+			opacity: 0;
+			translate: 0 var(--reveal-distance);
+		}
+	}
+
+	[data-animate] .faq__panel:not([hidden]) h2,
+	[data-animate] .faq__panel:not([hidden]) .faq__empty {
+		animation: faq-rise var(--duration-slow) var(--ease-calm) both;
+	}
+
+	[data-animate] .faq__panel:not([hidden]) .faq-item {
+		animation: faq-rise var(--duration-slow) var(--ease-calm) both;
+		animation-delay: calc(80ms + var(--i, 0) * 60ms);
+	}
+
+	.contact__actions {
+		--reveal-delay: 150ms;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		[data-animate] .faq__panel:not([hidden]) h2,
+		[data-animate] .faq__panel:not([hidden]) .faq__empty,
+		[data-animate] .faq__panel:not([hidden]) .faq-item {
+			animation: none;
+		}
 	}
 
 	.faq__panel[hidden] {
