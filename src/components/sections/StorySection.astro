@@ -16,7 +16,7 @@ const { eyebrow, title, paragraphs, image, alt, imagePosition = "65% 40%" } = As
 ---
 
 <section class="section story">
-	<div class="story__text">
+	<div class="story__text reveal">
 		<SectionHeader eyebrow={eyebrow} title={title} />
 		<div class="story__body">
 			{paragraphs.map((paragraph) => (
@@ -24,7 +24,7 @@ const { eyebrow, title, paragraphs, image, alt, imagePosition = "65% 40%" } = As
 			))}
 		</div>
 	</div>
-	<div class="story__image">
+	<div class="story__image reveal unveil">
 		<Image
 			src={image}
 			alt={alt}

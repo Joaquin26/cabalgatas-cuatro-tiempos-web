@@ -65,8 +65,8 @@ const team = [
 		/>
 
 		<section class="section values">
-			<h2 class="eyebrow">Lo que nos define</h2>
-			<ul class="values__list">
+			<h2 class="eyebrow reveal">Lo que nos define</h2>
+			<ul class="values__list" data-stagger>
 				{values.map((value) => (
 					<li class="values__item">
 						<h3>{value.title}</h3>
@@ -77,7 +77,7 @@ const team = [
 		</section>
 
 		<section class="section team">
-			<div class="team__header">
+			<div class="team__header reveal">
 				<SectionHeader
 					eyebrow="Las personas detrás"
 					title="Un equipo que comparte la misma pasión"
@@ -88,7 +88,7 @@ const team = [
 					experiencias bien hechas.
 				</p>
 			</div>
-			<ul class="team__grid">
+			<ul class="team__grid" data-stagger>
 				{team.map((member) => (
 					<li class="team__member">
 						<div class="team__photo" aria-hidden="true"></div>

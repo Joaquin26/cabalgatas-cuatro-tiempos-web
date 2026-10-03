@@ -19,7 +19,7 @@ const { image, alt, eyebrow, title, text, align = "left", action } = Astro.props
 <section class:list={["band", `band--${align}`]}>
 	<Image src={image} alt={alt} class="band__image" widths={[720, 1440, 2160]} sizes="100vw" />
 	<div class="band__scrim" aria-hidden="true"></div>
-	<div class="band__content">
+	<div class="band__content reveal">
 		<SectionHeader eyebrow={eyebrow} title={title} tone="dark" />
 		<p>{text}</p>
 		{action && (

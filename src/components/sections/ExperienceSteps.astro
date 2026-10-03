@@ -21,8 +21,8 @@ const columns = Math.min(steps.length, 4);
 ---
 
 <section class="section steps">
-	<SectionHeader title={title} align="center" />
-	<ol class="steps__list" style={`--columns: ${columns}`}>
+	<SectionHeader title={title} align="center" class="reveal" />
+	<ol class="steps__list" style={`--columns: ${columns}`} data-stagger>
 		{steps.map((step, i) => (
 			<li class="steps__item">
 				<div class="steps__image">

@@ -25,11 +25,11 @@ const { image, alt, eyebrow, title, subtitle } = Astro.props;
 	/>
 	<div class="page-hero__scrim" aria-hidden="true"></div>
 	<div class="page-hero__content">
-		<div class="page-hero__title">
+		<div class="page-hero__title reveal">
 			<span class="page-hero__eyebrow">{eyebrow}</span>
 			<h1>{title}</h1>
 		</div>
-		<p>{subtitle}</p>
+		<p class="reveal page-hero__subtitle">{subtitle}</p>
 	</div>
 	<p class="page-hero__location">
 		<span class="page-hero__location-main">PACHACAMÁC, LIMA</span>
@@ -48,7 +48,31 @@ const { image, alt, eyebrow, title, subtitle } = Astro.props;
 		color: var(--color-text-image);
 	}
 
+	/* Text enters in sequence; the photo slowly settles from a slight zoom (same as the home hero). */
+	.page-hero__subtitle {
+		--reveal-delay: 150ms;
+	}
+
+	/* A plain CSS animation (not .reveal): this block is hidden on phones and a scroll observer
+	   would never fire for it, leaving it invisible if the screen is later rotated. */
+	@keyframes page-hero-rise {
+		from {
+			opacity: 0;
+			translate: 0 var(--reveal-distance);
+		}
+	}
+
+	@keyframes page-hero-settle {
+		from {
+			scale: 1.06;
+		}
+		to {
+			scale: 1;
+		}
+	}
+
 	.page-hero__image {
+		animation: page-hero-settle 16s var(--ease-calm) both;
 		position: absolute;
 		inset: 0;
 		width: 100%;
@@ -116,6 +140,7 @@ const { image, alt, eyebrow, title, subtitle } = Astro.props;
 	}
 
 	.page-hero__location {
+		animation: page-hero-rise var(--duration-slow) var(--ease-calm) 300ms both;
 		position: absolute;
 		right: var(--gutter);
 		bottom: 2rem;
@@ -141,5 +166,12 @@ const { image, alt, eyebrow, title, subtitle } = Astro.props;
 		font-size: var(--text-small);
 		letter-spacing: var(--tracking-wide);
 		color: var(--color-dark-sand);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.page-hero__image,
+		.page-hero__location {
+			animation: none;
+		}
 	}
 </style>

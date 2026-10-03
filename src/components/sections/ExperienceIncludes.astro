@@ -23,10 +23,10 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 ---
 
 <section class="section includes">
-	<SectionHeader title={title} />
+	<SectionHeader title={title} class="reveal" />
 	<div class="includes__layout">
 		<div class="includes__main">
-			<ul class="includes__list">
+			<ul class="includes__list" data-stagger>
 				{includes.map((item) => (
 					<li class="includes__item">
 						<span class="includes__icon">
@@ -37,7 +37,7 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 				))}
 			</ul>
 			{requirements && (
-				<div class="includes__requirements">
+				<div class="includes__requirements reveal">
 					<h3>{requirements.title}</h3>
 					<ul>
 						{requirements.items.map((item) => (
@@ -47,7 +47,7 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 				</div>
 			)}
 		</div>
-		<aside class="includes__card">
+		<aside class="includes__card reveal">
 			<p class="includes__price">
 				<span class="includes__currency">{booking.price.currency}</span>
 				<span class="includes__amount">{booking.price.amount}</span>
@@ -166,7 +166,9 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 		max-height: 100%;
 	}
 
+	/* The price card follows the icons a beat later. */
 	.includes__card {
+		--reveal-delay: 150ms;
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-sm);
