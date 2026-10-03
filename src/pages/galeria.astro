@@ -1,6 +1,5 @@
 ---
 import { Image, getImage } from "astro:assets";
-import Lightbox from "../components/ui/Lightbox.astro";
 import PageHero from "../components/sections/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import hero from "../assets/galeria/hero.png";
@@ -150,7 +149,6 @@ const gallery = await Promise.all(
 			</div>
 		</section>
 	</main>
-	<Lightbox />
 </BaseLayout>
 
 <script>

@@ -156,6 +156,8 @@
 		max-height: calc(100dvh - 11rem);
 		border-radius: var(--radius-card);
 		object-fit: contain;
+		/* Small source files (cut from a contact sheet) are shown larger instead of as a thumbnail. */
+		min-height: min(60dvh, 40rem);
 		opacity: 0;
 		transform: scale(0.985);
 		transition:
