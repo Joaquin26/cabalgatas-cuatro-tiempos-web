@@ -108,6 +108,9 @@ a {
 
 .link-arrow {
 	display: inline-flex;
+	/* Fit the text: in a column container the link would otherwise stretch, and so would its
+	   hover underline. */
+	width: fit-content;
 	align-items: center;
 	min-height: 44px;
 	font-family: var(--font-ui);
