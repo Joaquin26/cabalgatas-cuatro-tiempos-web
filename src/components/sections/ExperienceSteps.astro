@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import SectionHeader from "../ui/SectionHeader.astro";
+import Zoomable from "../ui/Zoomable.astro";
 import defaultImage from "../../assets/inicio/momento.jpg";
 
 interface Step {
@@ -22,16 +23,18 @@ const columns = Math.min(steps.length, 4);
 
 <section class="section steps">
 	<SectionHeader title={title} align="center" class="reveal" />
-	<ol class="steps__list" style={`--columns: ${columns}`} data-stagger>
+	<ol class="steps__list" style={`--columns: ${columns}`} data-stagger data-lightbox-group>
 		{steps.map((step, i) => (
 			<li class="steps__item">
 				<div class="steps__image">
-					<Image
-						src={step.image ?? defaultImage}
-						alt={step.alt ?? ""}
-						widths={[400, 800]}
-						sizes="(min-width: 1024px) 300px, 50vw"
-					/>
+					<Zoomable src={step.image ?? defaultImage} alt={step.alt ?? step.title} grouped order={i}>
+						<Image
+							src={step.image ?? defaultImage}
+							alt=""
+							widths={[400, 800]}
+							sizes="(min-width: 1024px) 300px, 50vw"
+						/>
+					</Zoomable>
 				</div>
 				<div class="steps__text">
 					<span class="steps__number">{String(i + 1).padStart(2, "0")}</span>
@@ -84,6 +87,7 @@ const columns = Math.min(steps.length, 4);
 		position: absolute;
 		inset: 0;
 		background: color-mix(in srgb, var(--color-brown) 8%, transparent);
+		pointer-events: none;
 	}
 
 	.steps__text {
