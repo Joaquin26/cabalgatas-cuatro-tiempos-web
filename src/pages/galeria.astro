@@ -1,14 +1,21 @@
 ---
 import { Image, getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import PageHero from "../components/sections/PageHero.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import hero from "../assets/galeria/hero.jpg";
+import hero from "../assets/galeria/fotos/ruta-sendero-2.jpg";
 import moment1 from "../assets/galeria/momento-1.jpg";
 import moment2 from "../assets/galeria/momento-2.jpg";
 import moment3 from "../assets/galeria/momento-3.jpg";
 import moment4 from "../assets/galeria/momento-4.jpg";
 import moment5 from "../assets/galeria/momento-5.jpg";
 import moment6 from "../assets/galeria/momento-6.jpg";
+
+// Real photos from the client's shoots, one import per file in src/assets/galeria/fotos/.
+const realPhotos = import.meta.glob<{ default: ImageMetadata }>("../assets/galeria/fotos/*.jpg", {
+	eager: true,
+});
+const photo = (name: string) => realPhotos[`../assets/galeria/fotos/${name}.jpg`].default;
 
 const categories = [
 	{ id: "todos", label: "Todos" },
@@ -41,6 +48,147 @@ const photos = [
 		image: moment6,
 		category: "cabalgatas",
 		alt: "Jinete avanzando a caballo entre cultivos del valle",
+	},
+	{
+		image: photo("ruta-sendero"),
+		category: "cabalgatas",
+		alt: "Jinetes recorriendo un sendero entre árboles",
+	},
+	{
+		image: photo("caballo-saludo"),
+		category: "caballos",
+		alt: "Mujer con sombrero sonriendo junto a dos caballos",
+	},
+	{
+		image: photo("desayuno-buffet"),
+		category: "mesa",
+		alt: "Mesa de desayuno buffet con frutas, waffles y panes",
+	},
+	{
+		image: photo("rancho"),
+		category: "campo",
+		alt: "El rancho entre palmeras con los cerros al fondo",
+	},
+	{
+		image: photo("grupo-empresa"),
+		category: "celebraciones",
+		alt: "Grupo de una empresa posando frente a los caballos",
+	},
+	{
+		image: photo("ruta-quebrada"),
+		category: "cabalgatas",
+		alt: "Fila de jinetes avanzando por la quebrada",
+	},
+	{
+		image: photo("fogata-malvaviscos"),
+		category: "campo",
+		alt: "Manos tostando marshmellows sobre la fogata",
+	},
+	{
+		image: photo("almuerzo-ollas"),
+		category: "mesa",
+		alt: "Almuerzo campestre servido en ollas de barro",
+	},
+	{
+		image: photo("caballo-alazan"),
+		category: "caballos",
+		alt: "Hombre acariciando a un caballo alazán en el corral",
+	},
+	{
+		image: photo("grupo-fogon"),
+		category: "celebraciones",
+		alt: "Grupo reunido en el fogón entre plátanos",
+	},
+	{
+		image: photo("clase-picadero"),
+		category: "cabalgatas",
+		alt: "Clase de introducción en el picadero",
+	},
+	{
+		image: photo("desayuno-tabla"),
+		category: "mesa",
+		alt: "Tabla de desayuno con mermelada y queso, grabada con el logo",
+	},
+	{
+		image: photo("caballos-cerco"),
+		category: "caballos",
+		alt: "Mujer acariciando a dos caballos junto al cerco",
+	},
+	{ image: photo("porton"), category: "campo", alt: "Portón de entrada cubierto de buganvillas" },
+	{
+		image: photo("grupo-amigas"),
+		category: "celebraciones",
+		alt: "Grupo de amigas con sombrero frente a un caballo",
+	},
+	{
+		image: photo("ruta-canal"),
+		category: "cabalgatas",
+		alt: "Jinetes cabalgando junto a un canal entre árboles",
+	},
+	{
+		image: photo("limonadas"),
+		category: "mesa",
+		alt: "Limonadas de fresa servidas bajo los árboles",
+	},
+	{
+		image: photo("caballo-bayo"),
+		category: "caballos",
+		alt: "Dos mujeres dando de comer a un caballo bayo",
+	},
+	{
+		image: photo("fogata-circulo"),
+		category: "campo",
+		alt: "Amigos sentados alrededor de la fogata",
+	},
+	{
+		image: photo("grupo-cartel"),
+		category: "celebraciones",
+		alt: "Grupo celebrando con el cartel de Cabalgatas Cuatro Tiempos",
+	},
+	{
+		image: photo("ruta-fila"),
+		category: "cabalgatas",
+		alt: "Jinetes alineados frente a la casa antes de salir a la ruta",
+	},
+	{
+		image: photo("almuerzo-buffet"),
+		category: "mesa",
+		alt: "Buffet de almuerzo servido bajo el techo de la terraza",
+	},
+	{
+		image: photo("caballo-blanco"),
+		category: "caballos",
+		alt: "Mujer junto a un caballo blanco en el corral",
+	},
+	{
+		image: photo("fogata-amigos"),
+		category: "campo",
+		alt: "Amigos tostando marshmellows en la fogata",
+	},
+	{
+		image: photo("grupo-picadero"),
+		category: "celebraciones",
+		alt: "Grupo saludando en el jardín junto al picadero",
+	},
+	{
+		image: photo("ruta-canal-2"),
+		category: "cabalgatas",
+		alt: "Jinete avanzando por el borde de un canal",
+	},
+	{
+		image: photo("desayuno-valle"),
+		category: "mesa",
+		alt: "Desayuno servido en la terraza con vista al campo",
+	},
+	{
+		image: photo("almuerzo-mesa"),
+		category: "mesa",
+		alt: "Mesa campestre servida con platos caseros",
+	},
+	{
+		image: photo("ruta-sendero-2"),
+		category: "cabalgatas",
+		alt: "Jinetes en fila por un sendero de la quebrada",
 	},
 ];
 
@@ -83,7 +231,7 @@ const gallery = await Promise.all(
 	<main>
 		<PageHero
 			image={hero}
-			alt="Grupo de jinetes recorriendo un camino entre árboles en Pachacámac"
+			alt="Grupo de jinetes en fila por un sendero de la quebrada en Pachacámac"
 			eyebrow="Galería"
 			title="Momentos que se sienten"
 			subtitle="Cabalgatas, naturaleza y días en el campo de Pachacamac."
