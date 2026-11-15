@@ -89,8 +89,8 @@ closing:
   title: "Vive el valle a otro ritmo"
   text: "Los mejores momentos empiezan fuera de la rutina."
   cta: "RESERVAR AHORA →"
-  image: "../../assets/galeria/fotos/ruta-sendero-2.jpg"
-  alt: "Jinetes en fila por un sendero entre árboles"
+  image: "../../assets/inicio/cabalgata.jpg"
+  alt: "Jinetes cabalgando entre arbustos con los cerros del valle de Pachacámac al fondo"
 ---
 
 <!-- MOCK: precio, días, horario, cupos, requisitos e inclusiones vienen de la tabla del cliente. Los títulos del hero y de la introducción, los nombres de los pasos y las preguntas de la FAQ son borradores; el ícono de "alquiler de caballo" es provisional. Las fotos son las de Full Day hasta tener las propias. -->
