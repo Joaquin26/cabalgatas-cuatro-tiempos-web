@@ -4,7 +4,10 @@ import PageHero from "../components/sections/PageHero.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
 import { whatsappUrl, email as contactEmail, hours, phone } from "../data/contact";
 import WhatsAppIcon from "../components/ui/WhatsAppIcon.astro";
+import { Image } from "astro:assets";
 import hero from "../assets/faq/hero.jpg";
+import sidebarPhoto from "../assets/galeria/fotos/ruta-canal-2.jpg";
+import contactPhoto from "../assets/inicio/conexion.jpg";
 import chevron from "../assets/faq/chevron-up.svg";
 import whatsapp from "../assets/faq/whatsapp.svg";
 import email from "../assets/faq/email.svg";
@@ -286,6 +289,7 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 			eyebrow="FAQ"
 			title="Resolvemos tus dudas"
 			subtitle="Aquí encontrarás la información más importante para que vivas tu experiencia con tranquilidad."
+			mobilePosition="76% 50%"
 		/>
 
 		<section class="section faq" data-faq>
@@ -304,8 +308,13 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 						</li>
 					))}
 				</ul>
-				<!-- MOCK: placeholder for a photo, as in Figma. -->
-				<div class="faq__sidebar-photo reveal" aria-hidden="true"></div>
+				<Image
+					src={sidebarPhoto}
+					alt=""
+					class="faq__sidebar-photo reveal"
+					widths={[260, 520]}
+					sizes="16.25rem"
+				/>
 			</aside>
 
 			<div class="faq__main reveal">
@@ -333,8 +342,13 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 		</section>
 
 		<section class="section contact">
-			<!-- MOCK: placeholder for a photo, as in Figma. -->
-			<div class="contact__photo reveal" aria-hidden="true"></div>
+			<Image
+				src={contactPhoto}
+				alt=""
+				class="contact__photo reveal"
+				widths={[331, 662]}
+				sizes="20.6875rem"
+			/>
 			<SectionHeader
 				eyebrow="¿No encuentras tu respuesta?"
 				title="Escríbenos, estamos para ayudarte."
@@ -432,6 +446,8 @@ const contact = { whatsapp: whatsappUrl, email: contactEmail, hours, phone };
 
 	.faq__sidebar-photo,
 	.contact__photo {
+		height: auto;
+		object-fit: cover;
 		border-radius: var(--radius-card);
 		background: var(--color-sand);
 	}

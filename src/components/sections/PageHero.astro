@@ -10,12 +10,18 @@ interface Props {
 	subtitle: string;
 	/** Short key facts under the subtitle, such as days, length and price. */
 	facts?: { full: string; short: string }[];
+	/** Where the photo is anchored on phones (an object-position value), when its subject is off centre. */
+	mobilePosition?: string;
 }
 
-const { image, alt, eyebrow, title, subtitle, facts = [] } = Astro.props;
+const { image, alt, eyebrow, title, subtitle, facts = [], mobilePosition } = Astro.props;
 ---
 
-<section class="page-hero" data-hero>
+<section
+	class="page-hero"
+	data-hero
+	style={mobilePosition ? `--hero-position-mobile: ${mobilePosition}` : undefined}
+>
 	<Image
 		src={image}
 		alt={alt}
@@ -121,6 +127,10 @@ const { image, alt, eyebrow, title, subtitle, facts = [] } = Astro.props;
 	/* On phones the text runs nearly edge to edge, so the shade rises from the bottom instead of
 	   coming in from the left. */
 	@media (max-width: 767px) {
+		.page-hero__image {
+			object-position: var(--hero-position-mobile, 50% 50%);
+		}
+
 		.page-hero__scrim {
 			--shade: var(--color-dark-chocolate);
 			background: linear-gradient(
