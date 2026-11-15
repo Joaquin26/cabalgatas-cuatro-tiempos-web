@@ -24,14 +24,11 @@ steps:
   - title: "Refréscate"
     text: "Parada durante la ruta para disfrutar de jugo de naranja natural."
 place:
-  eyebrow: "Pachacamac, Lima"
+  eyebrow: "Pachacámac, Lima"
   title: "Un lugar con historia"
   text: "Cabalgamos en un valle lleno de cultura, naturaleza y energía especial. El escenario perfecto para vivir el campo de una forma distinta."
   image: "../../assets/nosotros/lugar.jpg"
   alt: "Valle y montañas de Pachacámac al atardecer"
-  action:
-    label: "DESCUBRIR EXPERIENCIAS →"
-    href: "/#experiencias"
 includesTitle: "Qué incluye"
 includes:
   - { icon: "hat", label: "Alquiler de caballo" }
@@ -71,10 +68,23 @@ faq:
     answer: "Estamos en el valle de Pachacámac, a unos 40 minutos del sur de Lima. Te enviamos la ubicación exacta y las indicaciones de acceso al confirmar tu reserva."
   - question: "¿Qué pasa si necesito cambiar mi reserva?"
     answer: "Puedes reprogramar tu cabalgata sin costo hasta 24 horas antes de la actividad escribiéndonos por WhatsApp o correo."
+gallery:
+  - image: "../../assets/galeria/fotos/ruta-fila.jpg"
+    alt: "Grupo de jinetes en fila frente a la casa del rancho"
+  - image: "../../assets/galeria/fotos/caballos-cerco.jpg"
+    alt: "Dos caballos asomados al cerco mientras una visitante los saluda"
+  - image: "../../assets/galeria/fotos/ruta-quebrada.jpg"
+    alt: "Fila de jinetes avanzando por la quebrada"
+  - image: "../../assets/galeria/fotos/caballo-alazan.jpg"
+    alt: "Visitante acariciando a un caballo alazán en el corral"
+  - image: "../../assets/galeria/fotos/ruta-sendero-2.jpg"
+    alt: "Jinetes en fila por un sendero entre árboles"
 closing:
   title: "¿Listo para vivirlo?"
   text: "Los mejores momentos empiezan fuera de la rutina."
   cta: "RESERVAR AHORA →"
+  image: "../../assets/inicio/cabalgata.jpg"
+  alt: "Jinetes cabalgando por el valle con luz de tarde"
 ---
 
 <!-- MOCK: precio, días, horario, cupos, requisitos e inclusiones vienen de la tabla del cliente. Los títulos del hero y de la introducción, los nombres de los pasos y las preguntas de la FAQ son borradores; el ícono de "alquiler de caballo" es provisional. Las fotos son las de Full Day hasta tener las propias. -->

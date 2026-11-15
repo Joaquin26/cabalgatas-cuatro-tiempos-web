@@ -26,14 +26,11 @@ steps:
   - title: "Disfruta"
     text: "Brunch saludable con un estilo campestre y un recuerdito para llevarte."
 place:
-  eyebrow: "Pachacamac, Lima"
+  eyebrow: "Pachacámac, Lima"
   title: "Un lugar con historia"
   text: "Cabalgamos en un valle lleno de cultura, naturaleza y energía especial. El escenario perfecto para vivir el campo de una forma distinta."
   image: "../../assets/nosotros/lugar.jpg"
   alt: "Valle y montañas de Pachacámac al atardecer"
-  action:
-    label: "DESCUBRIR EXPERIENCIAS →"
-    href: "/#experiencias"
 includesTitle: "Qué incluye"
 includes:
   - { icon: "guide", label: "Traslado ida y vuelta desde Lima" }
@@ -69,10 +66,23 @@ faq:
     answer: "Estamos en el valle de Pachacámac, a unos 40 minutos del sur de Lima. Te enviamos la ubicación exacta y las indicaciones de acceso al confirmar tu reserva."
   - question: "¿Qué pasa si necesito cambiar mi reserva?"
     answer: "Puedes reprogramar tu experiencia sin costo hasta 24 horas antes de la actividad escribiéndonos por WhatsApp o correo."
+gallery:
+  - image: "../../assets/galeria/momento-3.jpg"
+    alt: "Clase de pilates en el picadero junto a un caballo"
+  - image: "../../assets/galeria/momento-2.jpg"
+    alt: "Mujer sonriendo entre dos caballos en el corral"
+  - image: "../../assets/inicio/manana.jpg"
+    alt: "Mesa de brunch campestre servida en el jardín"
+  - image: "../../assets/galeria/fotos/caballo-blanco.jpg"
+    alt: "Visitante acariciando a un caballo blanco en el corral"
+  - image: "../../assets/galeria/fotos/rancho.jpg"
+    alt: "Rancho con palmeras y una carreta antigua en el valle"
 closing:
   title: "¿Listo para vivirlo?"
   text: "Los mejores momentos empiezan fuera de la rutina."
   cta: "RESERVAR AHORA →"
+  image: "../../assets/galeria/momento-4.jpg"
+  alt: "Grupo practicando pilates en el picadero entre palmeras"
 ---
 
 <!-- MOCK: precio, horario, capacidad e inclusiones vienen de la tabla del cliente. Los títulos del hero y de la introducción, los nombres de los pasos y el orden del día son borradores; los íconos de traslado, sorpresas y recuerdo son provisionales (faltan íconos propios). Las fotos son las de Full Day hasta tener las propias. -->

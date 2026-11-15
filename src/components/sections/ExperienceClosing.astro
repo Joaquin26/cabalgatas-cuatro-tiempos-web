@@ -1,0 +1,169 @@
+---
+// The last beat of an experience page: one full-bleed photo, the invitation and a single booking
+// button. Without a photo it falls back to the dark brand color.
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+	title: string;
+	text: string;
+	cta: string;
+	href: string;
+	facts?: string[];
+	image?: ImageMetadata;
+	alt?: string;
+}
+
+const { title, text, cta, href, facts = [], image, alt = "" } = Astro.props;
+---
+
+<section class:list={["closing", { "closing--photo": image }]} data-booking-bar-hide>
+	{image && (
+		<>
+			<Image
+				src={image}
+				alt={alt}
+				class="closing__image"
+				widths={[720, 1440, 2160]}
+				sizes="100vw"
+			/>
+			<div class="closing__scrim" aria-hidden="true" />
+		</>
+	)}
+	<div class="closing__content reveal">
+		<h2>{title}</h2>
+		<p>{text}</p>
+		{facts.length > 0 && (
+			<ul class="closing__facts">
+				{facts.map((fact) => (
+					<li>{fact}</li>
+				))}
+			</ul>
+		)}
+		<a href={href} class="button closing__cta" data-booking-open>
+			{cta}
+		</a>
+	</div>
+</section>
+
+<style>
+	.closing {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 80vh;
+		min-height: 80svh;
+		padding: var(--space-xl) var(--gutter);
+		overflow: hidden;
+		background: var(--color-dark-chocolate);
+		color: var(--color-text-image);
+		text-align: center;
+	}
+
+	.closing__image {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		/* Favour the upper middle of the frame, where a fire or horizon usually sits. */
+		object-position: 50% 35%;
+	}
+
+	/* Deepest around the text, so the fire stays bright at the edges of the frame. */
+	.closing__scrim {
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(
+				ellipse 60% 55% at 50% 50%,
+				color-mix(in srgb, var(--color-dark-chocolate) 78%, transparent) 0%,
+				color-mix(in srgb, var(--color-dark-chocolate) 55%, transparent) 60%,
+				color-mix(in srgb, var(--color-dark-chocolate) 35%, transparent) 100%
+			),
+			linear-gradient(
+				180deg,
+				color-mix(in srgb, var(--color-dark-chocolate) 30%, transparent) 0%,
+				transparent 40%,
+				color-mix(in srgb, var(--color-dark-chocolate) 45%, transparent) 100%
+			);
+	}
+
+	.closing__content {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--space-grid-gap);
+		max-width: 36rem;
+	}
+
+	.closing__content h2 {
+		font-family: var(--font-display);
+		font-size: var(--text-display-xl);
+		font-weight: var(--weight-regular);
+		line-height: 1.05;
+		letter-spacing: var(--tracking-tight);
+		text-wrap: balance;
+		color: var(--color-text-image);
+	}
+
+	.closing__content p {
+		font-size: var(--text-body-lg);
+		line-height: 1.5;
+		color: var(--color-dark-sand);
+	}
+
+	/* Same quiet facts line as the hero, so the page closes on what it opened with. */
+	.closing__facts {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: var(--space-xs) var(--space-sm);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		font-size: var(--text-small);
+		letter-spacing: var(--tracking-wide);
+		color: var(--color-text-image);
+	}
+
+	.closing__facts li + li::before {
+		content: "";
+		display: inline-block;
+		width: 1px;
+		height: 0.9em;
+		margin-right: var(--space-sm);
+		vertical-align: -0.1em;
+		background: var(--color-dark-sand);
+		opacity: 0.6;
+	}
+
+	/* Phones: one fact per line instead of a wrapped line that would start with a divider. */
+	@media (max-width: 479px) {
+		.closing__facts {
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.closing__facts li + li::before {
+			display: none;
+		}
+	}
+
+	.closing__cta {
+		margin-top: var(--space-xs);
+		background: var(--color-text-image);
+		color: var(--color-chocolate);
+	}
+
+	.closing__cta:hover {
+		background: var(--color-dark-sand);
+	}
+
+	.closing__cta:focus-visible {
+		outline: 2px solid var(--color-text-image);
+		outline-offset: 4px;
+	}
+</style>

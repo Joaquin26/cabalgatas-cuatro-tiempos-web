@@ -9,7 +9,10 @@ import ExperienceIncludes from "../../components/sections/ExperienceIncludes.ast
 import BookingDialog from "../../components/sections/BookingDialog.astro";
 import GalleryPreview from "../../components/sections/GalleryPreview.astro";
 import ExperienceFaq from "../../components/sections/ExperienceFaq.astro";
+import ExperienceClosing from "../../components/sections/ExperienceClosing.astro";
+import BookingBar from "../../components/sections/BookingBar.astro";
 import { whatsappLink, messages } from "../../data/contact";
+import { scheduleLabel } from "../../data/availability";
 
 export async function getStaticPaths() {
 	const experiencias = await getCollection("experiencias");
@@ -23,9 +26,14 @@ const { data } = Astro.props.entry;
 
 // MOCK: there is no booking flow yet, so every "reservar" button opens WhatsApp.
 const bookingHref = whatsappLink(messages.booking(data.title));
+
+// The key facts (days, length, price) shown in the hero, from the same data as the booking card.
+const { price } = data.booking;
+const priceLabel = `${price.currency} ${price.amount}`;
+const facts = [scheduleLabel(data.booking.schedule), data.duration, `${priceLabel} ${price.unit}`];
 ---
 
-<BaseLayout title={data.title} description={data.summary}>
+<BaseLayout title={data.title} description={data.summary} bookingHref={bookingHref}>
 	<main>
 		<PageHero
 			image={data.hero.image}
@@ -33,6 +41,7 @@ const bookingHref = whatsappLink(messages.booking(data.title));
 			eyebrow={data.hero.eyebrow}
 			title={data.hero.title}
 			subtitle={data.hero.subtitle}
+			facts={facts.filter(Boolean)}
 		/>
 		<StorySection
 			eyebrow={data.intro.eyebrow}
@@ -57,13 +66,19 @@ const bookingHref = whatsappLink(messages.booking(data.title));
 			requirements={data.requirements}
 			booking={{ ...data.booking, href: bookingHref }}
 		/>
-		<GalleryPreview />
-		<ExperienceFaq
-			title={data.faqTitle}
-			questions={data.faq}
-			cta={{ ...data.closing, label: data.closing.cta, href: bookingHref }}
+		<GalleryPreview photos={data.gallery?.map(({ image, alt }) => ({ src: image, alt }))} />
+		<ExperienceFaq title={data.faqTitle} questions={data.faq} />
+		<ExperienceClosing
+			title={data.closing.title}
+			text={data.closing.text}
+			cta={data.closing.cta}
+			href={bookingHref}
+			facts={facts.filter(Boolean)}
+			image={data.closing.image}
+			alt={data.closing.alt}
 		/>
 	</main>
+	<BookingBar price={priceLabel} unit={price.unit} href={bookingHref} />
 	<BookingDialog
 		slug={Astro.props.entry.id}
 		title={data.title}

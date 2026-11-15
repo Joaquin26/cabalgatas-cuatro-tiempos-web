@@ -65,7 +65,12 @@ const iconSrc = (name: string) => icons[`../../assets/experiencias/icons/${name}
 					</li>
 				))}
 			</ul>
-			<a href={booking.href} class="button button--primary includes__cta" data-booking-open>
+			<a
+				href={booking.href}
+				class="button button--primary includes__cta"
+				data-booking-open
+				data-booking-bar-hide
+			>
 				{booking.cta}
 			</a>
 		</aside>

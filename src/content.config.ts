@@ -38,6 +38,8 @@ const experiencias = defineCollection({
 			stepsTitle: z.string(),
 			steps: z.array(
 				z.object({
+					/** Moment of the day, such as "Mañana"; shown next to the step number. */
+					moment: z.string().optional(),
 					title: z.string(),
 					text: z.string(),
 					image: image().optional(),
@@ -69,7 +71,15 @@ const experiencias = defineCollection({
 			}),
 			faqTitle: z.string(),
 			faq: z.array(z.object({ question: z.string(), answer: z.string() })),
-			closing: z.object({ title: z.string(), text: z.string(), cta: z.string() }),
+			/** Photos for the gallery strip; without them the site-wide selection is shown. */
+			gallery: z.array(z.object({ image: image(), alt: z.string() })).optional(),
+			closing: z.object({
+				title: z.string(),
+				text: z.string(),
+				cta: z.string(),
+				image: image().optional(),
+				alt: z.string().optional(),
+			}),
 		}),
 });
 

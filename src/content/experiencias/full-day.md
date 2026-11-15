@@ -17,31 +17,32 @@ intro:
   alt: "Mujer con sombrero sonriendo entre dos caballos"
 stepsTitle: "Así se vive el día"
 steps:
-  - title: "Conecta"
-    text: "Te recibimos en el campo con un desayuno y una clase de introducción."
+  - moment: "Mañana"
+    title: "Desayuno y primera clase"
+    text: "Llegas al campo, desayunas sin apuro y conoces a tu caballo en una clase de introducción."
     image: "../../assets/galeria/fotos/desayuno-buffet.jpg"
     alt: "Mesa de desayuno buffet con frutas, waffles y panes"
-  - title: "Explora"
-    text: "Cabalgata de 2 horas por paisajes únicos en Pachacamac."
+  - moment: "Media mañana"
+    title: "Cabalgata por el valle"
+    text: "Dos horas a caballo por senderos y canales de Pachacámac, con dos guías y una parada para un jugo natural."
     image: "../../assets/galeria/fotos/ruta-canal.jpg"
     alt: "Jinetes cabalgando junto a un canal entre árboles"
-  - title: "Disfruta"
-    text: "Buena mesa, una pausa en la ruta y momentos para compartir."
+  - moment: "Mediodía"
+    title: "Almuerzo campestre"
+    text: "De vuelta en el campo, una mesa servida con comida casera para compartir sin prisa."
     image: "../../assets/galeria/fotos/almuerzo-mesa.jpg"
     alt: "Mesa campestre servida con platos caseros"
-  - title: "Relájate"
-    text: "Almuerzo campestre, fogata y chocolate caliente."
+  - moment: "Tarde"
+    title: "Fogata y chocolate"
+    text: "Cerramos el día alrededor del fuego, con chocolate caliente y malvaviscos."
     image: "../../assets/galeria/fotos/fogata-amigos.jpg"
-    alt: "Amigos tostando marshmellows alrededor de la fogata"
+    alt: "Amigos tostando malvaviscos alrededor de la fogata"
 place:
-  eyebrow: "Pachacamac, Lima"
+  eyebrow: "Pachacámac, Lima"
   title: "Un lugar con historia"
   text: "Cabalgamos en un valle lleno de cultura, naturaleza y energía especial. El escenario perfecto para vivir el campo de una forma distinta."
   image: "../../assets/nosotros/lugar.jpg"
   alt: "Valle y montañas de Pachacámac al atardecer"
-  action:
-    label: "DESCUBRIR EXPERIENCIAS →"
-    href: "/#experiencias"
 includesTitle: "Qué incluye"
 includes:
   - { icon: "horse", label: "Caballo de Paso Peruano" }
@@ -51,7 +52,7 @@ includes:
   - { icon: "class", label: "Clase de introducción" }
   - { icon: "guide", label: "2 guías especializados" }
   - { icon: "orange", label: "Parada de jugo natural" }
-  - { icon: "bonfire", label: "Fogata, chocolate y marshmellows" }
+  - { icon: "bonfire", label: "Fogata, chocolate y malvaviscos" }
 booking:
   price:
     currency: "S/"
@@ -79,10 +80,23 @@ faq:
     answer: "Ropa cómoda, zapatos cerrados, bloqueador solar y ganas de disfrutar. Si tu experiencia incluye alimentos o bebidas te lo indicamos previamente."
   - question: "¿Qué pasa si necesito cambiar mi reserva?"
     answer: "Puedes reprogramar tu cabalgata sin costo hasta 24 horas antes de la actividad escribiéndonos por WhatsApp o correo."
+gallery:
+  - image: "../../assets/galeria/fotos/caballo-bayo.jpg"
+    alt: "Dos amigas con sombrero junto a un caballo en el corral"
+  - image: "../../assets/galeria/fotos/clase-picadero.jpg"
+    alt: "Clase de introducción en el picadero, con un guía al lado"
+  - image: "../../assets/galeria/fotos/limonadas.jpg"
+    alt: "Botellas de jugo natural con limón sobre una bandeja"
+  - image: "../../assets/galeria/fotos/ruta-quebrada.jpg"
+    alt: "Fila de jinetes avanzando por la quebrada"
+  - image: "../../assets/galeria/fotos/almuerzo-ollas.jpg"
+    alt: "Ollas de barro con comida casera servida en la mesa"
 closing:
   title: "¿Listo para vivirlo?"
   text: "Los mejores momentos empiezan fuera de la rutina."
   cta: "RESERVAR AHORA →"
+  image: "../../assets/galeria/fotos/fogata-malvaviscos.jpg"
+  alt: "Manos tostando malvaviscos sobre la fogata"
 ---
 
 <!-- MOCK: precio, horarios, cupos, edad mínima y contenido incluido vienen de Figma y no están confirmados (ver PRODUCT.md — Capabilities and Constraints). Para una experiencia nueva, copia este archivo y cambia los datos. -->

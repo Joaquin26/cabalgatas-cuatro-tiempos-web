@@ -8,9 +8,11 @@ interface Props {
 	eyebrow: string;
 	title: string;
 	subtitle: string;
+	/** Short key facts under the subtitle, such as days, length and price. */
+	facts?: string[];
 }
 
-const { image, alt, eyebrow, title, subtitle } = Astro.props;
+const { image, alt, eyebrow, title, subtitle, facts = [] } = Astro.props;
 ---
 
 <section class="page-hero" data-hero>
@@ -30,9 +32,18 @@ const { image, alt, eyebrow, title, subtitle } = Astro.props;
 			<h1>{title}</h1>
 		</div>
 		<p class="reveal page-hero__subtitle">{subtitle}</p>
+		{facts.length > 0 && (
+			<div class="reveal page-hero__facts">
+				<ul>
+					{facts.map((fact) => (
+						<li>{fact}</li>
+					))}
+				</ul>
+			</div>
+		)}
 	</div>
 	<p class="page-hero__location">
-		<span class="page-hero__location-main">PACHACAMÁC, LIMA</span>
+		<span class="page-hero__location-main">PACHACÁMAC, LIMA</span>
 		<span class="page-hero__location-sub">A OTRO RITMO</span>
 	</p>
 </section>
@@ -137,6 +148,46 @@ const { image, alt, eyebrow, title, subtitle } = Astro.props;
 		line-height: 1.4;
 		letter-spacing: var(--tracking-tight);
 		color: var(--color-dark-sand);
+	}
+
+	/* Days, length and price on one quiet line, split by thin rules. When the line wraps, the rule
+	   that would start the new line falls in the clipped margin, so no line begins with a divider. */
+	.page-hero__facts {
+		--reveal-delay: 300ms;
+		--fact-gap: var(--space-sm);
+		padding-top: var(--space-sm);
+		border-top: 1px solid color-mix(in srgb, var(--color-dark-sand) 45%, transparent);
+		overflow: hidden;
+		font-size: var(--text-small);
+		letter-spacing: var(--tracking-wide);
+		color: var(--color-text-image);
+	}
+
+	.page-hero__facts ul {
+		display: flex;
+		flex-wrap: wrap;
+		row-gap: var(--space-xs);
+		margin: 0 0 0 calc(-2 * var(--fact-gap) - 1px);
+		padding: 0;
+		list-style: none;
+	}
+
+	.page-hero__facts li {
+		position: relative;
+		padding-left: calc(2 * var(--fact-gap) + 1px);
+		white-space: nowrap;
+	}
+
+	.page-hero__facts li::before {
+		content: "";
+		position: absolute;
+		left: var(--fact-gap);
+		top: 50%;
+		width: 1px;
+		height: 0.9em;
+		translate: 0 -50%;
+		background: var(--color-dark-sand);
+		opacity: 0.6;
 	}
 
 	.page-hero__location {

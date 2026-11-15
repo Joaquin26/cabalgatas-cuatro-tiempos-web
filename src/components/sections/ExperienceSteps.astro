@@ -6,6 +6,7 @@ import Zoomable from "../ui/Zoomable.astro";
 import defaultImage from "../../assets/inicio/momento.jpg";
 
 interface Step {
+	moment?: string;
 	title: string;
 	text: string;
 	image?: ImageMetadata;
@@ -37,7 +38,10 @@ const columns = Math.min(steps.length, 4);
 					</Zoomable>
 				</div>
 				<div class="steps__text">
-					<span class="steps__number">{String(i + 1).padStart(2, "0")}</span>
+					<span class="steps__number">
+						{String(i + 1).padStart(2, "0")}
+						{step.moment && <span class="steps__moment">{step.moment}</span>}
+					</span>
 					<h3>{step.title}</h3>
 					<p>{step.text}</p>
 				</div>
@@ -100,6 +104,21 @@ const columns = Math.min(steps.length, 4);
 		font-size: var(--text-eyebrow);
 		letter-spacing: var(--tracking-wide);
 		color: var(--color-brown);
+	}
+
+	/* The moment reads as part of the sequence: a short rule, then the time of day. */
+	.steps__moment {
+		text-transform: uppercase;
+	}
+
+	.steps__moment::before {
+		content: "";
+		display: inline-block;
+		width: var(--space-sm);
+		height: 1px;
+		margin: 0 var(--space-xs);
+		vertical-align: 0.3em;
+		background: var(--color-camel);
 	}
 
 	.steps__text h3 {

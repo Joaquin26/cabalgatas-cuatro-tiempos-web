@@ -7,11 +7,14 @@ import Lightbox from "../components/ui/Lightbox.astro";
 interface Props {
 	title: string;
 	description?: string;
+	/** On experience pages: the nav "Reservar" opens that experience's booking dialog. */
+	bookingHref?: string;
 }
 
 const {
 	title,
 	description = "Experiencias de campo en Pachacámac: caballos, naturaleza y momentos para recordar.",
+	bookingHref,
 } = Astro.props;
 ---
 
@@ -35,7 +38,7 @@ const {
 		/>
 	</head>
 	<body>
-		<Nav />
+		<Nav bookingHref={bookingHref} />
 		<slot />
 		<Footer />
 		<Lightbox />

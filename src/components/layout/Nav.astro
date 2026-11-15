@@ -6,6 +6,16 @@ import { getCollection } from "astro:content";
 import { whatsappUrl, instagramUrl, tiktokUrl, phone } from "../../data/contact";
 import WhatsAppIcon from "../ui/WhatsAppIcon.astro";
 
+interface Props {
+	/** Set on experience pages: "Reservar" then opens the booking dialog (WhatsApp without JS). */
+	bookingHref?: string;
+}
+
+const { bookingHref } = Astro.props;
+const reserve = bookingHref
+	? { href: bookingHref, "data-booking-open": "" }
+	: { href: "/#experiencias" };
+
 const links = [
 	{ label: "Experiencias", href: "/#experiencias" },
 	{ label: "Nosotros", href: "/nosotros" },
@@ -29,7 +39,7 @@ const experiences = (await getCollection("experiencias"))
 			<a href={link.href}>{link.label}</a>
 		))}
 	</nav>
-	<a href="/#experiencias" class="button button--secondary nav__cta">
+	<a {...reserve} class="button button--secondary nav__cta">
 		RESERVAR →
 	</a>
 	<button
@@ -99,7 +109,7 @@ const experiences = (await getCollection("experiencias"))
 	</nav>
 
 	<div class="menu__footer" style="--i: 4">
-		<a href="/#experiencias" class="button button--secondary menu__cta" data-menu-link>
+		<a {...reserve} class="button button--secondary menu__cta" data-menu-link>
 			RESERVAR →
 		</a>
 		<div class="menu__contact">

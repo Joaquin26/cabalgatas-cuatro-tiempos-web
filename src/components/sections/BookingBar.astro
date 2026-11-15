@@ -1,0 +1,125 @@
+---
+// Phones and tablets: once the hero is out of view, a slim bar keeps the price and "Reservar" within
+// thumb reach. It steps aside over the closing band and the footer. On wide screens the nav button does this job.
+interface Props {
+	price: string;
+	unit: string;
+	href: string;
+}
+
+const { price, unit, href } = Astro.props;
+---
+
+<div class="booking-bar" data-booking-bar>
+	<p class="booking-bar__price">
+		<strong>{price}</strong>
+		<span>{unit}</span>
+	</p>
+	<a href={href} class="button booking-bar__cta" data-booking-open>
+		RESERVAR →
+	</a>
+</div>
+
+<script>
+	const bar = document.querySelector<HTMLElement>("[data-booking-bar]");
+	const hero = document.querySelector<HTMLElement>("[data-hero]");
+	// The bar steps aside where the page already offers its own booking button, and over the footer.
+	const covers = document.querySelectorAll<HTMLElement>("footer, [data-booking-bar-hide]");
+
+	if (bar && hero) {
+		let pastHero = false;
+		const visible = new Set<Element>();
+		const update = () => {
+			const show = pastHero && visible.size === 0;
+			bar.classList.toggle("is-shown", show);
+			// Hidden bar: out of the tab order and the accessibility tree.
+			bar.inert = !show;
+		};
+		new IntersectionObserver(([entry]) => {
+			pastHero = !entry.isIntersecting;
+			update();
+		}).observe(hero);
+		const coverObserver = new IntersectionObserver((entries) => {
+			for (const entry of entries) {
+				if (entry.isIntersecting) visible.add(entry.target);
+				else visible.delete(entry.target);
+			}
+			update();
+		});
+		covers.forEach((el) => coverObserver.observe(el));
+		update();
+	}
+</script>
+
+<style>
+	.booking-bar {
+		position: fixed;
+		inset: auto 0 0 0;
+		z-index: 40;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-sm);
+		padding: var(--space-xs) var(--gutter);
+		padding-bottom: calc(var(--space-xs) + env(safe-area-inset-bottom));
+		background: color-mix(in srgb, var(--color-dark-chocolate) 94%, transparent);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-top: 1px solid color-mix(in srgb, var(--color-dark-sand) 20%, transparent);
+		color: var(--color-text-image);
+		translate: 0 110%;
+		transition: translate var(--duration-base) var(--ease-calm);
+	}
+
+	.booking-bar.is-shown {
+		translate: 0 0;
+	}
+
+	.booking-bar__price {
+		display: flex;
+		flex-direction: column;
+		margin: 0;
+		line-height: 1.2;
+	}
+
+	.booking-bar__price strong {
+		font-family: var(--font-display);
+		font-size: var(--text-card-title);
+		font-weight: var(--weight-medium);
+	}
+
+	.booking-bar__price span {
+		font-size: var(--text-eyebrow);
+		letter-spacing: var(--tracking-wide);
+		color: var(--color-dark-sand);
+	}
+
+	/* Light button over the dark bar, the same as the nav button over photos. */
+	.booking-bar__cta {
+		border-color: var(--color-dark-sand);
+		background: var(--color-text-image);
+		color: var(--color-chocolate);
+		padding: 0.75rem 1.25rem;
+	}
+
+	.booking-bar__cta:hover {
+		background: var(--color-dark-sand);
+	}
+
+	.booking-bar__cta:focus-visible {
+		outline: 2px solid var(--color-text-image);
+		outline-offset: 3px;
+	}
+
+	@media (min-width: 1024px) {
+		.booking-bar {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.booking-bar {
+			transition: none;
+		}
+	}
+</style>

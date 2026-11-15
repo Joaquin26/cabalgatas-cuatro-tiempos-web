@@ -45,3 +45,14 @@ export function getAvailability(slug: string, date: Date, schedule: Schedule): D
 	);
 	return { status: left <= 3 ? "low" : "available", left };
 }
+
+const dayNames = ["domingos", "lunes", "martes", "miércoles", "jueves", "viernes", "sábados"];
+
+/** Short label for the days an experience runs, such as "Domingos" or "Martes y viernes". */
+export function scheduleLabel(schedule: Schedule): string {
+	if (schedule.dates?.length) return "Fechas programadas";
+	const names = [...(schedule.weekdays ?? [])].sort().map((day) => dayNames[day]);
+	if (names.length === 0) return "";
+	const text = names.length === 1 ? names[0] : `${names.slice(0, -1).join(", ")} y ${names.at(-1)}`;
+	return text.charAt(0).toUpperCase() + text.slice(1);
+}

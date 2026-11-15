@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import SectionHeader from "../ui/SectionHeader.astro";
 import LinkArrow from "../ui/LinkArrow.astro";
 import Zoomable from "../ui/Zoomable.astro";
@@ -9,13 +10,20 @@ import photo3 from "../../assets/galeria/fotos/desayuno-tabla.jpg";
 import photo4 from "../../assets/galeria/fotos/fogata-malvaviscos.jpg";
 import photo5 from "../../assets/galeria/fotos/grupo-empresa.jpg";
 
-const photos = [
+interface Props {
+	/** Photos for this page; without them the site-wide selection is shown. */
+	photos?: { src: ImageMetadata; alt: string }[];
+}
+
+const defaultPhotos = [
 	{ src: photo1, alt: "Jinetes recorriendo un sendero entre árboles, vistos desde otro caballo" },
 	{ src: photo2, alt: "Mujer con sombrero sonriendo junto a dos caballos en el corral" },
 	{ src: photo3, alt: "Tabla de desayuno con mermelada y queso, grabada con el logo de la marca" },
-	{ src: photo4, alt: "Manos tostando marshmellows sobre la fogata" },
+	{ src: photo4, alt: "Manos tostando malvaviscos sobre la fogata" },
 	{ src: photo5, alt: "Grupo de una empresa posando frente a los caballos" },
 ];
+
+const photos = Astro.props.photos?.length ? Astro.props.photos : defaultPhotos;
 ---
 
 <section class="gallery-preview section">
