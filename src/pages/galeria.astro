@@ -10,6 +10,7 @@ import moment3 from "../assets/galeria/momento-3.jpg";
 import moment4 from "../assets/galeria/momento-4.jpg";
 import moment5 from "../assets/galeria/momento-5.jpg";
 import moment6 from "../assets/galeria/momento-6.jpg";
+import groupGarden from "../assets/inicio/atardecer.jpg";
 
 // Real photos from the client's shoots, one import per file in src/assets/galeria/fotos/.
 const realPhotos = import.meta.glob<{ default: ImageMetadata }>("../assets/galeria/fotos/*.jpg", {
@@ -189,6 +190,36 @@ const photos = [
 		image: photo("ruta-sendero-2"),
 		category: "cabalgatas",
 		alt: "Jinetes en fila por un sendero de la quebrada",
+	},
+	{
+		image: groupGarden,
+		category: "celebraciones",
+		alt: "Grupo con sombreros reunido en el jardín del rancho",
+	},
+	{
+		image: photo("caballos-sonrisa"),
+		category: "caballos",
+		alt: "Mujer sonriendo junto a dos caballos en el corral",
+	},
+	{
+		image: photo("clase-guia"),
+		category: "cabalgatas",
+		alt: "Guía preparando a los jinetes en el picadero antes de salir",
+	},
+	{
+		image: photo("jugo-mesa"),
+		category: "mesa",
+		alt: "Jarra de jugo natural servida en la mesa del campo",
+	},
+	{
+		image: photo("caballo-blanco-jinete"),
+		category: "caballos",
+		alt: "Jinete sobre un caballo blanco en el picadero",
+	},
+	{
+		image: photo("caballo-alazan-2"),
+		category: "caballos",
+		alt: "Mujer acariciando a un caballo alazán en el corral",
 	},
 ];
 
