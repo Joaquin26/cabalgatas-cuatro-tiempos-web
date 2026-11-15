@@ -221,6 +221,21 @@ const slideCount = String(slides.length).padStart(2, "0");
 			);
 	}
 
+	/* On phones the text runs nearly edge to edge, so the shade rises from the bottom instead of
+	   coming in from the left (same as the page hero). */
+	@media (max-width: 767px) {
+		.hero__scrim {
+			--shade: var(--color-dark-chocolate);
+			background: linear-gradient(
+				180deg,
+				color-mix(in srgb, var(--shade) 30%, transparent) 0%,
+				color-mix(in srgb, var(--shade) 10%, transparent) 28%,
+				color-mix(in srgb, var(--shade) 64%, transparent) 50%,
+				color-mix(in srgb, var(--shade) 86%, transparent) 100%
+			);
+		}
+	}
+
 	.hero__content {
 		display: flex;
 		flex-direction: column;

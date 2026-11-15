@@ -105,23 +105,28 @@ const cards = [
 		transition: transform var(--duration-slow) var(--ease-calm);
 	}
 
+	/* The text block is anchored to the bottom, so the shade is measured from the bottom too: it
+	   stays deep behind the whole block whatever the card's height, then fades into the photo. */
 	.experience-card__scrim {
+		--shade: var(--color-dark-chocolate);
 		position: absolute;
 		inset: 0;
 		background: linear-gradient(
-			180deg,
-			rgba(20, 15, 11, 0.22) 0%,
-			rgba(20, 15, 11, 0.28) 45%,
-			rgba(20, 15, 11, 0.9) 100%
+			0deg,
+			color-mix(in srgb, var(--shade) 92%, transparent) 0,
+			color-mix(in srgb, var(--shade) 80%, transparent) 11rem,
+			color-mix(in srgb, var(--shade) 30%, transparent) 16rem,
+			color-mix(in srgb, var(--shade) 22%, transparent) 100%
 		);
 	}
 
 	.experience-card--large .experience-card__scrim {
 		background: linear-gradient(
-			180deg,
-			rgba(20, 15, 11, 0.02) 0%,
-			rgba(20, 15, 11, 0.08) 45%,
-			rgba(20, 15, 11, 0.78) 100%
+			0deg,
+			color-mix(in srgb, var(--shade) 88%, transparent) 0,
+			color-mix(in srgb, var(--shade) 74%, transparent) 11rem,
+			color-mix(in srgb, var(--shade) 10%, transparent) 17rem,
+			color-mix(in srgb, var(--shade) 2%, transparent) 100%
 		);
 	}
 

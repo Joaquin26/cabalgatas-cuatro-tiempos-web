@@ -98,23 +98,39 @@ const { image, alt, eyebrow, title, subtitle, facts = [] } = Astro.props;
 	}
 
 	.page-hero__scrim {
+		--shade: var(--color-dark-chocolate);
 		position: absolute;
 		inset: 0;
 		z-index: -1;
 		background:
 			linear-gradient(
 				90deg,
-				rgba(20, 15, 11, 0.72) 0%,
-				rgba(20, 15, 11, 0.42) 32%,
-				rgba(20, 15, 11, 0.1) 70%,
-				rgba(20, 15, 11, 0.06) 100%
+				color-mix(in srgb, var(--shade) 78%, transparent) 0%,
+				color-mix(in srgb, var(--shade) 54%, transparent) 34%,
+				color-mix(in srgb, var(--shade) 14%, transparent) 70%,
+				color-mix(in srgb, var(--shade) 6%, transparent) 100%
 			),
 			linear-gradient(
 				180deg,
-				rgba(20, 15, 11, 0.18) 0%,
-				rgba(20, 15, 11, 0) 50%,
-				rgba(20, 15, 11, 0.32) 100%
+				color-mix(in srgb, var(--shade) 18%, transparent) 0%,
+				transparent 50%,
+				color-mix(in srgb, var(--shade) 42%, transparent) 100%
 			);
+	}
+
+	/* On phones the text runs nearly edge to edge, so the shade rises from the bottom instead of
+	   coming in from the left. */
+	@media (max-width: 767px) {
+		.page-hero__scrim {
+			--shade: var(--color-dark-chocolate);
+			background: linear-gradient(
+				180deg,
+				color-mix(in srgb, var(--shade) 30%, transparent) 0%,
+				color-mix(in srgb, var(--shade) 8%, transparent) 30%,
+				color-mix(in srgb, var(--shade) 62%, transparent) 55%,
+				color-mix(in srgb, var(--shade) 86%, transparent) 100%
+			);
+		}
 	}
 
 	.page-hero__content {
