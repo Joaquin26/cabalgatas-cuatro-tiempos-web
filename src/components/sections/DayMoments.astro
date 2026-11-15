@@ -2,14 +2,43 @@
 import { Image } from "astro:assets";
 import SectionHeader from "../ui/SectionHeader.astro";
 import Zoomable from "../ui/Zoomable.astro";
-import momentoImage from "../../assets/inicio/momento.jpg";
+import arrive from "../../assets/galeria/fotos/porton.jpg";
+import meet from "../../assets/galeria/fotos/clase-guia.jpg";
+import valley from "../../assets/galeria/fotos/ruta-quebrada.jpg";
+import table from "../../assets/galeria/fotos/almuerzo-mesa.jpg";
+import fire from "../../assets/galeria/fotos/fogata-amigos.jpg";
 
 const steps = [
-	{ number: "01", label: "Llegas al campo" },
-	{ number: "02", label: "Conoces a tu caballo" },
-	{ number: "03", label: "Conoces el valle" },
-	{ number: "04", label: "Compartes la mesa" },
-	{ number: "05", label: "Terminas sin prisa" },
+	{
+		number: "01",
+		label: "Llegas al campo",
+		image: arrive,
+		alt: "Portón de entrada al rancho cubierto de buganvillas",
+	},
+	{
+		number: "02",
+		label: "Conoces a tu caballo",
+		image: meet,
+		alt: "Guía preparando a los jinetes en el picadero antes de salir",
+	},
+	{
+		number: "03",
+		label: "Conoces el valle",
+		image: valley,
+		alt: "Fila de jinetes avanzando por la quebrada",
+	},
+	{
+		number: "04",
+		label: "Compartes la mesa",
+		image: table,
+		alt: "Mesa campestre servida con platos caseros",
+	},
+	{
+		number: "05",
+		label: "Terminas sin prisa",
+		image: fire,
+		alt: "Amigos tostando malvaviscos alrededor de la fogata",
+	},
 ];
 ---
 
@@ -24,8 +53,8 @@ const steps = [
 		{steps.map((step, i) => (
 			<li class="day-moments__step">
 				<span class="day-moments__image">
-					<Zoomable src={momentoImage} alt={step.label} grouped order={i}>
-						<Image src={momentoImage} alt="" width={480} height={548} />
+					<Zoomable src={step.image} alt={step.alt} grouped order={i}>
+						<Image src={step.image} alt="" width={480} height={548} />
 					</Zoomable>
 				</span>
 				<span class="day-moments__text">

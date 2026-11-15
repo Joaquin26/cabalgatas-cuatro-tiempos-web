@@ -2,9 +2,11 @@
 import { Image } from "astro:assets";
 import Zoomable from "../ui/Zoomable.astro";
 import { whatsappLink, messages } from "../../data/contact";
-import celebrateImage from "../../assets/experiencias/celebra-a-tu-manera/hero.jpg";
+import celebrateImage from "../../assets/galeria/fotos/grupo-picadero.jpg";
 
 const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
+// The arch is taller than the photo is wide, so the photo is drawn by its height (and zoomed a
+// little for the parallax): the sizes below are that drawn width, not the arch's width.
 ---
 
 <section class="celebrate" id="celebra">
@@ -28,14 +30,14 @@ const tags = ["GRUPOS", "CUMPLEAÑOS", "ANIVERSARIOS", "EXPERIENCIAS PRIVADAS"];
 			<div class="celebrate__image">
 				<Zoomable
 					src={celebrateImage}
-					alt="Mesa servida al aire libre para una celebración en Cuatro Tiempos"
+					alt="Grupo de amigos con sombreros celebrando en el picadero, con los cerros al fondo"
 				>
 					<Image
 						class="parallax"
 						src={celebrateImage}
-						alt="Mesa servida al aire libre para una celebración en Cuatro Tiempos"
-						width={520}
-						height={400}
+						alt="Grupo de amigos con sombreros celebrando en el picadero, con los cerros al fondo"
+						widths={[800, 1400, 2000, 2400]}
+						sizes="(min-width: 1024px) 72rem, 44rem"
 					/>
 				</Zoomable>
 			</div>

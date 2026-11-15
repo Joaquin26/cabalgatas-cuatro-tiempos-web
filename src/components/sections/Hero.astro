@@ -1,10 +1,21 @@
 ---
 import { Image } from "astro:assets";
-import heroImage from "../../assets/inicio/hero-cabalgata.jpg";
+import valley from "../../assets/inicio/hero-cabalgata.jpg";
+import canal from "../../assets/experiencias/hero-cabalgata-2h.jpg";
+import garden from "../../assets/nosotros/hero.jpg";
+import kiss from "../../assets/faq/hero.jpg";
+import trail from "../../assets/experiencias/hero-full-day.jpg";
 
-const slides = Array.from({ length: 5 }, () => ({
-	image: heroImage,
-	alt: "Grupo a caballo al atardecer en el valle de Pachacámac",
+const photos = [
+	{ image: valley, alt: "Grupo a caballo al atardecer en el valle de Pachacámac" },
+	{ image: canal, alt: "Jinetes cabalgando junto a un canal entre árboles al atardecer" },
+	{ image: garden, alt: "Jardín del rancho con palmeras y una carreta antigua al atardecer" },
+	{ image: kiss, alt: "Mujer dando un beso a un caballo alazán en el corral al atardecer" },
+	{ image: trail, alt: "Fila de jinetes con sombrero por un sendero entre árboles al atardecer" },
+];
+
+const slides = photos.map((photo) => ({
+	...photo,
 	heading: ["Vuelve a", "vivir lo esencial."],
 	subtitle:
 		"Experiencias entre caballos, naturaleza y momentos para recordar en el valle de Pachacámac.",
