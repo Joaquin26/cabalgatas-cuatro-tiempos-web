@@ -9,7 +9,7 @@ interface Props {
 	text: string;
 	cta: string;
 	href: string;
-	facts?: string[];
+	facts?: { full: string; short: string }[];
 	image?: ImageMetadata;
 	alt?: string;
 }
@@ -36,7 +36,12 @@ const { title, text, cta, href, facts = [], image, alt = "" } = Astro.props;
 		{facts.length > 0 && (
 			<ul class="closing__facts">
 				{facts.map((fact) => (
-					<li>{fact}</li>
+					<li>
+						<span class="fact-full">{fact.full}</span>
+						<span class="fact-short" aria-hidden="true">
+							{fact.short}
+						</span>
+					</li>
 				))}
 			</ul>
 		)}
@@ -71,23 +76,30 @@ const { title, text, cta, href, facts = [], image, alt = "" } = Astro.props;
 		object-position: 50% 35%;
 	}
 
-	/* Deepest around the text, so the fire stays bright at the edges of the frame. */
+	/* Dark only where the text sits; the edges of the photo keep their own light and colour. */
 	.closing__scrim {
 		position: absolute;
 		inset: 0;
 		background:
 			radial-gradient(
-				ellipse 60% 55% at 50% 50%,
-				color-mix(in srgb, var(--color-dark-chocolate) 78%, transparent) 0%,
-				color-mix(in srgb, var(--color-dark-chocolate) 55%, transparent) 60%,
-				color-mix(in srgb, var(--color-dark-chocolate) 35%, transparent) 100%
+				ellipse 55% 44% at 50% 50%,
+				color-mix(in srgb, var(--color-dark-chocolate) 80%, transparent) 0%,
+				color-mix(in srgb, var(--color-dark-chocolate) 55%, transparent) 55%,
+				transparent 100%
 			),
 			linear-gradient(
 				180deg,
-				color-mix(in srgb, var(--color-dark-chocolate) 30%, transparent) 0%,
-				transparent 40%,
-				color-mix(in srgb, var(--color-dark-chocolate) 45%, transparent) 100%
+				color-mix(in srgb, var(--color-dark-chocolate) 35%, transparent) 0%,
+				transparent 30%,
+				transparent 70%,
+				color-mix(in srgb, var(--color-dark-chocolate) 40%, transparent) 100%
 			);
+	}
+
+	.closing__content h2,
+	.closing__content p,
+	.closing__facts {
+		text-shadow: 0 1px 12px color-mix(in srgb, var(--color-dark-chocolate) 60%, transparent);
 	}
 
 	.closing__content {
@@ -96,7 +108,8 @@ const { title, text, cta, href, facts = [], image, alt = "" } = Astro.props;
 		flex-direction: column;
 		align-items: center;
 		gap: var(--space-grid-gap);
-		max-width: 36rem;
+		/* Wide enough for the title to sit on one line on desktop. */
+		max-width: 60rem;
 	}
 
 	.closing__content h2 {
@@ -129,6 +142,10 @@ const { title, text, cta, href, facts = [], image, alt = "" } = Astro.props;
 		color: var(--color-text-image);
 	}
 
+	.closing__facts li {
+		white-space: nowrap;
+	}
+
 	.closing__facts li + li::before {
 		content: "";
 		display: inline-block;
@@ -138,18 +155,6 @@ const { title, text, cta, href, facts = [], image, alt = "" } = Astro.props;
 		vertical-align: -0.1em;
 		background: var(--color-dark-sand);
 		opacity: 0.6;
-	}
-
-	/* Phones: one fact per line instead of a wrapped line that would start with a divider. */
-	@media (max-width: 479px) {
-		.closing__facts {
-			flex-direction: column;
-			align-items: center;
-		}
-
-		.closing__facts li + li::before {
-			display: none;
-		}
 	}
 
 	.closing__cta {

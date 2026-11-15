@@ -30,7 +30,12 @@ const bookingHref = whatsappLink(messages.booking(data.title));
 // The key facts (days, length, price) shown in the hero, from the same data as the booking card.
 const { price } = data.booking;
 const priceLabel = `${price.currency} ${price.amount}`;
-const facts = [scheduleLabel(data.booking.schedule), data.duration, `${priceLabel} ${price.unit}`];
+// Each fact has a shorter form for phones, so the line never wraps there.
+const facts = [
+	{ full: scheduleLabel(data.booking.schedule), short: scheduleLabel(data.booking.schedule, true) },
+	{ full: data.duration, short: data.duration },
+	{ full: `${priceLabel} ${price.unit}`, short: priceLabel },
+].filter((fact) => fact.full);
 ---
 
 <BaseLayout title={data.title} description={data.summary} bookingHref={bookingHref}>
@@ -41,7 +46,7 @@ const facts = [scheduleLabel(data.booking.schedule), data.duration, `${priceLabe
 			eyebrow={data.hero.eyebrow}
 			title={data.hero.title}
 			subtitle={data.hero.subtitle}
-			facts={facts.filter(Boolean)}
+			facts={facts}
 		/>
 		<StorySection
 			eyebrow={data.intro.eyebrow}
@@ -73,7 +78,7 @@ const facts = [scheduleLabel(data.booking.schedule), data.duration, `${priceLabe
 			text={data.closing.text}
 			cta={data.closing.cta}
 			href={bookingHref}
-			facts={facts.filter(Boolean)}
+			facts={facts}
 			image={data.closing.image}
 			alt={data.closing.alt}
 		/>

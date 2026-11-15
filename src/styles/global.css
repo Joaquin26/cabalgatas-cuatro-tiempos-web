@@ -373,3 +373,24 @@ a {
 html:has(dialog[open]) {
 	overflow: hidden;
 }
+
+/* Key facts (days, length, price) on experience pages: the short form replaces the full one on
+   phones, while screen readers always hear the full text. */
+.fact-short {
+	display: none;
+}
+
+@media (max-width: 559px) {
+	.fact-full {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+	}
+
+	.fact-short {
+		display: inline;
+	}
+}

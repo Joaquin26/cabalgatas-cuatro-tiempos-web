@@ -6,8 +6,8 @@ hero:
   eyebrow: "Full Day"
   title: "Un día en la naturaleza"
   subtitle: "Naturaleza, buena comida y todo lo que necesitas para vivir la experiencia."
-  image: "../../assets/galeria/fotos/ruta-sendero.jpg"
-  alt: "Grupo de jinetes recorriendo un sendero entre árboles en Pachacámac"
+  image: "../../assets/experiencias/hero-full-day.jpg"
+  alt: "Fila de jinetes con sombrero por un sendero entre árboles al atardecer en Pachacámac"
 intro:
   eyebrow: "La experiencia"
   title: "Más que una cabalgata, un día para reconectar."
@@ -92,7 +92,7 @@ gallery:
   - image: "../../assets/galeria/fotos/almuerzo-ollas.jpg"
     alt: "Ollas de barro con comida casera servida en la mesa"
 closing:
-  title: "¿Listo para vivirlo?"
+  title: "Vive el valle a otro ritmo"
   text: "Los mejores momentos empiezan fuera de la rutina."
   cta: "RESERVAR AHORA →"
   image: "../../assets/galeria/fotos/fogata-malvaviscos.jpg"

@@ -9,7 +9,7 @@ interface Props {
 	title: string;
 	subtitle: string;
 	/** Short key facts under the subtitle, such as days, length and price. */
-	facts?: string[];
+	facts?: { full: string; short: string }[];
 }
 
 const { image, alt, eyebrow, title, subtitle, facts = [] } = Astro.props;
@@ -36,7 +36,12 @@ const { image, alt, eyebrow, title, subtitle, facts = [] } = Astro.props;
 			<div class="reveal page-hero__facts">
 				<ul>
 					{facts.map((fact) => (
-						<li>{fact}</li>
+						<li>
+							<span class="fact-full">{fact.full}</span>
+							<span class="fact-short" aria-hidden="true">
+								{fact.short}
+							</span>
+						</li>
 					))}
 				</ul>
 			</div>
@@ -155,6 +160,9 @@ const { image, alt, eyebrow, title, subtitle, facts = [] } = Astro.props;
 	.page-hero__facts {
 		--reveal-delay: 300ms;
 		--fact-gap: var(--space-sm);
+		/* The line may run wider than the text column above, so it stays on one line. */
+		width: max-content;
+		max-width: calc(100vw - 2 * var(--gutter));
 		padding-top: var(--space-sm);
 		border-top: 1px solid color-mix(in srgb, var(--color-dark-sand) 45%, transparent);
 		overflow: hidden;

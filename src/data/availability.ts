@@ -47,11 +47,16 @@ export function getAvailability(slug: string, date: Date, schedule: Schedule): D
 }
 
 const dayNames = ["domingos", "lunes", "martes", "miércoles", "jueves", "viernes", "sábados"];
+const dayShort = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
 
-/** Short label for the days an experience runs, such as "Domingos" or "Martes y viernes". */
-export function scheduleLabel(schedule: Schedule): string {
-	if (schedule.dates?.length) return "Fechas programadas";
-	const names = [...(schedule.weekdays ?? [])].sort().map((day) => dayNames[day]);
+/**
+ * Label for the days an experience runs, such as "Domingos" or "Martes y viernes". `short` gives the
+ * phone version ("Mar, mié y vie") when several days are listed.
+ */
+export function scheduleLabel(schedule: Schedule, short = false): string {
+	if (schedule.dates?.length) return short ? "Por fechas" : "Fechas programadas";
+	const days = [...(schedule.weekdays ?? [])].sort();
+	const names = days.map((day) => (short && days.length > 1 ? dayShort : dayNames)[day]);
 	if (names.length === 0) return "";
 	const text = names.length === 1 ? names[0] : `${names.slice(0, -1).join(", ")} y ${names.at(-1)}`;
 	return text.charAt(0).toUpperCase() + text.slice(1);
